@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.social.twitter.api.Entities;
+import org.springframework.social.twitter.api.SearchParameters;
 import org.springframework.social.twitter.api.SearchResults;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
@@ -38,7 +40,10 @@ public class CrawlerController {
 		final DBCollection items = this.connectdb(keyword);
 		
 		System.out.println("Getting " + count + " Tweets for keyword [" + keyword + "]...");
-		final SearchResults result = twitter.searchOperations().search(keyword, count);
+		final SearchParameters searchParameters = new SearchParameters(keyword)
+				.count(count)
+				.includeEntities(true);
+		final SearchResults result = twitter.searchOperations().search(searchParameters);
 		final List<Tweet> tweets = result.getTweets();
 		System.out.println("Results size=" + tweets.size());
 		for (Tweet tweet : tweets) {
@@ -50,6 +55,8 @@ public class CrawlerController {
 			basicObj.put("tweet_followers_count", tweet.getUser().getFollowersCount());
 			basicObj.put("source", tweet.getSource());
 			basicObj.put("coordinates", tweet.getUser().getLocation());
+			final Entities mentioned = tweet.getEntities();
+            basicObj.put("tweet_mentioned_count", mentioned.getMentions().size());
 			try {
 				items.insert(basicObj);
 			} catch (Exception e) {
