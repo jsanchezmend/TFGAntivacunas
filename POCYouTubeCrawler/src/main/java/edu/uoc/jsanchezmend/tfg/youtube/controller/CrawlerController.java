@@ -1,6 +1,7 @@
 package edu.uoc.jsanchezmend.tfg.youtube.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,7 +17,11 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
-import com.google.api.services.youtube.model.SearchResultSnippet;
+import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoListResponse;
+import com.google.api.services.youtube.model.VideoSnippet;
+import com.google.api.services.youtube.model.VideoStatistics;
+import com.google.common.base.Joiner;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -48,14 +53,14 @@ public class CrawlerController {
 			System.out.println("Getting " + count + " Youtube videos for keyword [" + keyword + "]...");
 			
 			// Define the API request for retrieving search results.
-	        final YouTube.Search.List search = youtube.search().list("id,snippet");      
+	        final YouTube.Search.List search = youtube.search().list("id");      
 	        // Set your developer key from the {{ Google Cloud Console }} for non-authenticated requests.
 	        search.setKey(apiKey);
 	        search.setQ(keyword);
 	        // Restrict the search results to only include videos.
 	        search.setType("video");
 	        // To increase efficiency, only retrieve the fields that the application uses.
-	        search.setFields("items(id/kind,id/videoId,snippet/title,snippet/description)");
+	        search.setFields("items(id/videoId)");
 	        search.setMaxResults(new Long(count));
 	        
 	        // Call the API and save results.
@@ -63,22 +68,40 @@ public class CrawlerController {
 	        final List<SearchResult> searchResultList = searchResponse.getItems();
 	        if (searchResultList != null) {
 	        	System.out.println("Results size=" + searchResultList.size());
-	    		for (SearchResult searchResult : searchResultList) { 	
+	        	
+	        	// Merge video IDs
+	        	final List<String> videoIds = new ArrayList<String>();
+	        	for (SearchResult searchResult : searchResultList) {
 	    			final ResourceId id = searchResult.getId();
-	    			final SearchResultSnippet snippet = searchResult.getSnippet();	
-	    			// Confirm that the result represents a video.
-	                if (id.getKind().equals("youtube#video")) {
-		    			final BasicDBObject basicObj = new BasicDBObject();
-		    			basicObj.put("video_ID", id.getVideoId());
-		                basicObj.put("video_title", snippet.getTitle());
-		                basicObj.put("video_description", snippet.getDescription());
-		    			try {
-		    				items.insert(basicObj);
-		    			} catch (Exception e) {
-		    				System.out.println("MongoDB Connection Error : " + e.getMessage());
-		    			}
-	                }
+	    			videoIds.add(id.getVideoId());
 	    		}
+	        	final Joiner stringJoiner = Joiner.on(',');
+	        	final String searchForvideoIds = stringJoiner.join(videoIds);
+
+	        	// Call the YouTube Data API's youtube.videos.list method to 
+	        	// retrieve the resources that represent the specified videos.
+	            final YouTube.Videos.List videosListMultipleIdsRequest = youtube.videos().list("snippet,statistics");
+	            videosListMultipleIdsRequest.setKey(apiKey);
+		        // To increase efficiency, only retrieve the fields that the application uses.
+	            videosListMultipleIdsRequest.setFields("items(id,snippet/title,snippet/description,statistics/viewCount)");
+	            videosListMultipleIdsRequest.setId(searchForvideoIds);
+	            
+	            final VideoListResponse videoListResponse = videosListMultipleIdsRequest.execute();
+	            final List<Video> videos = videoListResponse.getItems();
+	            for(Video video : videos) {
+	            	final VideoSnippet snippet = video.getSnippet();
+	            	final VideoStatistics statistics = video.getStatistics();
+	            	final BasicDBObject basicObj = new BasicDBObject();
+	    			basicObj.put("video_ID", video.getId());
+	                basicObj.put("video_title", snippet.getTitle());
+	                basicObj.put("video_description", snippet.getDescription());
+	                basicObj.put("video_viewCount", statistics.getViewCount().toString());
+	    			try {
+	    				items.insert(basicObj);
+	    			} catch (Exception e) {
+	    				System.out.println("MongoDB Connection Error : " + e.getMessage());
+	    			}
+	            }
 	        }
 		} catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
