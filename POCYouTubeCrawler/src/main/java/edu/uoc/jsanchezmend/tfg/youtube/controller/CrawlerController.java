@@ -3,7 +3,10 @@ package edu.uoc.jsanchezmend.tfg.youtube.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.api.client.googleapis.media.MediaHttpDownloader;
 import com.google.api.client.googleapis.media.MediaHttpDownloaderProgressListener;
+import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTube.Captions.Download;
 import com.google.api.services.youtube.model.Caption;
@@ -86,6 +90,118 @@ public class CrawlerController {
 	        	final String searchVideoIds = stringJoiner.join(videoIds);
 	        	// Retrieve related id videos and persist their info
 	        	this.saveVideoInfo(keyword, searchVideoIds);	
+	        }
+		} catch (IOException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            return false;
+        }  
+
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param keyword
+	 * @param from [MM/dd/yyyy]
+	 * @param to [MM/dd/yyyy]
+	 * @param order [date, rating, relevance, title, videoCount, viewCount]
+	 * @param count
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/{keyword}/{from}/{to}/{order}/{count}", method = RequestMethod.GET)
+	public Boolean keywordFiltersCrawler(@PathVariable(value = "keyword", required = true) String keyword,
+			@PathVariable(value = "from", required = true) String from,
+			@PathVariable(value = "to", required = true) String to,
+			@PathVariable(value = "order", required = true) String order,
+			@PathVariable(value = "count", required = true) int count) {				
+		try {
+			System.out.println("Getting " + count + " Youtube videos for keyword [" + keyword + "]...");
+			
+			// Define the API request for retrieving search results.
+	        final YouTube.Search.List search = youtube.search().list("id");      
+	        // Set your developer key from the {{ Google Cloud Console }} for non-authenticated requests.
+	        search.setKey(apiKey);
+	        search.setQ(keyword);
+	        search.setPublishedAfter(this.getDateTimeFromString(from));
+	        search.setPublishedBefore(this.getDateTimeFromString(to));
+	        search.setOrder(order);
+	        // Restrict the search results to only include videos.
+	        search.setType("video");
+	        // To increase efficiency, only retrieve the fields that the application uses.
+	        search.setFields("items(id/videoId)");
+	        search.setMaxResults(new Long(count));
+	        
+	        // Call the API and save results.
+	        final SearchListResponse searchResponse = search.execute();
+	        final List<SearchResult> searchResultList = searchResponse.getItems();
+	        if (searchResultList != null) {
+	        	System.out.println("Results size=" + searchResultList.size());
+	        	// Merge video IDs
+	        	final List<String> videoIds = new ArrayList<String>();
+	        	for (SearchResult searchResult : searchResultList) {
+	    			final ResourceId id = searchResult.getId();
+	    			videoIds.add(id.getVideoId());
+	    		}
+	        	final Joiner stringJoiner = Joiner.on(',');
+	        	final String searchVideoIds = stringJoiner.join(videoIds);
+	        	// Retrieve related id videos and persist their info
+	        	this.saveVideoInfo(keyword, searchVideoIds);	
+	        }
+		} catch (IOException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            return false;
+        }  
+
+		return true;
+	}
+	
+	private DateTime getDateTimeFromString(String strDate) {
+		DateTime dt = null;
+		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
+		try {
+			final Date date = simpleDateFormat.parse(strDate);
+			dt = new DateTime(date);
+		} catch (ParseException e) {
+			System.err.println("There was an error parsing to date: " + strDate);
+            return null;
+		}
+		return dt;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/related/{relatedToVideoId}/{count}", method = RequestMethod.GET)
+	public Boolean relatedToVideoIdCrawler(@PathVariable(value = "relatedToVideoId", required = true) String relatedToVideoId,
+			@PathVariable(value = "count", required = true) int count) {	
+		try {
+			System.out.println("Getting " + count + " Youtube related videos for vieoId [" + relatedToVideoId + "]...");
+			
+			// Define the API request for retrieving search results.
+	        final YouTube.Search.List search = youtube.search().list("id");      
+	        // Set your developer key from the {{ Google Cloud Console }} for non-authenticated requests.
+	        search.setKey(apiKey);
+	        search.setRelatedToVideoId(relatedToVideoId);
+	        // Restrict the search results to only include videos.
+	        search.setType("video");
+	        // To increase efficiency, only retrieve the fields that the application uses.
+	        search.setFields("items(id/videoId)");
+	        search.setMaxResults(new Long(count));
+	        
+	        // Call the API and save results.
+	        final SearchListResponse searchResponse = search.execute();
+	        final List<SearchResult> searchResultList = searchResponse.getItems();
+	        if (searchResultList != null) {
+	        	System.out.println("Results size=" + searchResultList.size());
+	        	// Merge video IDs
+	        	final List<String> videoIds = new ArrayList<String>();
+	        	for (SearchResult searchResult : searchResultList) {
+	    			final ResourceId id = searchResult.getId();
+	    			videoIds.add(id.getVideoId());
+	    		}
+	        	final Joiner stringJoiner = Joiner.on(',');
+	        	final String searchVideoIds = stringJoiner.join(videoIds);
+	        	// Retrieve related id videos and persist their info
+	        	this.saveVideoInfo(relatedToVideoId, searchVideoIds);	
 	        }
 		} catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
