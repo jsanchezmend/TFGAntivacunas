@@ -18,7 +18,10 @@ import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoContentDetails;
 import com.google.api.services.youtube.model.VideoListResponse;
+import com.google.api.services.youtube.model.VideoPlayer;
+import com.google.api.services.youtube.model.VideoRecordingDetails;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatistics;
 import com.google.common.base.Joiner;
@@ -80,10 +83,24 @@ public class CrawlerController {
 
 	        	// Call the YouTube Data API's youtube.videos.list method to 
 	        	// retrieve the resources that represent the specified videos.
-	            final YouTube.Videos.List videosListMultipleIdsRequest = youtube.videos().list("snippet,statistics");
+	            final YouTube.Videos.List videosListMultipleIdsRequest = youtube.videos().list("snippet, contentDetails, recordingDetails, statistics, player");
 	            videosListMultipleIdsRequest.setKey(apiKey);
 		        // To increase efficiency, only retrieve the fields that the application uses.
-	            videosListMultipleIdsRequest.setFields("items(id,snippet/title,snippet/description,statistics/viewCount)");
+	            videosListMultipleIdsRequest.setFields("items("
+		            		+ "id,"
+		            		+ "snippet/title,"
+		            		+ "snippet/description,"
+		            		+ "snippet/publishedAt,"
+		            		+ "snippet/channelId,"
+		            		+ "snippet/channelTitle,"
+		            		+ "contentDetails/duration,"
+		            		+ "recordingDetails/location,"
+		            		+ "statistics/viewCount,"
+		            		+ "statistics/likeCount,"
+		            		+ "statistics/dislikeCount,"
+		            		+ "statistics/commentCount,"
+		            		+ "player/embedHtml"
+	            		+ ")");
 	            videosListMultipleIdsRequest.setId(searchForvideoIds);
 	            
 	            final VideoListResponse videoListResponse = videosListMultipleIdsRequest.execute();
@@ -91,11 +108,29 @@ public class CrawlerController {
 	            for(Video video : videos) {
 	            	final VideoSnippet snippet = video.getSnippet();
 	            	final VideoStatistics statistics = video.getStatistics();
+	            	final VideoContentDetails contentDetails = video.getContentDetails();
+	            	final VideoPlayer player = video.getPlayer();
 	            	final BasicDBObject basicObj = new BasicDBObject();
-	    			basicObj.put("video_ID", video.getId());
-	                basicObj.put("video_title", snippet.getTitle());
-	                basicObj.put("video_description", snippet.getDescription());
-	                basicObj.put("video_viewCount", statistics.getViewCount().toString());
+	    			basicObj.put("videoId", video.getId());
+	    			if(snippet != null) {
+		                basicObj.put("title", snippet.getTitle());
+		                basicObj.put("description", snippet.getDescription());
+		                basicObj.put("publishedAt", snippet.getPublishedAt() != null ? snippet.getPublishedAt().toString() : null);
+		                basicObj.put("channelId", snippet.getChannelId());
+		                basicObj.put("channelTitle", snippet.getChannelTitle());
+	    			}
+	    			if(contentDetails != null) {
+	                basicObj.put("duration", contentDetails.getDuration());
+	    			}
+	    			if(statistics != null) {
+		                basicObj.put("viewCount", statistics.getViewCount() != null ? statistics.getViewCount().toString() : null);
+		                basicObj.put("likeCount",  statistics.getLikeCount() != null ? statistics.getLikeCount().toString() : null);
+		                basicObj.put("dislikeCount", statistics.getDislikeCount() != null ? statistics.getDislikeCount().toString() : null);
+		                basicObj.put("commentCount", statistics.getCommentCount() != null ? statistics.getCommentCount().toString() : null);
+	    			}
+	    			if(player != null) {
+	    				basicObj.put("embedHtml", player.getEmbedHtml());
+	    			}
 	    			try {
 	    				items.insert(basicObj);
 	    			} catch (Exception e) {
@@ -116,8 +151,8 @@ public class CrawlerController {
 		try {
 			items = mongoDB.getCollection(keyword);
 			
-			// make the video_ID unique in the database
-			BasicDBObject index = new BasicDBObject("video_ID", 1);
+			// make the "videoId" field as unique in the database
+			BasicDBObject index = new BasicDBObject("videoId", 1);
 			items.createIndex(index, new BasicDBObject("unique", true));
 		} catch (MongoException ex) {
 			System.out.println("MongoException :" + ex.getMessage());
