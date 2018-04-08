@@ -3,6 +3,7 @@ package edu.uoc.jsanchezmend.tfg.youtube.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ import com.google.api.services.youtube.YouTube.Captions.Download;
 import com.google.api.services.youtube.model.Caption;
 import com.google.api.services.youtube.model.CaptionListResponse;
 import com.google.api.services.youtube.model.CaptionSnippet;
+import com.google.api.services.youtube.model.Channel;
+import com.google.api.services.youtube.model.ChannelListResponse;
+import com.google.api.services.youtube.model.ChannelSnippet;
+import com.google.api.services.youtube.model.ChannelStatistics;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
@@ -39,6 +44,7 @@ import com.google.common.base.Joiner;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 
 @Controller
@@ -225,7 +231,6 @@ public class CrawlerController {
             		+ "snippet/description,"
             		+ "snippet/publishedAt,"
             		+ "snippet/channelId,"
-            		+ "snippet/channelTitle,"
             		+ "contentDetails/duration,"
             		+ "recordingDetails/location,"
             		+ "statistics/viewCount,"
@@ -249,8 +254,12 @@ public class CrawlerController {
                 basicObj.put("title", snippet.getTitle());
                 basicObj.put("description", snippet.getDescription());
                 basicObj.put("publishedAt", snippet.getPublishedAt() != null ? snippet.getPublishedAt().toString() : null);
-                basicObj.put("channelId", snippet.getChannelId());
-                basicObj.put("channelTitle", snippet.getChannelTitle());
+                final String channelId = snippet.getChannelId();
+                basicObj.put("channelId", channelId);
+                // Save the video channel if not exist in the DB and calc the "scopeRange" (this is only a possible implementation example!)
+                final Channel channel = this.getChannel(channelId);
+                final BigInteger scopeRange = channel.getStatistics().getSubscriberCount().divide(channel.getStatistics().getVideoCount()).multiply(statistics.getViewCount());
+                basicObj.put("scopeRange", scopeRange.toString());
 			}
 			if(contentDetails != null) {
             basicObj.put("duration", contentDetails.getDuration());
@@ -272,6 +281,98 @@ public class CrawlerController {
 				System.out.println("MongoDB Connection Error : " + e.getMessage());
 			}
         }
+	}
+	
+	private Channel getChannel(final String channelId) throws IOException {
+		final Channel channel;
+		
+		final DBCollection channelsCollection = this.connectChannels();
+		
+		final BasicDBObject query = new BasicDBObject();
+		query.put("channelId", channelId);        
+		final DBObject dbChannel = channelsCollection.findOne(query);
+		if(dbChannel != null) {
+			System.out.println("Video channel read from DB");
+			channel = this.transformDBChannel(dbChannel);
+		} else {
+			channel = this.getChannelFromAPI(channelId);
+			if(channel != null) {
+				System.out.println("Video channel read from API");
+			}
+		}
+		if(channel == null) {
+			System.out.println("Video channel impossible to find");
+		}
+		
+		return channel;
+	}
+	
+	private Channel transformDBChannel(DBObject dbChannel) {
+		final Channel channel = new Channel();
+		
+		final ChannelSnippet snippet = new ChannelSnippet();
+    	final ChannelStatistics statistics = new ChannelStatistics();
+		channel.setId(dbChannel.get("channelId").toString());
+		snippet.setTitle(dbChannel.get("title").toString());
+		snippet.setDescription(dbChannel.get("description").toString());
+		statistics.setCommentCount(new BigInteger(dbChannel.get("commentCount").toString()));
+		statistics.setVideoCount(new BigInteger(dbChannel.get("videoCount").toString()));
+		statistics.setSubscriberCount(new BigInteger(dbChannel.get("subscriberCount").toString()));
+		statistics.setViewCount(new BigInteger(dbChannel.get("viewCount").toString()));
+		channel.setSnippet(snippet);
+		channel.setStatistics(statistics);
+		//... more fields to transform
+		
+		return channel;
+	}
+	
+	private Channel getChannelFromAPI(final String channelId) throws IOException {
+		final DBCollection channelsCollection = this.connectChannels();
+		
+		final YouTube.Channels.List channelsListByIdRequest = youtube.channels().list("id,snippet,statistics");
+		channelsListByIdRequest.setKey(apiKey);
+        // To increase efficiency, only retrieve the fields that the application uses.
+		channelsListByIdRequest.setFields("items("
+            		+ "id,"
+            		+ "snippet/title,"
+            		+ "snippet/description,"
+            		+ "snippet/publishedAt,"
+            		+ "snippet/customUrl,"
+            		+ "snippet/thumbnails/default/url,"
+            		+ "statistics/viewCount,"
+            		+ "statistics/commentCount,"
+            		+ "statistics/subscriberCount,"
+            		+ "statistics/videoCount"
+        		+ ")");
+	    channelsListByIdRequest.setId(channelId);
+	    final ChannelListResponse channelListResponse = channelsListByIdRequest.execute();
+	    final List<Channel> channels = channelListResponse.getItems();
+	    final Channel channel = channels.get(0);
+
+	    final ChannelSnippet snippet = channel.getSnippet();
+    	final ChannelStatistics statistics = channel.getStatistics();
+    	final BasicDBObject basicObj = new BasicDBObject();
+		basicObj.put("channelId", channel.getId());
+		if(snippet != null) {
+            basicObj.put("title", snippet.getTitle());
+            basicObj.put("description", snippet.getDescription());
+            basicObj.put("publishedAt", snippet.getPublishedAt() != null ? snippet.getPublishedAt().toString() : null);
+            basicObj.put("customUrl", snippet.getCustomUrl());
+            basicObj.put("thumbnail", snippet.getThumbnails().getDefault().getUrl());
+		}
+		if(statistics != null) {
+            basicObj.put("viewCount", statistics.getViewCount() != null ? statistics.getViewCount().toString() : null);
+            basicObj.put("commentCount", statistics.getCommentCount() != null ? statistics.getCommentCount().toString() : null);
+            basicObj.put("subscriberCount", statistics.getSubscriberCount() != null ? statistics.getSubscriberCount().toString() : null);
+            basicObj.put("videoCount", statistics.getVideoCount() != null ? statistics.getVideoCount().toString() : null);
+		}
+		try {
+			channelsCollection.insert(basicObj);
+		} catch (Exception e) {
+			System.out.println("MongoDB Connection Error : " + e.getMessage());
+		}
+
+	    return channel;
 	}
 
 	/**
@@ -371,6 +472,21 @@ public class CrawlerController {
 		}
 		
 		return items;
+	}
+	
+	public DBCollection connectChannels() {
+		DBCollection channels = null;
+		try {
+			channels = mongoDB.getCollection("channels");
+			
+			// make the "videoId" field as unique in the database
+			BasicDBObject index = new BasicDBObject("channelId", 1);
+			channels.createIndex(index, new BasicDBObject("unique", true));
+		} catch (MongoException ex) {
+			System.out.println("MongoException :" + ex.getMessage());
+		}
+		
+		return channels;
 	}
 	
 }
