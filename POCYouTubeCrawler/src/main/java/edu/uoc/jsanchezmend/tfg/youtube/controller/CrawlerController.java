@@ -95,7 +95,7 @@ public class CrawlerController {
 	        	final Joiner stringJoiner = Joiner.on(',');
 	        	final String searchVideoIds = stringJoiner.join(videoIds);
 	        	// Retrieve related id videos and persist their info
-	        	this.saveVideoInfo(keyword, searchVideoIds);	
+	        	this.saveVideoInfo(false, keyword, searchVideoIds);	
 	        }
 		} catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
@@ -152,7 +152,7 @@ public class CrawlerController {
 	        	final Joiner stringJoiner = Joiner.on(',');
 	        	final String searchVideoIds = stringJoiner.join(videoIds);
 	        	// Retrieve related id videos and persist their info
-	        	this.saveVideoInfo(keyword, searchVideoIds);	
+	        	this.saveVideoInfo(false, keyword, searchVideoIds);	
 	        }
 		} catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
@@ -182,6 +182,9 @@ public class CrawlerController {
 		try {
 			System.out.println("Getting " + count + " Youtube related videos for vieoId [" + relatedToVideoId + "]...");
 			
+			//HOT FIX to display the graph correctly with relations!!!!!
+			this.saveVideoToFindRelatedVideos(relatedToVideoId);
+			
 			// Define the API request for retrieving search results.
 	        final YouTube.Search.List search = youtube.search().list("id");      
 	        // Set your developer key from the {{ Google Cloud Console }} for non-authenticated requests.
@@ -207,7 +210,7 @@ public class CrawlerController {
 	        	final Joiner stringJoiner = Joiner.on(',');
 	        	final String searchVideoIds = stringJoiner.join(videoIds);
 	        	// Retrieve related id videos and persist their info
-	        	this.saveVideoInfo(relatedToVideoId, searchVideoIds);	
+	        	this.saveVideoInfo(true, relatedToVideoId, searchVideoIds);	
 	        }
 		} catch (IOException e) {
             System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
@@ -217,8 +220,14 @@ public class CrawlerController {
 		return true;
 	}
 	
-	private void saveVideoInfo(final String keyword, final String searchVideoIds) throws IOException {
-		final DBCollection items = this.connectdb(keyword);
+	/**
+	 * HOT FIX!!!
+	 * 
+	 * @param string
+	 * @throws IOException 
+	 */
+	private void saveVideoToFindRelatedVideos(String relatedToVideoId) throws IOException {	
+		final DBCollection items = this.connectdb("nodes");
 		
 		// Call the YouTube Data API's youtube.videos.list method to 
     	// retrieve the resources that represent the specified videos.
@@ -232,7 +241,74 @@ public class CrawlerController {
             		+ "snippet/publishedAt,"
             		+ "snippet/channelId,"
             		+ "contentDetails/duration,"
-            		+ "recordingDetails/location,"
+            		+ "statistics/viewCount,"
+            		+ "statistics/likeCount,"
+            		+ "statistics/dislikeCount,"
+            		+ "statistics/commentCount,"
+            		+ "player/embedHtml"
+        		+ ")");
+        videosListMultipleIdsRequest.setId(relatedToVideoId);
+        
+        final VideoListResponse videoListResponse = videosListMultipleIdsRequest.execute();
+        final List<Video> videos = videoListResponse.getItems();
+        for(Video video : videos) {
+        	final VideoSnippet snippet = video.getSnippet();
+        	final VideoStatistics statistics = video.getStatistics();
+        	final VideoContentDetails contentDetails = video.getContentDetails();
+        	final VideoPlayer player = video.getPlayer();
+        	final BasicDBObject basicObj = new BasicDBObject();
+			basicObj.put("videoId", video.getId());
+			if(snippet != null) {
+                basicObj.put("title", snippet.getTitle());
+                basicObj.put("description", snippet.getDescription());
+                basicObj.put("publishedAt", snippet.getPublishedAt() != null ? snippet.getPublishedAt().toString() : null);
+                final String channelId = snippet.getChannelId();
+                basicObj.put("channelId", channelId);
+                // Save the video channel if not exist in the DB and calc the "scopeRange" (this is only a possible implementation example!)
+                final Channel channel = this.getChannel(channelId);
+                final BigInteger scopeRange = channel.getStatistics().getSubscriberCount().divide(channel.getStatistics().getVideoCount()).multiply(statistics.getViewCount());
+                basicObj.put("scopeRange", scopeRange.toString());
+			}
+			if(contentDetails != null) {
+            basicObj.put("duration", contentDetails.getDuration());
+			}
+			if(statistics != null) {
+                basicObj.put("viewCount", statistics.getViewCount() != null ? statistics.getViewCount().toString() : null);
+                basicObj.put("likeCount",  statistics.getLikeCount() != null ? statistics.getLikeCount().toString() : null);
+                basicObj.put("dislikeCount", statistics.getDislikeCount() != null ? statistics.getDislikeCount().toString() : null);
+                basicObj.put("commentCount", statistics.getCommentCount() != null ? statistics.getCommentCount().toString() : null);
+			}
+			if(player != null) {
+				basicObj.put("embedHtml", player.getEmbedHtml());
+			}
+			// Download asrCaptions: Not allowed for non video owners
+			//basicObj.put("asrCaption", this.dowloadASRCaption(video.getId()));
+			try {
+				System.out.println("Saving the origanl video to find relations!!");
+				items.insert(basicObj);
+			} catch (Exception e) {
+				System.out.println("MongoDB Connection Error : " + e.getMessage());
+			}
+        }
+		
+	}
+
+	private void saveVideoInfo(boolean related, final String keyword, final String searchVideoIds) throws IOException {	
+		final String collection = related ? "nodes" : keyword;		
+		final DBCollection items = this.connectdb(collection);
+		
+		// Call the YouTube Data API's youtube.videos.list method to 
+    	// retrieve the resources that represent the specified videos.
+        final YouTube.Videos.List videosListMultipleIdsRequest = youtube.videos().list("snippet, contentDetails, recordingDetails, statistics, player");
+        videosListMultipleIdsRequest.setKey(apiKey);
+        // To increase efficiency, only retrieve the fields that the application uses.
+        videosListMultipleIdsRequest.setFields("items("
+            		+ "id,"
+            		+ "snippet/title,"
+            		+ "snippet/description,"
+            		+ "snippet/publishedAt,"
+            		+ "snippet/channelId,"
+            		+ "contentDetails/duration,"
             		+ "statistics/viewCount,"
             		+ "statistics/likeCount,"
             		+ "statistics/dislikeCount,"
@@ -277,10 +353,21 @@ public class CrawlerController {
 			//basicObj.put("asrCaption", this.dowloadASRCaption(video.getId()));
 			try {
 				items.insert(basicObj);
+				if(related) {
+					this.createRelation(keyword, video.getId());
+				}
 			} catch (Exception e) {
 				System.out.println("MongoDB Connection Error : " + e.getMessage());
 			}
         }
+	}
+	
+	private void createRelation(String source, String target) {
+		final DBCollection edges = this.connectEdges();
+		final BasicDBObject basicObj = new BasicDBObject();
+		basicObj.put("source", source);
+        basicObj.put("target", target);
+        edges.insert(basicObj);
 	}
 	
 	private Channel getChannel(final String channelId) throws IOException {
@@ -487,6 +574,16 @@ public class CrawlerController {
 		}
 		
 		return channels;
+	}
+	
+	public DBCollection connectEdges() {
+		DBCollection edges = null;
+		try {
+			edges = mongoDB.getCollection("edges");
+		} catch (MongoException ex) {
+			System.out.println("MongoException :" + ex.getMessage());
+		}
+		return edges;
 	}
 	
 }

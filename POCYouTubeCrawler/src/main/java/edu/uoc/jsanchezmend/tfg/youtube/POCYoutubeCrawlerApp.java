@@ -7,7 +7,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({MongoDBConfiguration.class, YouTubeConfiguration.class})
+@Import({MongoDBConfiguration.class, YouTubeConfiguration.class, JsonConfiguration.class})
 public class POCYoutubeCrawlerApp extends SpringBootServletInitializer {
 	
 	@Override
