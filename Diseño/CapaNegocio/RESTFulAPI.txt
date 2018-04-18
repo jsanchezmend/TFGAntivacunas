@@ -1,0 +1,53 @@
+YouTubeCrawlerTool RESTFul API
+==============================
+
+User session component
+----------------------
+GET		/session				Devuelve la session actual.
+POST	/session				Crea una nueva session autentificando las credenciales.
+DELETE	/session				(R) Destruye la session actual.
+
+Crawler component
+-----------------
+GET		/crawlers				Lista todos los crawlers.
+POST	/crawlers				(R) Inicia un nuevo proceso de crawler.
+GET		/crawlers/{id}			Devuelve un proceso de crawler.
+PUT		/crawlers/{id}			(R) Modifica un proceso de crawler, unica acción posible es cambiar el estado a "Stop" o "Play".
+DELETE	/crawlers/{id}			(R) Borra un proceso de crawler.
+GET		/crawlers/{id}/stats	Devuelve las estadisticas de un proceso de crawler.
+GET		/crawlers/{id}/videos	Lista todos los videos descuviertos por un proceso de crawler.
+
+Video component
+---------------
+GET		/videos					Lista todos los videos.
+GET		/videos/stats			Devuelve las estadisticas de todos los videos.
+GET		/videos/{id}			Devuelve un video.
+PUT		/videos/{id}			(R) Modifica un video, unica acción posible es cambiar la categoria.
+DELETE	/videos/{id}			(R) Borra un video.
+GET		/videos/{id}/videos		Lista todos los videos relacionados con un video.
+
+Channel component
+-----------------
+GET		/channels				Lista todos los canales.
+GET		/channels/stats			Devuelve las estadisticas de todos los canales.
+GET		/channels/{id}			Devuelve un canal.
+DELETE	/channels/{id}			(R) Borra un canal.
+GET		/channels/{id}/stats	Devuelve las estadisticas de un canal.
+GET		/channels/{id}/videos	Lista todos los videos de un canal.
+
+
+Category component
+------------------
+GET		/categories				Lista todas las categorias.
+POST	/categories				(R) Crea una nueva categoria.
+GET		/categories/{id}		Devuelve una categoria.
+PUT		/categories/{id}		(R) Modifica una categoria.
+DELETE	/categories/{id}		(R) Borra una categoria.
+
+
+Analysis component
+------------------
+POST /graphs					Crea un nuevo grafo (no se persiste, se muestra por pantalla).
+POST /exports					Crea una nueva exportación a fichero.
+
+
