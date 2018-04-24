@@ -1,0 +1,42 @@
+<thymeleaf xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:fragment="leftMenu" th:remove="tag">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    	<!-- Logo -->
+    	<div class="navbar-header">
+    		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+            </button>
+    		<a class="navbar-brand" th:href="@{/}"><i class="fa fa-youtube-play"></i> YouTubeCrawlerTool</a>
+    	</div>
+    	<!-- Top menu -->
+    	<ul class="nav navbar-top-links navbar-right">
+    		<li class="dropdown">
+    			<a class="dropdown-toggle" th:href="@{/login}">
+    				Login <i class="fa fa-user fa-fw"></i>
+    			</a>
+            </li>
+		</ul>
+		<!-- Left menu -->
+		<div class="navbar-default sidebar" role="navigation">
+			<div class="sidebar-nav navbar-collapse">
+				<ul class="nav" id="side-menu">
+					<li>
+						<a th:href="@{/}" id="crawlersView"><i class="fa fa-dashboard fa-fw"></i> Crawler</a>
+					</li>
+					<li>
+						<a th:href="@{/analysis}" id="analysisView"><i class="fa fa-bar-chart-o fa-fw"></i> Analysis</a>
+					</li>
+					<li>
+						<a th:href="@{/channels}" id="channelsView"><i class="fa fa-table fa-fw"></i> Channels</a>
+					</li>
+					<li>
+						<a th:href="@{/categories}" id="categoriesView"><i class="fa fa-edit fa-fw"></i> Categories</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+    </nav>
+    <div id="menuValue" style="display:none;" th:text="${activeMenuOption}">activeMenuOption</div>
+</thymeleaf>
