@@ -2,6 +2,7 @@ package uoc.edu.jsanchezmend.tfg.ytct.data.entity;
 
 import java.util.Date;
 
+import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -19,6 +20,7 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerStatusEnum;
 public class Crawler {
 	
 	@Id
+	@GeneratedValue
 	protected Long id;
 
 	protected String search;
