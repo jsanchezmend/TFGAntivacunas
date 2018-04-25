@@ -1,24 +1,21 @@
-package uoc.edu.jsanchezmend.tfg.ytct.data.entity;
+package uoc.edu.jsanchezmend.tfg.ytct.data.item;
 
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-
 /**
- * Video @NodeEntity
+ * @Video POJO representation
  * 
  * @author jsanchezmend
  *
  */
-@NodeEntity
-public class Video {
+public class VideoItem extends AbstractItem {
+
+	private static final long serialVersionUID = 6633484677117936799L;
 	
-	@Id
+	
 	protected String id;
 
 	protected String title;
@@ -40,40 +37,20 @@ public class Video {
 	protected BigInteger scopeRange;
 	
 	protected String embedHtml;
-	
-	@Relationship(type = "UPLOADED_BY", direction = Relationship.UNDIRECTED)
-	protected Channel channel;
-	
-	@Relationship(type = "RELATED_TO", direction = Relationship.UNDIRECTED)
-	public Set<Video> related;
-	
-	@Relationship(type = "DISCOVERED_BY", direction = Relationship.UNDIRECTED)
-	protected Crawler crawler;
-	
-	@Relationship(type = "CATEGORIZED_AS", direction = Relationship.UNDIRECTED)
-	protected Category category;
-	
 
-	public Video() {
-		
-	};
+	protected ChannelItem channel;
 
-	public Video(String id, String title, String description, Date publishedAt, String duration, BigInteger viewCount,
-			BigInteger likeCount, BigInteger dislikeCount, BigInteger commentCount, BigInteger scopeRange,
-			String embedHtml) {
+	public Set<VideoItem> related;
+
+	protected CrawlerItem crawler;
+	
+	protected CategoryItem category;
+	
+	
+	public VideoItem() {
 		super();
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.publishedAt = publishedAt;
-		this.duration = duration;
-		this.viewCount = viewCount;
-		this.likeCount = likeCount;
-		this.dislikeCount = dislikeCount;
-		this.commentCount = commentCount;
-		this.scopeRange = scopeRange;
-		this.embedHtml = embedHtml;
 	}
+
 
 	public String getId() {
 		return id;
@@ -102,7 +79,7 @@ public class Video {
 	public void setPublishedAt(Date publishedAt) {
 		this.publishedAt = publishedAt;
 	}
-	
+
 	public String getDuration() {
 		return duration;
 	}
@@ -151,36 +128,39 @@ public class Video {
 	public void setEmbedHtml(String embedHtml) {
 		this.embedHtml = embedHtml;
 	}
-	
-	public Channel getChannel() {
+
+	public ChannelItem getChannel() {
 		return channel;
 	}
-	public void setChannel(Channel channel) {
+	public void setChannel(ChannelItem channel) {
 		this.channel = channel;
 	}
 
-	public Set<Video> getRelated() {
+	public Set<VideoItem> getRelated() {
 		return related;
 	}
-	public void addRelated(Video video) {
-		if (related == null) {
-			related = new HashSet<>();
+	public void setRelated(Set<VideoItem> related) {
+		this.related = related;
+	}
+	public void addRelated(VideoItem video) {
+		if (this.related == null) {
+			this.related = new HashSet<>();
 		}
-		related.add(video);
+		this.related.add(video);
 	}
 
-	public Crawler getCrawler() {
+	public CrawlerItem getCrawler() {
 		return crawler;
 	}
-	public void setCrawler(Crawler crawler) {
+	public void setCrawler(CrawlerItem crawler) {
 		this.crawler = crawler;
 	}
 
-	public Category getCategory() {
+	public CategoryItem getCategory() {
 		return category;
 	}
-	public void setCategory(Category category) {
+	public void setCategory(CategoryItem category) {
 		this.category = category;
 	}
-	
+
 }
