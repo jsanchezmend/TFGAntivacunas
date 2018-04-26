@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,11 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 import com.google.common.base.Joiner;
 
+import uoc.edu.jsanchezmend.tfg.ytct.core.converter.YouTubeConverterService;
 import uoc.edu.jsanchezmend.tfg.ytct.core.service.YouTubeSearchService;
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerOrderByEnum;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.ChannelItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
 
 /**
  * @YouTubeSearchService service implementation
@@ -74,9 +78,17 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 	
 	@Value("${youtube.search.language}")
 	private String relevanceLanguage;
-
+	
 	@Autowired
 	private YouTube youtube;
+
+	@Autowired
+	@Qualifier("videoConverterService")
+	private YouTubeConverterService<Video, uoc.edu.jsanchezmend.tfg.ytct.data.entity.Video, VideoItem> videoConverterService;
+	
+	@Autowired
+	@Qualifier("channelConverterService")
+	private YouTubeConverterService<Channel, uoc.edu.jsanchezmend.tfg.ytct.data.entity.Channel, ChannelItem> channelConverterService;
 
 	
 	@Override
@@ -183,9 +195,9 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 	}
 
 	@Override
-	public List<Video> findVideos(List<String> videoIds) throws IOException {
+	public List<VideoItem> findVideos(List<String> videoIds) throws IOException {
 		log.info("New find for " + videoIds.size() + " videos");
-		List<Video> videos = null;
+		List<VideoItem> videoItems = null;
 		
 		// Convert a @List<String> to a comma separate string ready to be used as a search criteria
 		final Joiner stringJoiner = Joiner.on(',');
@@ -200,17 +212,18 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
         // Execute the search and obtain the results
         final VideoListResponse videoListResponse = videosListMultipleIdsRequest.execute();
         if(videoListResponse != null) {
-        	videos = videoListResponse.getItems();
-        	log.info("Finded videos: " + videos.size());
+        	final List<Video> videos = videoListResponse.getItems();
+        	videoItems = videoConverterService.fromYouTubeListToListItem(videos);
+        	log.info("Finded videos: " + videoItems.size());
         }
  
-        return videos;
+        return videoItems;
 	}
 	
 	@Override
-	public Channel findChannel(String channelId) throws IOException {
+	public ChannelItem findChannel(String channelId) throws IOException {
 		log.info("New find for " + channelId + " channel");
-		Channel channel = null;
+		ChannelItem channelItem = null;
 		
 		// Create a new channel search
 		final YouTube.Channels.List channelsListByIdRequest = youtube.channels().list(CHANNEL_PARTS);
@@ -223,14 +236,15 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 	    if(channelListResponse != null) {
 	    	final List<Channel> channels = channelListResponse.getItems();
 	    	if(channels != null) {
-	    		channel = channels.get(0);
+	    		final Channel channel = channels.get(0);
 	    		if(channel != null) {
+	    			channelItem = channelConverterService.fromYouTubeToItem(channel);
 	    			log.info("Finded channel: " + channelId);
 	    		}
 	    	}
 	    }
 	   
-	    return channel;
+	    return channelItem;
 	}
 
 }

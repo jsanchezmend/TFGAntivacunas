@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.api.client.util.DateTime;
-import com.google.api.services.youtube.model.Channel;
-import com.google.api.services.youtube.model.Video;
 
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerOrderByEnum;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.ChannelItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
 
 /**
  * Allows connection to the YouTube Data API to perform search and find operations
@@ -48,14 +48,14 @@ public interface YouTubeSearchService {
 	List<String> searchRelatedVideos(String videoId, String pageToken, Long count) throws IOException;
 	
 	/**
-	 * Given a list of video ids, returns a set of @Video
+	 * Given a list of video ids, returns a list of @VideoItem
 	 * See https://developers.google.com/youtube/v3/docs/videos/list
 	 * 
 	 * @param videoIds
 	 * @return
 	 * @throws IOException
 	 */
-	List<Video> findVideos(List<String> videoIds) throws IOException;
+	List<VideoItem> findVideos(List<String> videoIds) throws IOException;
 		
 	/**
 	 * Given a channel id, returns a @Channel
@@ -65,6 +65,6 @@ public interface YouTubeSearchService {
 	 * @return
 	 * @throws IOException
 	 */
-	Channel findChannel(String channelId) throws IOException;
+	ChannelItem findChannel(String channelId) throws IOException;
 
 }
