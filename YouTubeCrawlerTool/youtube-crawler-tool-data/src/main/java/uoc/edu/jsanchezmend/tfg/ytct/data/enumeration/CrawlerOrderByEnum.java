@@ -8,20 +8,26 @@ package uoc.edu.jsanchezmend.tfg.ytct.data.enumeration;
  */
 public enum CrawlerOrderByEnum {
 	
-	RATING("Running"),
-	DATE("Date"),
-	RELEVANCE("Relevance"),
-	TITLE("Title"),
-	VIEW_COUNT("View count");
+	RATING("Rating", "rating"),
+	DATE("Date", "date"),
+	RELEVANCE("Relevance","relevance"),
+	TITLE("Title", "title"),
+	VIEW_COUNT("View count", "viewCount");
 	
 	protected String name;
+	protected String value;
 	
-	CrawlerOrderByEnum(String name) {
+	CrawlerOrderByEnum(String name, String value) {
 		this.name = name;
+		this.value = value;
 	}
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getValue() {
+		return value;
 	}
 	
 	public CrawlerOrderByEnum getByName(String name) {
