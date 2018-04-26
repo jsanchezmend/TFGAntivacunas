@@ -1,4 +1,4 @@
-package uoc.edu.jsanchezmend.tfg.ytct.web.controller;
+package uoc.edu.jsanchezmend.tfg.ytct.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -18,6 +18,11 @@
             <artifactId>youtube-crawler-tool-core</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <!-- Spring Boot Web -->
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
     </dependencies>
 
 </project>

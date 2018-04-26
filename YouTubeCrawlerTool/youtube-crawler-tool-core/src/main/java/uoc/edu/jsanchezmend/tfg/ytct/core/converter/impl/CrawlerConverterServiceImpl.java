@@ -12,7 +12,7 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
  * @author jsanchezmend
  *
  */
-@Service("categoryConverterService")
+@Service("crawlerConverterService")
 public class CrawlerConverterServiceImpl 
 		extends AbstractConverterService<Crawler, CrawlerItem> {
 

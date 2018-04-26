@@ -35,6 +35,8 @@ public class Crawler {
 	
 	protected Integer maxVideosPerLevel;
 	
+	protected Integer maxVideos;
+	
 	protected Integer videosFound;
 	
 	protected Integer newVideos;
@@ -56,7 +58,7 @@ public class Crawler {
 	}
 
 	public Crawler(Long id, String search, Date fromDate, Date toDate, String orderBy, Integer relatedLevels,
-			Integer maxVideosPerLevel, Integer videosFound, Integer newVideos, Integer completed, Long executionTime,
+			Integer maxVideosPerLevel, Integer maxVideos, Integer videosFound, Integer newVideos, Integer completed, Long executionTime,
 			Date createdDate, String status) {
 		super();
 		this.id = id;
@@ -66,6 +68,7 @@ public class Crawler {
 		this.orderBy = orderBy;
 		this.relatedLevels = relatedLevels;
 		this.maxVideosPerLevel = maxVideosPerLevel;
+		this.maxVideos = maxVideos;
 		this.videosFound = videosFound;
 		this.newVideos = newVideos;
 		this.completed = completed;
@@ -128,6 +131,13 @@ public class Crawler {
 	}
 	public void setMaxVideosPerLevel(Integer maxVideosPerLevel) {
 		this.maxVideosPerLevel = maxVideosPerLevel;
+	}
+	
+	public Integer getMaxVideos() {
+		return maxVideos;
+	}
+	public void setMaxVideos(Integer maxVideos) {
+		this.maxVideos = maxVideos;
 	}
 
 	public Integer getVideosFound() {

@@ -26,7 +26,7 @@ public interface ConverterService<ENTITY, ITEM> {
 	 * @param entity
 	 * @return
 	 */
-	public List<ITEM> toListItem(List<ENTITY> entities);
+	public List<ITEM> toListItem(Iterable<ENTITY> entities);
 
 	/**
 	 * Given a @ITEM returns a @ENTITY

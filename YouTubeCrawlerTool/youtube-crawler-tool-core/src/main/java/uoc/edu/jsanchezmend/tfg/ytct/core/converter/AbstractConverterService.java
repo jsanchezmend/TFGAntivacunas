@@ -23,13 +23,15 @@ public abstract class AbstractConverterService<ENTITY, ITEM>
 	@Override
 	public ITEM toItem(ENTITY entity) {
 		ITEM item = getItem();
-		BeanUtils.copyProperties(entity, item);
-		customToItem(entity, item);
+		if(entity != null) {
+			BeanUtils.copyProperties(entity, item);
+			customToItem(entity, item);
+		}
 		return item;
 	}
 
 	@Override
-	public List<ITEM> toListItem(List<ENTITY> entities) {
+	public List<ITEM> toListItem(Iterable<ENTITY> entities) {
 		List<ITEM> list = new ArrayList<ITEM>();
 		for (ENTITY entity : entities) {
 			list.add(this.toItem(entity));
