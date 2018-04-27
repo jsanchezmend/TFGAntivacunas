@@ -132,7 +132,7 @@ public class CrawlerController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/stats", method = RequestMethod.GET)
 	public CrawlerStatsItem getCrawlerStats(@PathVariable(value = "id", required = true) Long id) {
 		final CrawlerStatsItem result = crawlerService.getCrawlerStats(id);
 		return result;				
