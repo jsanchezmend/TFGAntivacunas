@@ -34,12 +34,12 @@ public interface CrawlerService {
 	 * @param order
 	 * @param relatedLevels
 	 * @param maxRelatedVideosPerLevel
-	 * @param defaultCategoryName
 	 * @param maxVideos
+	 * @param defaultCategoryName
 	 * @return
 	 */
 	CrawlerItem newCrawler(String keyword, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order,
-			Integer relatedLevels, Integer maxRelatedVideosPerLevel, String defaultCategoryName, Integer maxVideos);
+			Integer relatedLevels, Integer maxRelatedVideosPerLevel, Integer maxVideos, String defaultCategoryName);
 
 	/**
 	 * Creates a new crawler process for related videos
@@ -47,12 +47,12 @@ public interface CrawlerService {
 	 * @param videoId
 	 * @param relatedLevels
 	 * @param maxRelatedVideosPerLevel
-	 * @param defaultCategoryName
 	 * @param maxVideos
+	 * @param defaultCategoryName
 	 * @return
 	 */
 	CrawlerItem newRelatedCrawler(String videoId, Integer relatedLevels, Integer maxRelatedVideosPerLevel,
-			String defaultCategoryName, Integer maxVideos);
+			Integer maxVideos, String defaultCategoryName);
 
 	/**
 	 * Given a crawler id, returns a crawler item

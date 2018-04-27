@@ -36,12 +36,12 @@ public class CrawlerServiceImpl implements CrawlerService {
 	
 	@Autowired
 	private CrawlerRepository crawlerRepository;
+		
+	@Autowired
+	private YouTubeSearchService youTubeSearchService;
 	
 	@Autowired
 	private VideoRepository videoRepository;
-	
-	@Autowired
-	private YouTubeSearchService youTubeSearchService;
 	
 	@Autowired
 	@Qualifier("crawlerConverterService")
@@ -61,7 +61,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 	@Override
 	public CrawlerItem newCrawler(String keyword, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order,
-			Integer relatedLevels, Integer maxRelatedVideosPerLevel, String defaultCategoryName, Integer maxVideos) {
+			Integer relatedLevels, Integer maxRelatedVideosPerLevel, Integer maxVideos, String defaultCategoryName) {
 		// TODO: To complete!!
 		
 		final Crawler crawler = new Crawler();
@@ -102,7 +102,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 	@Override
 	public CrawlerItem newRelatedCrawler(String videoId, Integer relatedLevels, Integer maxRelatedVideosPerLevel,
-			String defaultCategoryName, Integer maxVideos) {
+			Integer maxVideos, String defaultCategoryName) {
 		// TODO: To complete!!
 		
 		final Crawler crawler = new Crawler();
@@ -147,26 +147,49 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 	@Override
 	public CrawlerItem editCrawlerStatus(Long id, CrawlerStatusEnum newStatus) {
-		// TODO Auto-generated method stub
-		return null;
+		CrawlerItem result = null;
+		
+		if(newStatus != null) {
+			final Optional<Crawler> optionalCrawler = crawlerRepository.findById(id);
+			if(optionalCrawler.isPresent()) {
+				final Crawler crawler = optionalCrawler.get();
+				crawler.setStatusByEnum(newStatus);
+				crawlerRepository.save(crawler);
+				result = crawlerConverterService.toItem(crawler);
+			}
+		}
+		
+		return result;
 	}
 
 	@Override
 	public CrawlerItem deleteCrawler(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		CrawlerItem result = null;
+		
+		final Optional<Crawler> optionalCrawler = crawlerRepository.findById(id);
+		if(optionalCrawler.isPresent()) {
+			final Crawler crawler = optionalCrawler.get();
+			crawlerRepository.delete(crawler);
+			result = crawlerConverterService.toItem(crawler);
+		}
+		
+		return result;
 	}
 
 	@Override
 	public CrawlerStatsItem getCrawlerStats(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		CrawlerStatsItem result = null;
+		//TODO
+		return result;
 	}
 
 	@Override
 	public List<VideoItem> getCrawlerVideos(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<VideoItem> results = null;
+		
+		//TODO
+		
+		return results;
 	}
 
 }

@@ -25,6 +25,8 @@ public class Crawler {
 
 	protected String search;
 	
+	protected String relatedVideoId;
+	
 	protected Date fromDate;
 	
 	protected Date toDate;
@@ -57,12 +59,13 @@ public class Crawler {
 		
 	}
 
-	public Crawler(Long id, String search, Date fromDate, Date toDate, String orderBy, Integer relatedLevels,
+	public Crawler(Long id, String search, String relatedVideoId, Date fromDate, Date toDate, String orderBy, Integer relatedLevels,
 			Integer maxVideosPerLevel, Integer maxVideos, Integer videosFound, Integer newVideos, Integer completed, Long executionTime,
 			Date createdDate, String status) {
 		super();
 		this.id = id;
 		this.search = search;
+		this.relatedVideoId = relatedVideoId;
 		this.fromDate = fromDate;
 		this.toDate = toDate;
 		this.orderBy = orderBy;
@@ -91,7 +94,14 @@ public class Crawler {
 	public void setSearch(String search) {
 		this.search = search;
 	}
-	
+
+	public String getRelatedVideoId() {
+		return relatedVideoId;
+	}
+	public void setRelatedVideoId(String relatedVideoId) {
+		this.relatedVideoId = relatedVideoId;
+	}
+
 	public Date getFromDate() {
 		return fromDate;
 	}

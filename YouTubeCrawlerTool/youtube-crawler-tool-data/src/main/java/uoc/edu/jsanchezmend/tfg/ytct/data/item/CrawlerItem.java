@@ -17,6 +17,8 @@ public class CrawlerItem extends AbstractItem {
 
 	protected String search;
 	
+	protected String relatedVideoId;
+	
 	protected Date fromDate;
 	
 	protected Date toDate;
@@ -26,6 +28,8 @@ public class CrawlerItem extends AbstractItem {
 	protected Integer relatedLevels;
 	
 	protected Integer maxVideosPerLevel;
+	
+	protected Integer maxVideos;
 	
 	protected Integer videosFound;
 	
@@ -39,7 +43,7 @@ public class CrawlerItem extends AbstractItem {
 	
 	protected String status;
 	
-	protected CategoryItem categoryByDefault;
+	protected String categoryByDefault;
 	
 	
 	public CrawlerItem() {
@@ -59,6 +63,13 @@ public class CrawlerItem extends AbstractItem {
 	}
 	public void setSearch(String search) {
 		this.search = search;
+	}
+	
+	public String getRelatedVideoId() {
+		return relatedVideoId;
+	}
+	public void setRelatedVideoId(String relatedVideoId) {
+		this.relatedVideoId = relatedVideoId;
 	}
 
 	public Date getFromDate() {
@@ -94,6 +105,13 @@ public class CrawlerItem extends AbstractItem {
 	}
 	public void setMaxVideosPerLevel(Integer maxVideosPerLevel) {
 		this.maxVideosPerLevel = maxVideosPerLevel;
+	}
+	
+	public Integer getMaxVideos() {
+		return maxVideos;
+	}
+	public void setMaxVideos(Integer maxVideos) {
+		this.maxVideos = maxVideos;
 	}
 
 	public Integer getVideosFound() {
@@ -138,10 +156,10 @@ public class CrawlerItem extends AbstractItem {
 		this.status = status;
 	}
 
-	public CategoryItem getCategoryByDefault() {
+	public String getCategoryByDefault() {
 		return categoryByDefault;
 	}
-	public void setCategoryByDefault(CategoryItem categoryByDefault) {
+	public void setCategoryByDefault(String categoryByDefault) {
 		this.categoryByDefault = categoryByDefault;
 	}
 
