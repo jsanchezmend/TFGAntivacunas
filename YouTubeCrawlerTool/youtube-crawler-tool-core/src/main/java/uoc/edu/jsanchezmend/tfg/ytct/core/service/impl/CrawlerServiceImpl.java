@@ -2,6 +2,7 @@ package uoc.edu.jsanchezmend.tfg.ytct.core.service.impl;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -255,9 +256,11 @@ public class CrawlerServiceImpl implements CrawlerService {
 			final Optional<Crawler> optionalCrawler = crawlerRepository.findById(id);
 			if(optionalCrawler.isPresent()) {
 				final Crawler crawler = optionalCrawler.get();
-				crawler.setStatusByEnum(newStatus);
-				crawlerRepository.save(crawler);
-				result = crawlerConverterService.toItem(crawler);
+				if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.FINISHED)) {
+					crawler.setStatusByEnum(newStatus);
+					crawlerRepository.save(crawler);
+					result = crawlerConverterService.toItem(crawler);
+				}
 			}
 		}
 		
@@ -268,11 +271,14 @@ public class CrawlerServiceImpl implements CrawlerService {
 	public CrawlerItem deleteCrawler(Long id) {
 		CrawlerItem result = null;
 		
-		final Optional<Crawler> optionalCrawler = crawlerRepository.findById(id);
+		final Optional<Crawler> optionalCrawler = this.crawlerRepository.findById(id);
 		if(optionalCrawler.isPresent()) {
 			final Crawler crawler = optionalCrawler.get();
-			crawlerRepository.delete(crawler);
-			result = crawlerConverterService.toItem(crawler);
+			// Delete first all crawler related videos
+			this.videoRepository.removeByCrawlerId(id);
+			// Delete the crawler 
+			this.crawlerRepository.delete(crawler);
+			result = this.crawlerConverterService.toItem(crawler);
 		}
 		
 		return result;
@@ -287,10 +293,11 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 	@Override
 	public List<VideoItem> getCrawlerVideos(Long id) {
-		List<VideoItem> results = null;
-		
-		//TODO
-		
+		final List<VideoItem> results = new ArrayList<VideoItem>();
+		final List<Video> entities = this.videoRepository.findByCrawlerId(id);
+		if(entities != null) {
+			results.addAll(this.videoConverterService.toListItem(entities));
+		}
 		return results;
 	}
 	

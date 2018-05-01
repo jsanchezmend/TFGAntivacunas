@@ -83,7 +83,7 @@ public class CrawlerController {
 	public CrawlerItem editCrawler(@PathVariable(value = "id", required = true) Long id, @RequestBody CrawlerItem crawler) {
 		CrawlerItem result = null;
 		final String newStatus = crawler.getStatus();
-		final CrawlerStatusEnum newStatusEnum = CrawlerStatusEnum.valueOf(newStatus);
+		final CrawlerStatusEnum newStatusEnum = CrawlerStatusEnum.getByName(newStatus);
 		if(newStatusEnum != null) {
 			result = crawlerService.editCrawlerStatus(id, newStatusEnum);
 		}
