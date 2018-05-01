@@ -52,6 +52,7 @@ public class VideoConverterServiceImpl
     	if(snippet != null) {
     		item.setTitle(snippet.getTitle());
     		item.setDescription(snippet.getDescription());
+    		item.setChannelId(snippet.getChannelId());
     		item.setPublishedAt(new Date(snippet.getPublishedAt().getValue()));
 		}
 		if(contentDetails != null) {

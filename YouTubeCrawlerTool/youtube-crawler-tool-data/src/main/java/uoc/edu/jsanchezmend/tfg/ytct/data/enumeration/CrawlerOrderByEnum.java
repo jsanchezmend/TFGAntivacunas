@@ -30,7 +30,7 @@ public enum CrawlerOrderByEnum {
 		return value;
 	}
 	
-	public CrawlerOrderByEnum getByName(String name) {
+	public static CrawlerOrderByEnum getByName(String name) {
 		for(CrawlerOrderByEnum item : CrawlerOrderByEnum.values()) {
 			if(item.getName().equals(name)) {
 				return item;

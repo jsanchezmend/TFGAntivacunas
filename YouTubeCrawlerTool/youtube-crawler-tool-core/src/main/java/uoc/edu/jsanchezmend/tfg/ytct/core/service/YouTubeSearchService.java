@@ -8,6 +8,7 @@ import com.google.api.client.util.DateTime;
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerOrderByEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.ChannelItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.YouTubeSearchResponseItem;
 
 /**
  * Allows connection to the YouTube Data API to perform search and find operations
@@ -19,7 +20,7 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
 public interface YouTubeSearchService {
 	
 	/**
-	 * Given a search criteria returns a list of @Video ids
+	 * Given a search criteria returns a @YouTubeSearchResponseItem with a list of @Video ids 
 	 * See https://developers.google.com/youtube/v3/docs/search/list
 	 * 
 	 * @param keyword
@@ -31,11 +32,10 @@ public interface YouTubeSearchService {
 	 * @return
 	 * @throws IOException
 	 */
-	List<String> searchVideos(String keyword, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order, String pageToken, Long count) throws IOException;
-	
-	
+	YouTubeSearchResponseItem searchVideos(String keyword, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order, String pageToken, Long count) throws IOException;
+		
 	/**
-	 * Given a video id, returns a list of related @Video ids
+	 * Given a video id, returns a @YouTubeSearchResponseItem with a list of related @Video ids 
 	 * See https://developers.google.com/youtube/v3/docs/search/list
 	 * (using 'relatedToVideoId' search criteria)
 	 * 
@@ -45,7 +45,7 @@ public interface YouTubeSearchService {
 	 * @return
 	 * @throws IOException
 	 */
-	List<String> searchRelatedVideos(String videoId, String pageToken, Long count) throws IOException;
+	YouTubeSearchResponseItem searchRelatedVideos(String videoId, String pageToken, Long count) throws IOException;
 	
 	/**
 	 * Given a list of video ids, returns a list of @VideoItem

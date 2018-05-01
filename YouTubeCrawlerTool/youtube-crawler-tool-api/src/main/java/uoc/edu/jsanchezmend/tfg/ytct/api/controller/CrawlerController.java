@@ -1,5 +1,6 @@
 package uoc.edu.jsanchezmend.tfg.ytct.api.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.api.client.util.DateTime;
-
 import uoc.edu.jsanchezmend.tfg.ytct.core.service.CrawlerService;
-import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerOrderByEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerStatusEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerStatsItem;
@@ -54,23 +52,7 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public CrawlerItem startNewCrawler(@RequestBody CrawlerItem crawler) {
-		CrawlerItem result = null;
-		
-		final String keyword = crawler.getSearch();
-		final String relatedVideoId = crawler.getRelatedVideoId();
-		final Integer relatedLevels = crawler.getRelatedLevels();
-		final Integer maxRelatedVideosPerLevel = crawler.getMaxVideosPerLevel();
-		final String defaultCategoryName = crawler.getCategoryByDefault();
-		final Integer maxVideos = crawler.getMaxVideos();
-		if(keyword != null) {
-			final DateTime fromDateTime = crawler.getFromDate() != null ? new DateTime(crawler.getFromDate().getTime()) : null;
-			final DateTime toDateTime = crawler.getToDate() != null ? new DateTime(crawler.getToDate().getTime()) : null;
-			final CrawlerOrderByEnum order = CrawlerOrderByEnum.valueOf(crawler.getOrderBy());
-			result = crawlerService.newCrawler(keyword, fromDateTime, toDateTime, order, relatedLevels, maxRelatedVideosPerLevel, maxVideos, defaultCategoryName);	
-		} else if (relatedVideoId != null) {
-			result = crawlerService.newRelatedCrawler(relatedVideoId, relatedLevels, maxRelatedVideosPerLevel, maxVideos, defaultCategoryName);
-		}
-		
+		final CrawlerItem result = crawlerService.newCrawler(crawler);		
 		return result;				
 	}
 	
@@ -151,23 +133,26 @@ public class CrawlerController {
 		return results;				
 	}
 	
-
 	/********************************
 	 * TEMPORAL APIS!!
+	 * @throws ParseException 
 	 ********************************/
-	
 	@ResponseBody
 	@RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
-	public CrawlerItem search(@PathVariable(value = "keyword", required = true) String keyword) {
-		final CrawlerItem result = crawlerService.newCrawler(keyword, null, null, null, null, null, null, null);
+	public CrawlerItem search(@PathVariable(value = "keyword", required = true) String keyword) throws ParseException {
+		final CrawlerItem crawler = new CrawlerItem();
+		crawler.setSearch(keyword);
+		final CrawlerItem result = crawlerService.newCrawler(crawler);
 		return result;				
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/search/related/{videoId}", method = RequestMethod.GET)
-	public CrawlerItem searchRelated(@PathVariable(value = "videoId", required = true) String videoId) {
-		final CrawlerItem result = crawlerService.newRelatedCrawler(videoId, null, null, null, null);
-		return result;				
+	public CrawlerItem searchRelated(@PathVariable(value = "videoId", required = true) String videoId) throws ParseException {
+		final CrawlerItem crawler = new CrawlerItem();
+		crawler.setRelatedVideoId(videoId);
+		final CrawlerItem result = crawlerService.newCrawler(crawler);
+		return result;					
 	}
 
 }

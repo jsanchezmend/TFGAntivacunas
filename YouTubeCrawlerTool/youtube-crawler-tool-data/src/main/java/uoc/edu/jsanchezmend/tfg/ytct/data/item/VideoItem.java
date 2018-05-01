@@ -38,7 +38,7 @@ public class VideoItem extends AbstractItem {
 	
 	protected String embedHtml;
 
-	protected ChannelItem channel;
+	protected String channelId;
 
 	public Set<VideoItem> related;
 
@@ -129,11 +129,11 @@ public class VideoItem extends AbstractItem {
 		this.embedHtml = embedHtml;
 	}
 
-	public ChannelItem getChannel() {
-		return channel;
+	public String getChannelId() {
+		return channelId;
 	}
-	public void setChannel(ChannelItem channel) {
-		this.channel = channel;
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
 	}
 
 	public Set<VideoItem> getRelated() {

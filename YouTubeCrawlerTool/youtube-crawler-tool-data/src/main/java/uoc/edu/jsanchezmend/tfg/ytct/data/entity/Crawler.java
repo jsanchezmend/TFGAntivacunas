@@ -43,9 +43,11 @@ public class Crawler {
 	
 	protected Integer newVideos;
 	
-	protected Integer completed;
+	protected Float completed;
 	
 	protected Long executionTime;
+
+	protected String pageToken;
 	
 	protected Date createdDate;
 	
@@ -60,8 +62,8 @@ public class Crawler {
 	}
 
 	public Crawler(Long id, String search, String relatedVideoId, Date fromDate, Date toDate, String orderBy, Integer relatedLevels,
-			Integer maxVideosPerLevel, Integer maxVideos, Integer videosFound, Integer newVideos, Integer completed, Long executionTime,
-			Date createdDate, String status) {
+			Integer maxVideosPerLevel, Integer maxVideos, Integer videosFound, Integer newVideos, Float completed, Long executionTime,
+			String pageToken, Date createdDate, String status) {
 		super();
 		this.id = id;
 		this.search = search;
@@ -76,6 +78,7 @@ public class Crawler {
 		this.newVideos = newVideos;
 		this.completed = completed;
 		this.executionTime = executionTime;
+		this.pageToken = pageToken;
 		this.createdDate = createdDate;
 		this.status = status;
 	}
@@ -123,7 +126,7 @@ public class Crawler {
 		this.orderBy = orderBy;
 	}
 	public CrawlerOrderByEnum getOrderByByEnum() {
-		return CrawlerOrderByEnum.valueOf(this.orderBy);
+		return CrawlerOrderByEnum.getByName(this.orderBy);
 	}
 	public void setOrderByByEnum(CrawlerOrderByEnum orderBy) {
 		this.orderBy = orderBy.getName();
@@ -164,10 +167,10 @@ public class Crawler {
 		this.newVideos = newVideos;
 	}
 
-	public Integer getCompleted() {
+	public Float getCompleted() {
 		return completed;
 	}
-	public void setCompleted(Integer completed) {
+	public void setCompleted(Float completed) {
 		this.completed = completed;
 	}
 
@@ -176,6 +179,13 @@ public class Crawler {
 	}
 	public void setExecutionTime(Long executionTime) {
 		this.executionTime = executionTime;
+	}
+
+	public String getPageToken() {
+		return pageToken;
+	}
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
 	}
 
 	public Date getCreatedDate() {
@@ -192,7 +202,7 @@ public class Crawler {
 		this.status = status;
 	}
 	public CrawlerStatusEnum getStatusByEnum() {
-		return CrawlerStatusEnum.valueOf(this.status);
+		return CrawlerStatusEnum.getByName(this.status);
 	}
 	public void setStatusByEnum(CrawlerStatusEnum status) {
 		this.status = status.getName();

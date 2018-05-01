@@ -10,7 +10,8 @@ public enum CrawlerStatusEnum {
 	
 	RUNNING("Running"),
 	STOPPED("Stopped"),
-	FINISHED("Finished");
+	FINISHED("Finished"),
+	BLOCKED("locked");
 	
 	protected String name;
 	
@@ -22,7 +23,7 @@ public enum CrawlerStatusEnum {
 		return name;
 	}
 	
-	public CrawlerStatusEnum getByName(String name) {
+	public static CrawlerStatusEnum getByName(String name) {
 		for(CrawlerStatusEnum item : CrawlerStatusEnum.values()) {
 			if(item.getName().equals(name)) {
 				return item;

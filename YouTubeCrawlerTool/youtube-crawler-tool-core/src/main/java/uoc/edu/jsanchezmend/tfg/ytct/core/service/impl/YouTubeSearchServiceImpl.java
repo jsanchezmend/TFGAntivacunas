@@ -27,6 +27,7 @@ import uoc.edu.jsanchezmend.tfg.ytct.core.service.YouTubeSearchService;
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerOrderByEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.ChannelItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.YouTubeSearchResponseItem;
 
 /**
  * @YouTubeSearchService service implementation
@@ -39,10 +40,9 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 	
 	private final static Logger log = LoggerFactory.getLogger(YouTubeSearchServiceImpl.class);
 	
-	protected static final String SEARCH_PARTS = "id";
-	protected static final String SEARCH_FIELDS = "items(id/videoId)";
+	protected static final String SEARCH_PARTS = "snippet, id";
 	protected static final String SEARCH_TYPE = "video";
-	protected static final Long SEARCH_DEFAULT_COUNT = 50L;
+	protected static final Long SEARCH_MAX_COUNT = 50L;
 	
 	protected static final String VIDEOS_PARTS = "snippet, contentDetails, recordingDetails, statistics, player";
 	protected static final String VIDEOS_FIELDS = "items("
@@ -92,12 +92,12 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 
 	
 	@Override
-	public List<String> searchVideos(String keyword, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order, String pageToken, Long count) throws IOException {
+	public YouTubeSearchResponseItem searchVideos(String keyword, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order, String pageToken, Long count) throws IOException {
         return this.performSearchOperation(keyword, null, fromDateTime, toDateTime, order, pageToken, count);
 	}
 	
 	@Override
-	public List<String> searchRelatedVideos(String videoId, String pageToken, Long count) throws IOException {       
+	public YouTubeSearchResponseItem searchRelatedVideos(String videoId, String pageToken, Long count) throws IOException {       
         return this.performSearchOperation(null, videoId, null, null, null, pageToken, count);
 	}
 	
@@ -119,7 +119,9 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 	 * @throws IOException
 	 * @throws UnsupportedOperationException
 	 */
-	private List<String> performSearchOperation(String keyword, String videoId, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order, String pageToken, Long count) throws IOException, UnsupportedOperationException {
+	private YouTubeSearchResponseItem performSearchOperation(String keyword, String videoId, DateTime fromDateTime, DateTime toDateTime, CrawlerOrderByEnum order, String pageToken, Long count) throws IOException, UnsupportedOperationException {
+		final YouTubeSearchResponseItem result = new YouTubeSearchResponseItem();
+		
 		// General search criteria validations
 		if(keyword != null && videoId != null) {
 			throw new UnsupportedOperationException("Search criteria must be 'keyword' or 'videoId', but not both!");
@@ -129,7 +131,7 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 		// Search by keyword validations
 		if(keyword != null) {
 			if(fromDateTime != null && toDateTime != null) {
-				if(toDateTime.getValue() > fromDateTime.getValue()) {
+				if(toDateTime.getValue() < fromDateTime.getValue()) {
 					throw new UnsupportedOperationException("Search criteria 'toDateTime' must be after 'fromDateTime'");
 				}
 			}
@@ -145,14 +147,11 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 				throw new UnsupportedOperationException("Search by related videos doesn't allow 'order' parameter");
 			}
 		}
-		
-		final List<String> videoIds = new ArrayList<String>();
-		
+				
 		// Create a new search
         final YouTube.Search.List search = youtube.search().list(SEARCH_PARTS);      
         search.setKey(this.apiKey);
         search.setType(SEARCH_TYPE);
-        search.setFields(SEARCH_FIELDS);
         search.setRelevanceLanguage(this.relevanceLanguage);
         
         // Set search criteria
@@ -175,11 +174,17 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
         if(pageToken != null) {
         	search.setPageToken(pageToken);
         }
-        final Long searchCount = count != null ? count : SEARCH_DEFAULT_COUNT;
+        final Long searchCount = count != null && count.compareTo(SEARCH_MAX_COUNT) < 0  ? count : SEARCH_MAX_COUNT;
         search.setMaxResults(searchCount);
         
         // Execute the search and obtain the results
         final SearchListResponse searchResponse = search.execute();
+        result.setNextPageToken(searchResponse.getNextPageToken());
+        result.setPrevPageToken(searchResponse.getPrevPageToken());
+        if(searchResponse.getPageInfo() != null) {
+        	result.setTotalResults(searchResponse.getPageInfo().getTotalResults());
+        }
+        final List<String> videoIds = new ArrayList<String>();
         if(searchResponse != null) {
         	final List<SearchResult> searchResultList = searchResponse.getItems();
 	        if (searchResultList != null) {
@@ -190,8 +195,8 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
 	    		}
 	        }
         }
-  
-        return videoIds;
+        result.setItems(videoIds);
+        return result;
 	}
 
 	@Override

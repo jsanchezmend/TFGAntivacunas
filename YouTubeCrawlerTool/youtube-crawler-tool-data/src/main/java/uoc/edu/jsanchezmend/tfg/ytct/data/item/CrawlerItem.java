@@ -19,9 +19,9 @@ public class CrawlerItem extends AbstractItem {
 	
 	protected String relatedVideoId;
 	
-	protected Date fromDate;
+	protected String fromDate;
 	
-	protected Date toDate;
+	protected String toDate;
 	
 	protected String orderBy;
 	
@@ -35,9 +35,11 @@ public class CrawlerItem extends AbstractItem {
 	
 	protected Integer newVideos;
 	
-	protected Integer completed;
+	protected Float completed;
 	
 	protected Long executionTime;
+	
+	protected String pageToken;
 	
 	protected Date createdDate;
 	
@@ -72,17 +74,17 @@ public class CrawlerItem extends AbstractItem {
 		this.relatedVideoId = relatedVideoId;
 	}
 
-	public Date getFromDate() {
+	public String getFromDate() {
 		return fromDate;
 	}
-	public void setFromDate(Date fromDate) {
+	public void setFromDate(String fromDate) {
 		this.fromDate = fromDate;
 	}
 
-	public Date getToDate() {
+	public String getToDate() {
 		return toDate;
 	}
-	public void setToDate(Date toDate) {
+	public void setToDate(String toDate) {
 		this.toDate = toDate;
 	}
 
@@ -128,10 +130,10 @@ public class CrawlerItem extends AbstractItem {
 		this.newVideos = newVideos;
 	}
 
-	public Integer getCompleted() {
+	public Float getCompleted() {
 		return completed;
 	}
-	public void setCompleted(Integer completed) {
+	public void setCompleted(Float completed) {
 		this.completed = completed;
 	}
 
@@ -140,6 +142,13 @@ public class CrawlerItem extends AbstractItem {
 	}
 	public void setExecutionTime(Long executionTime) {
 		this.executionTime = executionTime;
+	}
+	
+	public String getPageToken() {
+		return pageToken;
+	}
+	public void setPageToken(String pageToken) {
+		this.pageToken = pageToken;
 	}
 
 	public Date getCreatedDate() {
