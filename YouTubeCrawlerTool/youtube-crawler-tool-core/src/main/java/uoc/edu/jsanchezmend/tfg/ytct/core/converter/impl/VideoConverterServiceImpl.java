@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.google.api.services.youtube.model.VideoContentDetails;
@@ -14,7 +15,13 @@ import com.google.api.services.youtube.model.VideoStatistics;
 
 import uoc.edu.jsanchezmend.tfg.ytct.core.converter.AbstractConverterService;
 import uoc.edu.jsanchezmend.tfg.ytct.core.converter.YouTubeConverterService;
+import uoc.edu.jsanchezmend.tfg.ytct.data.entity.Category;
+import uoc.edu.jsanchezmend.tfg.ytct.data.entity.Channel;
+import uoc.edu.jsanchezmend.tfg.ytct.data.entity.Crawler;
 import uoc.edu.jsanchezmend.tfg.ytct.data.entity.Video;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.CategoryItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.ChannelItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
 
 /**
@@ -38,7 +45,32 @@ public class VideoConverterServiceImpl
 	public VideoItem getItem() {
 		return new VideoItem();
 	}
-
+	
+	@Override
+	protected void customToItem(Video entity, VideoItem item) {
+		final Channel channel = entity.getChannel();
+		if(channel != null) {
+			final ChannelItem channelItem = new ChannelItem();
+			channelItem.setId(channel.getId());
+			channelItem.setName(channel.getName());
+			item.setChannel(channelItem);
+		}
+		
+		final Category category = entity.getCategory();
+		if(category != null) {
+			final CategoryItem categoryItem = new CategoryItem();
+			BeanUtils.copyProperties(category, categoryItem);
+			item.setCategory(categoryItem);			
+		}
+		
+		final Crawler crawler = entity.getCrawler();
+		if(crawler != null) {
+			final CrawlerItem crawlerItem = new CrawlerItem();
+			crawlerItem.setId(crawler.getId());
+			item.setCrawler(crawlerItem);
+		}
+	}
+	
 	@Override
 	public VideoItem fromYouTubeToItem(com.google.api.services.youtube.model.Video video) {
 		final VideoItem item = this.getItem();
@@ -52,7 +84,9 @@ public class VideoConverterServiceImpl
     	if(snippet != null) {
     		item.setTitle(snippet.getTitle());
     		item.setDescription(snippet.getDescription());
-    		item.setChannelId(snippet.getChannelId());
+    		final ChannelItem channelItem = new ChannelItem();
+    		channelItem.setId(snippet.getChannelId());
+    		item.setChannel(channelItem);
     		item.setPublishedAt(new Date(snippet.getPublishedAt().getValue()));
 		}
 		if(contentDetails != null) {

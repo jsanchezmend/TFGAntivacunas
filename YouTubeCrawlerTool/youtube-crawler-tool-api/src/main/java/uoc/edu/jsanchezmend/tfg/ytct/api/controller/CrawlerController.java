@@ -43,7 +43,7 @@ public class CrawlerController {
 	}
 	
 	/**
-	 * Starts a new crawler process
+	 * Create and starts a new crawler process
 	 * Requires identification
 	 * 
 	 * @param crawler
@@ -52,8 +52,10 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public CrawlerItem createCrawler(@RequestBody CrawlerItem crawler) {
+		// Create a new crawler process
 		final CrawlerItem result = crawlerService.createCrawler(crawler);
 		final Long crawlerId = result.getId();
+		// Execute it in a new thread
 		final CompletableFuture<CrawlerItem> futureResult = crawlerService.executeCrawler(crawlerId);
 		return futureResult.getNow(result);				
 	}
@@ -83,13 +85,19 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public CrawlerItem editCrawler(@PathVariable(value = "id", required = true) Long id, @RequestBody CrawlerItem crawler) {
-		CrawlerItem result = null;
+		// Save the new crawler status
 		final String newStatus = crawler.getStatus();
-		final CrawlerStatusEnum newStatusEnum = CrawlerStatusEnum.getByName(newStatus);
-		if(newStatusEnum != null) {
-			result = crawlerService.editCrawlerStatus(id, newStatusEnum);
+		final CrawlerItem result = crawlerService.editCrawlerStatus(id, newStatus);
+		
+		// If the new status is 'Running', execute the crawler process
+		if(result != null && result.getStatus() != null && CrawlerStatusEnum.RUNNING.getName().equals(result.getStatus())) {
+			final Long crawlerId = result.getId();
+			// Execute it in a new thread
+			final CompletableFuture<CrawlerItem> futureResult = crawlerService.executeCrawler(crawlerId);
+			return futureResult.getNow(result);	
+		} else {
+			return result;	
 		}
-		return result;				
 	}
 	
 	/**
@@ -102,10 +110,7 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public CrawlerItem deleteCrawler(@PathVariable(value = "id", required = true) Long id) {
-		final CrawlerItem result = crawlerService.getCrawler(id);
-		if(result != null) {
-			crawlerService.deleteCrawler(id);
-		}	
+		final CrawlerItem result = crawlerService.deleteCrawler(id);
 		return result;				
 	}
 	
@@ -135,28 +140,4 @@ public class CrawlerController {
 		return results;				
 	}
 	
-	/********************************
-	 * TEMPORAL APIS!!
-	 * @throws ParseException 
-	 ********************************/
-	/*
-	@ResponseBody
-	@RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
-	public CrawlerItem search(@PathVariable(value = "keyword", required = true) String keyword) throws ParseException {
-		final CrawlerItem crawler = new CrawlerItem();
-		crawler.setSearch(keyword);
-		final CrawlerItem result = crawlerService.newCrawler(crawler);
-		return result;				
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/search/related/{videoId}", method = RequestMethod.GET)
-	public CrawlerItem searchRelated(@PathVariable(value = "videoId", required = true) String videoId) throws ParseException {
-		final CrawlerItem crawler = new CrawlerItem();
-		crawler.setRelatedVideoId(videoId);
-		final CrawlerItem result = crawlerService.newCrawler(crawler);
-		return result;					
-	}
-	*/
-
 }

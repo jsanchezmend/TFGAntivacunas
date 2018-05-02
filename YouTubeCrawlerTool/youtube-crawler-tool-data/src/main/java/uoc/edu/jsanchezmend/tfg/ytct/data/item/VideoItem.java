@@ -2,8 +2,6 @@ package uoc.edu.jsanchezmend.tfg.ytct.data.item;
 
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @Video POJO representation
@@ -38,9 +36,9 @@ public class VideoItem extends AbstractItem {
 	
 	protected String embedHtml;
 
-	protected String channelId;
+	protected ChannelItem channel;
 
-	public Set<VideoItem> related;
+	//protected Set<VideoItem> related;
 
 	protected CrawlerItem crawler;
 	
@@ -129,13 +127,14 @@ public class VideoItem extends AbstractItem {
 		this.embedHtml = embedHtml;
 	}
 
-	public String getChannelId() {
-		return channelId;
+	public ChannelItem getChannel() {
+		return channel;
 	}
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
+	public void setChannel(ChannelItem channel) {
+		this.channel = channel;
 	}
 
+	/*
 	public Set<VideoItem> getRelated() {
 		return related;
 	}
@@ -148,6 +147,7 @@ public class VideoItem extends AbstractItem {
 		}
 		this.related.add(video);
 	}
+	*/
 
 	public CrawlerItem getCrawler() {
 		return crawler;

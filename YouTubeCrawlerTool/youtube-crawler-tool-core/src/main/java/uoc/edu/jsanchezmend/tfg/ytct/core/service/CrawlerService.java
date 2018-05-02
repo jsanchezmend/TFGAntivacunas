@@ -3,7 +3,6 @@ package uoc.edu.jsanchezmend.tfg.ytct.core.service;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerStatusEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerStatsItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
@@ -51,10 +50,10 @@ public interface CrawlerService {
 	 * Edit crawler status
 	 * 
 	 * @param id
-	 * @param newStatus
+	 * @param newStatusName
 	 * @return
 	 */
-	CrawlerItem editCrawlerStatus(Long id, CrawlerStatusEnum newStatus);
+	CrawlerItem editCrawlerStatus(Long id, String newStatusName);
 	
 	
 	/**
