@@ -144,7 +144,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	public CompletableFuture<CrawlerItem> executeCrawler(Long crawlerId) {
 		// TODO: Search for related videos && make it thread safe	
 		
-		final Crawler crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
+		Crawler crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
 		CrawlerItem result = this.crawlerConverterService.toItem(crawler);
 		if(result == null) {
 			return null;
@@ -165,7 +165,15 @@ public class CrawlerServiceImpl implements CrawlerService {
 				result.setStatus(CrawlerStatusEnum.ERROR.getName());
 				e.printStackTrace();
 			}
-			crawler.setExecutionTime(new Date().getTime() - startTime);
+			// Check if the process is stopped by user
+			crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
+			if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.RUNNING)) {
+				if(CrawlerStatusEnum.RUNNING.getName().equals(result.getStatus())) {
+					result.setStatus(crawler.getStatus());
+				}
+			}
+			// Save the current crawler state
+			result.setExecutionTime(new Date().getTime() - startTime);
 			final Crawler resultEntity = this.crawlerConverterService.toEntity(result);
 			this.crawlerRepository.save(resultEntity);
 		} while(CrawlerStatusEnum.RUNNING.getName().equals(result.getStatus()));
