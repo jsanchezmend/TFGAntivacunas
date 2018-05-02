@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.util.DateTime;
@@ -83,9 +85,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 	@Qualifier("channelConverterService")
 	private YouTubeConverterService<com.google.api.services.youtube.model.Channel, Channel, ChannelItem> channelConverterService;
 	
-	
 	@Override
-	public CrawlerItem newCrawler(CrawlerItem crawlerItem) {	
+	public CrawlerItem createCrawler(CrawlerItem crawlerItem) {	
 		// Set default search values if null
 		if(this.isSearchCrawler(crawlerItem)) {
 			if(crawlerItem.getFromDate() == null) {
@@ -117,34 +118,25 @@ public class CrawlerServiceImpl implements CrawlerService {
 		crawler.setCreatedDate(new Date());
 		crawler.setStatusByEnum(CrawlerStatusEnum.RUNNING);
 		crawler = this.crawlerRepository.save(crawler);
-		final Long crawlerId = crawler.getId();
-		
-		// Execute the new crawler
-		if(this.isSearchCrawler(crawlerItem)) {
-			this.executeSearchCrawler(crawlerId);
-		} else if(this.isRelatedCrawler(crawlerItem)) {
-			this.executeRelatedCrawler(crawlerId);
-		} else {
-			crawler.setStatusByEnum(CrawlerStatusEnum.FINISHED);
-			crawler = this.crawlerRepository.save(crawler);
-		}
-		
+				
 		// Return the created crawler as a result
 		final CrawlerItem result = crawlerConverterService.toItem(crawler);
 		return result;
 	}
 	
-	private void executeSearchCrawler(Long crawlerId) {
-		// TODO: Make as a thread && search for related videos
+	@Async
+	public CompletableFuture<CrawlerItem> executeCrawler(Long crawlerId) {
+		// TODO: Search for related videos && make it thread safe
+		// TODO: Do it not recursive 
 		
 		final Optional<Crawler> optCrawler = this.crawlerRepository.findById(crawlerId);
 		final Crawler crawler = optCrawler.orElse(null);
 		if(crawler == null) {
-			return;
+			return null;
 		}
 		// If the crawler finished or if it was stopped by the user, then finish the execution
 		if(crawler.getStatusByEnum() != CrawlerStatusEnum.RUNNING) {
-			return;
+			return null;
 		}
 		
 		try {
@@ -202,14 +194,20 @@ public class CrawlerServiceImpl implements CrawlerService {
 			} 
 			crawler.setExecutionTime(crawler.getExecutionTime() + (new Date().getTime() - startTime));
 			this.crawlerRepository.save(crawler);
-			this.executeSearchCrawler(crawlerId);
+			this.executeCrawler(crawlerId);
 			
 		} catch (IOException e) {
 			// Exception throw by YouTube to block our petition
 			crawler.setStatusByEnum(CrawlerStatusEnum.BLOCKED);
 			this.crawlerRepository.save(crawler);
 			e.printStackTrace();
+		} catch (Exception e) {
+			crawler.setStatusByEnum(CrawlerStatusEnum.ERROR);
+			this.crawlerRepository.save(crawler);
+			e.printStackTrace();
 		}
+		final CrawlerItem result = this.crawlerConverterService.toItem(crawler);
+		return CompletableFuture.completedFuture(result);
 	}
 	
 	private Channel getChannel(final String channelId) throws IOException {
@@ -229,11 +227,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 		}
 		return channel;
 	}
-	
-	private void executeRelatedCrawler(Long crawlerId) {
-		// TODO: Execute as a new thread
-	}
-	
+		
 	@Override
 	public List<CrawlerItem> listCrawlers() {
 		final Iterable<Crawler> crawlerIterable = crawlerRepository.findAll();
@@ -306,9 +300,5 @@ public class CrawlerServiceImpl implements CrawlerService {
 	private boolean isSearchCrawler(CrawlerItem crawlerItem) {
 		return crawlerItem.getSearch() != null && !crawlerItem.getSearch().isEmpty() ? true : false;
 	}
-	
-	private boolean isRelatedCrawler(CrawlerItem crawlerItem) {
-		return crawlerItem.getRelatedVideoId() != null && !crawlerItem.getRelatedVideoId().isEmpty() ? true : false;
-	}
-	
+		
 }

@@ -11,7 +11,8 @@ public enum CrawlerStatusEnum {
 	RUNNING("Running"),
 	STOPPED("Stopped"),
 	FINISHED("Finished"),
-	BLOCKED("Blocked");
+	BLOCKED("Blocked"),
+	ERROR("Error"); // For development proposes 
 	
 	protected String name;
 	

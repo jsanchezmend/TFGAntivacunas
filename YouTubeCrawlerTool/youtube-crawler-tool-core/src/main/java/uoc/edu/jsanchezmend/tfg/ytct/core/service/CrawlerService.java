@@ -1,6 +1,7 @@
 package uoc.edu.jsanchezmend.tfg.ytct.core.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerStatusEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
@@ -28,7 +29,15 @@ public interface CrawlerService {
 	 * @param crawlerItem
 	 * @return
 	 */
-	CrawlerItem newCrawler(CrawlerItem crawlerItem);
+	CrawlerItem createCrawler(CrawlerItem crawlerItem);
+
+	/**
+	 * Executes a crawler process
+	 * 
+	 * @param crawlerId
+	 * @return
+	 */
+	CompletableFuture<CrawlerItem> executeCrawler(Long crawlerId);
 
 	/**
 	 * Given a crawler id, returns a crawler item

@@ -1,7 +1,7 @@
 package uoc.edu.jsanchezmend.tfg.ytct.api.controller;
 
-import java.text.ParseException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,9 +51,11 @@ public class CrawlerController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public CrawlerItem startNewCrawler(@RequestBody CrawlerItem crawler) {
-		final CrawlerItem result = crawlerService.newCrawler(crawler);		
-		return result;				
+	public CrawlerItem createCrawler(@RequestBody CrawlerItem crawler) {
+		final CrawlerItem result = crawlerService.createCrawler(crawler);
+		final Long crawlerId = result.getId();
+		final CompletableFuture<CrawlerItem> futureResult = crawlerService.executeCrawler(crawlerId);
+		return futureResult.getNow(result);				
 	}
 	
 	/**
@@ -137,6 +139,7 @@ public class CrawlerController {
 	 * TEMPORAL APIS!!
 	 * @throws ParseException 
 	 ********************************/
+	/*
 	@ResponseBody
 	@RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
 	public CrawlerItem search(@PathVariable(value = "keyword", required = true) String keyword) throws ParseException {
@@ -154,5 +157,6 @@ public class CrawlerController {
 		final CrawlerItem result = crawlerService.newCrawler(crawler);
 		return result;					
 	}
+	*/
 
 }

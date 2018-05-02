@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Import;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
+import uoc.edu.jsanchezmend.tfg.ytct.core.configuration.AsyncExecutorConfiguration;
 import uoc.edu.jsanchezmend.tfg.ytct.core.configuration.YouTubeConfiguration;
 
 /**
@@ -18,7 +19,7 @@ import uoc.edu.jsanchezmend.tfg.ytct.core.configuration.YouTubeConfiguration;
  */
 @SpringBootApplication
 @EnableNeo4jRepositories("uoc.edu.jsanchezmend.tfg.ytct.data.repository")
-@Import(YouTubeConfiguration.class)
+@Import({YouTubeConfiguration.class, AsyncExecutorConfiguration.class})
 public class YouTubeCrawlerToolApp extends SpringBootServletInitializer {
 	
 	private final static Logger log = LoggerFactory.getLogger(YouTubeCrawlerToolApp.class);
