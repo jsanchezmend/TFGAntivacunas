@@ -276,6 +276,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 			final Crawler crawler = optionalCrawler.get();
 			// Delete first all crawler related videos
 			this.videoRepository.removeByCrawlerId(id);
+			// Delete orphan channels 
+			this.channelRepository.removeOrphanChannels();
 			// Delete the crawler 
 			this.crawlerRepository.delete(crawler);
 			result = this.crawlerConverterService.toItem(crawler);
