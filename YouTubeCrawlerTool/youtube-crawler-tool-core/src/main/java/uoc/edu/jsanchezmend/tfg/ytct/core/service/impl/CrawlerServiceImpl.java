@@ -167,9 +167,9 @@ public class CrawlerServiceImpl implements CrawlerService {
 			}
 			// Check if the process is stopped by user
 			crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
-			if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.RUNNING)) {
+			if(crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)) {
 				if(CrawlerStatusEnum.RUNNING.getName().equals(result.getStatus())) {
-					result.setStatus(crawler.getStatus());
+					result.setStatus(CrawlerStatusEnum.STOPPED.getName());
 				}
 			}
 			// Save the current crawler state
@@ -279,11 +279,13 @@ public class CrawlerServiceImpl implements CrawlerService {
 				// Allow change crawler status if:
 				// - crawler not 'Finished'
 				// - crawler not 'Error'
-				// - new status is 'Running' or 'Stopped'
+				// - crawler not 'Stopping'
+				// - new status is 'Running' or 'Stopping'
 				// - new status is different than the actual one
 				if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.FINISHED)
 					&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.ERROR)
-					&& (newStatus.equals(CrawlerStatusEnum.RUNNING) || newStatus.equals(CrawlerStatusEnum.STOPPED))
+					&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)
+					&& (newStatus.equals(CrawlerStatusEnum.RUNNING) || newStatus.equals(CrawlerStatusEnum.STOPPING))
 					&& !crawler.getStatusByEnum().equals(newStatus)) {
 					crawler.setStatusByEnum(newStatus);
 					crawlerRepository.save(crawler);

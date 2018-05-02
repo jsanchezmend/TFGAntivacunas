@@ -8,11 +8,12 @@ package uoc.edu.jsanchezmend.tfg.ytct.data.enumeration;
  */
 public enum CrawlerStatusEnum {
 	
-	RUNNING("Running"),
-	STOPPED("Stopped"),
-	FINISHED("Finished"),
-	BLOCKED("Blocked"),
-	ERROR("Error"); // For development proposes 
+	RUNNING("Running"), // Crawler process is executed
+	STOPPED("Stopped"), // Crawler process is stopped
+	STOPPING("Stopping"), // Crawler process will be stopped
+	FINISHED("Finished"), // Crawler process is finished
+	BLOCKED("Blocked"), // Crawler process is blocked by YouTune (quota usage)
+	ERROR("Error"); // For test development (it should not happen)
 	
 	protected String name;
 	
