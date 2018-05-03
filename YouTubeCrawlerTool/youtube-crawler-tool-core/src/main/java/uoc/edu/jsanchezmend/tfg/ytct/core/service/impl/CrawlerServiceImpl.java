@@ -182,17 +182,18 @@ public class CrawlerServiceImpl implements CrawlerService {
 	}
 	
 	/**
-	 * Performs a crawler process defined by a @CrawlerItem
+	 * Performs a search crawler process defined by a @CrawlerItem
 	 * 
 	 * @param crawler
 	 * @return
 	 */
 	private CrawlerItem doCrawler(CrawlerItem crawlerItem) {
+		int searchedVideos = 0;
 		do {
 			final Long startTime = new Date().getTime();
 			try {
 				// Search for videos
-				final Long count = new Long(crawlerItem.getMaxVideos() - crawlerItem.getVideosFound());
+				final Long count = new Long(crawlerItem.getMaxVideos() - searchedVideos);
 				final Date fromDate = DateUtil.toDate(crawlerItem.getFromDate());
 				final Date toDate = DateUtil.toDate(crawlerItem.getToDate());
 				final YouTubeSearchResponseItem youTubeSearchResponseItem = this.youTubeSearchService.searchVideos(
@@ -206,6 +207,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 				final List<String> videoIds = youTubeSearchResponseItem.getItems();
 				crawlerItem.setPageToken(youTubeSearchResponseItem.getNextPageToken());
 				crawlerItem.addVideosFound(videoIds.size());
+				searchedVideos += videoIds.size();
 				
 				// Obtain the videos
 				crawlerItem = this.obtainVideos(crawlerItem, videoIds);
@@ -215,10 +217,10 @@ public class CrawlerServiceImpl implements CrawlerService {
 				if(totalVideosToCrawler.compareTo(youTubeSearchResponseItem.getTotalResults()) > 0) {
 					totalVideosToCrawler = youTubeSearchResponseItem.getTotalResults();
 				}
-				crawlerItem.setCompleted(new Float(crawlerItem.getVideosFound() * 100 / totalVideosToCrawler));
+				crawlerItem.setCompleted(new Float(searchedVideos * 100 / totalVideosToCrawler));
 				
 				// Prepare the crawler to next search
-				if(crawlerItem.getPageToken() == null || crawlerItem.getMaxVideos().compareTo(crawlerItem.getVideosFound()) <= 0) {
+				if(crawlerItem.getPageToken() == null || crawlerItem.getMaxVideos().compareTo(searchedVideos) <= 0) {
 					// Finish the execution
 					crawlerItem.setStatus(CrawlerStatusEnum.FINISHED.getName());	
 					crawlerItem.setCompleted(100F);
@@ -250,6 +252,77 @@ public class CrawlerServiceImpl implements CrawlerService {
 	
 		return crawlerItem;
 	}
+		
+	/**
+	 * Performs a related by videoId crawler process defined by a @CrawlerItem
+	 * 
+	 * @param crawler
+	 * @return
+	 */
+	private CrawlerItem doRelatedCrawler(CrawlerItem crawlerItem) {
+		if(!this.isRelatedSearchRequired(crawlerItem)) {
+			return crawlerItem;
+		}
+
+		int searchedVideos = 0;
+		do {
+			final Long startTime = new Date().getTime();
+			try {
+				// Search for related videos
+				final Long count = new Long(crawlerItem.getMaxVideosPerLevel() - searchedVideos);
+				final YouTubeSearchResponseItem youTubeSearchResponseItem = this.youTubeSearchService.searchRelatedVideos(
+						crawlerItem.getRelatedVideoId(),
+						crawlerItem.getPageToken(),
+						count
+					);
+				final List<String> videoIds = youTubeSearchResponseItem.getItems();
+				crawlerItem.setPageToken(youTubeSearchResponseItem.getNextPageToken());
+				crawlerItem.addVideosFound(videoIds.size());
+				searchedVideos += videoIds.size();
+				
+				// Obtain the videos
+				crawlerItem = this.obtainVideos(crawlerItem, videoIds);
+				
+				// Calculate process completion
+				Integer totalVideosToCrawler = crawlerItem.getMaxVideosPerLevel();
+				if(totalVideosToCrawler.compareTo(youTubeSearchResponseItem.getTotalResults()) > 0) {
+					totalVideosToCrawler = youTubeSearchResponseItem.getTotalResults();
+				}
+				crawlerItem.setCompleted(new Float(searchedVideos * 100 / totalVideosToCrawler));
+		
+				// Prepare the crawler to next search
+				if(crawlerItem.getPageToken() == null || crawlerItem.getMaxVideosPerLevel().compareTo(searchedVideos) <= 0) {
+					// Finish the execution
+					crawlerItem.setStatus(CrawlerStatusEnum.FINISHED.getName());
+					crawlerItem.setCompleted(100F);
+				} 
+			} catch (IOException e) {
+				// Exception throw by YouTube to block our petition
+				crawlerItem.setStatus(CrawlerStatusEnum.BLOCKED.getName());
+				e.printStackTrace();
+			} catch (Exception e) {
+				crawlerItem.setStatus(CrawlerStatusEnum.ERROR.getName());
+				e.printStackTrace();
+			}
+			
+			// Synchronized: Ensure crawler status consistency through different threads
+			synchronized (this) {
+				// Check if the process is stopped by user
+				final Crawler crawler = this.crawlerRepository.findById(crawlerItem.getId()).orElse(null);
+				if(crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)) {
+					if(CrawlerStatusEnum.RUNNING.getName().equals(crawlerItem.getStatus())) {
+						crawlerItem.setStatus(CrawlerStatusEnum.STOPPED.getName());
+					}
+				}
+				// Save the current crawler state
+				crawlerItem.addExecutionTime(new Date().getTime() - startTime);
+				final Crawler resultEntity = this.crawlerConverterService.toEntity(crawlerItem);
+				this.crawlerRepository.save(resultEntity);
+			}
+		} while(CrawlerStatusEnum.RUNNING.getName().equals(crawlerItem.getStatus()));
+		
+		return crawlerItem;
+	}
 	
 	/**
 	 * Given a crawler process and a list of video id's, retrieve it from YouTube and persist them
@@ -270,6 +343,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 			synchronized (this) {
 				final boolean videoExist = this.videoRepository.existsById(videoId);
 				if(!videoExist) {
+					// Create the video
 					final Video newVideo = this.videoConverterService.toEntity(videoItem);
 		            // Set the channel
 					final Channel channel = this.getChannel(videoItem.getChannel().getId());
@@ -291,48 +365,81 @@ public class CrawlerServiceImpl implements CrawlerService {
 					crawler.addNewVideos(1);
 				}
 			}
-			/*
-			// Create a new related crawler
-			CrawlerItem relatedCrawler = new CrawlerItem();
-			relatedCrawler.setRelatedVideoId(videoId);
-			relatedCrawler.setRelatedLevels(crawler.getRelatedLevels());
-			relatedCrawler.setMaxVideosPerLevel(crawler.getMaxVideosPerLevel());
-			relatedCrawler.setCategoryByDefault(crawler.getCategoryByDefault());
-			relatedCrawler = this.initilizeCrawlerItem(relatedCrawler);
-			// Search for related videos
-			relatedCrawler = this.doRelatedCrawler(relatedCrawler);
-			crawler.addNewVideos(relatedCrawler.getNewVideos());
-			//crawler.setVideosFound(crawler.getVideosFound() + relatedCrawler.getVideosFound());
-			 */
+			
+			// If it is a related crawler process, create a new relationship
+			if(this.isRelatedCrawler(crawler)) {
+				this.createVideoRelation(crawler.getRelatedVideoId(), videoId);
+			}
+			
+			// If necessary, create a new search for related videos
+			if(this.isRelatedSearchRequired(crawler)) {
+				CrawlerItem relatedCrawler = new CrawlerItem();
+				relatedCrawler.setId(crawler.getId());
+				relatedCrawler.setRelatedVideoId(videoId);
+				relatedCrawler.setRelatedLevels(crawler.getRelatedLevels()-1);
+				relatedCrawler.setMaxVideosPerLevel(crawler.getMaxVideosPerLevel());
+				relatedCrawler.setCategoryByDefault(crawler.getCategoryByDefault());
+				relatedCrawler = this.initilizeCrawlerItem(relatedCrawler);
+				// Search for related videos
+				relatedCrawler = this.searchRelatedVideos(relatedCrawler);
+				crawler.addVideosFound(relatedCrawler.getVideosFound());
+				crawler.addNewVideos(relatedCrawler.getNewVideos());
+			}
 		}
 
 		return crawler;
 	}
+		
+	/**
+	 * Creates a 'RELATED_TO' relationship between two @Video
+	 * 
+	 * @param fromVideoId
+	 * @param toVideoId
+	 */
+	private synchronized void createVideoRelation(String fromVideoId, String toVideoId) {
+		// Synchronized method: Ensure that the new relationship it's not being created by another thread
+		final Video fromVideo = this.videoRepository.findById(fromVideoId).orElse(null);
+		final Video toVideo = this.videoRepository.findById(toVideoId).orElse(null);
+		if(fromVideo != null && toVideo != null) {
+			fromVideo.addRelated(toVideo);
+			this.videoRepository.save(fromVideo);
+		}
+	}
 	
 	/**
-	 * Performs a related by videoId crawler process defined by a @CrawlerItem
+	 * Given a @CrawlerItem performs a search for a related videos
 	 * 
-	 * @param crawler
+	 * @param crawlerItem
 	 * @return
+	 * @throws IOException
+	 * @throws Exception
 	 */
-	private CrawlerItem doRelatedCrawler(CrawlerItem crawler) {
-		final String relatedVideoId = crawler.getRelatedVideoId();
-		final Integer relatedLevels = crawler.getRelatedLevels();
-		final Integer relatedVideosPerLevel = crawler.getMaxVideosPerLevel();
-		if(relatedVideoId == null || relatedVideoId.isEmpty()
-				|| relatedLevels == null || relatedLevels.compareTo(1) < 0 
-				|| relatedVideosPerLevel == null || relatedVideosPerLevel.compareTo(1) < 0) {
-			// If video id to search related videos is null or empty
-			// or levels to search is null or less than 1
-			// or if the related videos to search per level is null or less than 1
-			// then finish the execution
-			return crawler;
-		}
-		
-		// TODO: Search for related videos
+	private CrawlerItem searchRelatedVideos(CrawlerItem crawlerItem) throws IOException, Exception {
+		int searchedVideos = 0;
+		do {
+			// Search for related videos
+			final Long count = new Long(crawlerItem.getMaxVideosPerLevel() - searchedVideos);
+			final YouTubeSearchResponseItem youTubeSearchResponseItem = this.youTubeSearchService.searchRelatedVideos(
+					crawlerItem.getRelatedVideoId(),
+					crawlerItem.getPageToken(),
+					count
+				);
+			final List<String> videoIds = youTubeSearchResponseItem.getItems();
+			crawlerItem.setPageToken(youTubeSearchResponseItem.getNextPageToken());
+			crawlerItem.addVideosFound(videoIds.size());
+			searchedVideos += videoIds.size();
+			
+			// Obtain the videos
+			crawlerItem = this.obtainVideos(crawlerItem, videoIds);
+	
+			// Prepare the crawler to next search
+			if(crawlerItem.getPageToken() == null || crawlerItem.getMaxVideosPerLevel().compareTo(searchedVideos) <= 0) {
+				// Finish the execution
+				crawlerItem.setStatus(CrawlerStatusEnum.FINISHED.getName());	
+			} 
+		} while(CrawlerStatusEnum.RUNNING.getName().equals(crawlerItem.getStatus()));
 
-		
-		return crawler;
+		return crawlerItem;
 	}
 	
 	/**
@@ -459,5 +566,20 @@ public class CrawlerServiceImpl implements CrawlerService {
 	private boolean isRelatedCrawler(CrawlerItem crawlerItem) {
 		return crawlerItem.getRelatedVideoId() != null && !crawlerItem.getRelatedVideoId().isEmpty() ? true : false;
 	}
-		
+	
+	/**
+	 * Given a @CrawlerItem returns if a related videos search is required
+	 * 
+	 * @param crawlerItem
+	 * @return
+	 */
+	private boolean isRelatedSearchRequired(CrawlerItem crawlerItem) {
+		if(crawlerItem.getRelatedLevels() == null || crawlerItem.getRelatedLevels().compareTo(0) == 0) {
+			return false;
+		} else if (crawlerItem.getMaxVideosPerLevel() == null || crawlerItem.getMaxVideosPerLevel().compareTo(0) == 0) {
+			return false;
+		}
+		return true;
+	}
+	
 }
