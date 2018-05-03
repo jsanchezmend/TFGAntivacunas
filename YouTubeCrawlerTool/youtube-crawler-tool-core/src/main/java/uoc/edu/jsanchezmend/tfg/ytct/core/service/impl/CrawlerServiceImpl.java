@@ -159,7 +159,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	@Async
 	@Override
 	public CompletableFuture<CrawlerItem> executeCrawler(Long crawlerId) {
-		Crawler crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
+		final Crawler crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
 		if(crawler == null) {
 			return null;
 		} else if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.RUNNING)) {
@@ -168,37 +168,15 @@ public class CrawlerServiceImpl implements CrawlerService {
 		CrawlerItem result = this.crawlerConverterService.toItem(crawler);
 
 		// Start the execution
-		do {
-			try {
-				if(this.isSearchCrawler(result)) {
-					// Do a search crawler
-					result = this.doCrawler(result);
-				} else if(this.isRelatedCrawler(result)) {
-					// Do a related by video id crawler
-					result = this.doRelatedCrawler(result);
-				}
-			} catch (IOException e) {
-				// Exception throw by YouTube to block our petition
-				result.setStatus(CrawlerStatusEnum.BLOCKED.getName());
-				e.printStackTrace();
-			} catch (Exception e) {
-				result.setStatus(CrawlerStatusEnum.ERROR.getName());
-				e.printStackTrace();
-			}
-			// Synchronized: Ensure crawler status consistency through different threads
-			synchronized (this) {
-				// Check if the process is stopped by user
-				crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
-				if(crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)) {
-					if(CrawlerStatusEnum.RUNNING.getName().equals(result.getStatus())) {
-						result.setStatus(CrawlerStatusEnum.STOPPED.getName());
-					}
-				}
-				// Save the current crawler state
-				final Crawler resultEntity = this.crawlerConverterService.toEntity(result);
-				this.crawlerRepository.save(resultEntity);
-			}
-		} while(CrawlerStatusEnum.RUNNING.getName().equals(result.getStatus()));
+		if(this.isSearchCrawler(result)) {
+			// Do a search crawler
+			result = this.doCrawler(result);
+		} else if(this.isRelatedCrawler(result)) {
+			// Do a related by video id crawler
+			result = this.doRelatedCrawler(result);
+		} else {
+			return null;
+		}
 		
 		return CompletableFuture.completedFuture(result);
 	}
@@ -208,45 +186,69 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * 
 	 * @param crawler
 	 * @return
-	 * @throws IOException
-	 * @throws Exception
 	 */
-	private CrawlerItem doCrawler(CrawlerItem crawler) throws IOException, Exception {	
-		final Long startTime = new Date().getTime();
-		// Search for videos
-		final Long count = new Long(crawler.getMaxVideos() - crawler.getVideosFound());
-		final Date fromDate = DateUtil.toDate(crawler.getFromDate());
-		final Date toDate = DateUtil.toDate(crawler.getToDate());
-		final YouTubeSearchResponseItem youTubeSearchResponseItem = this.youTubeSearchService.searchVideos(
-				crawler.getSearch(),
-				new DateTime(fromDate.getTime()),
-				new DateTime(toDate.getTime()), 
-				CrawlerOrderByEnum.getByName(crawler.getOrderBy()),
-				crawler.getPageToken(),
-				count
-			);
-		final List<String> videoIds = youTubeSearchResponseItem.getItems();
-		crawler.setPageToken(youTubeSearchResponseItem.getNextPageToken());
-		crawler.addVideosFound(videoIds.size());
+	private CrawlerItem doCrawler(CrawlerItem crawlerItem) {
+		do {
+			final Long startTime = new Date().getTime();
+			try {
+				// Search for videos
+				final Long count = new Long(crawlerItem.getMaxVideos() - crawlerItem.getVideosFound());
+				final Date fromDate = DateUtil.toDate(crawlerItem.getFromDate());
+				final Date toDate = DateUtil.toDate(crawlerItem.getToDate());
+				final YouTubeSearchResponseItem youTubeSearchResponseItem = this.youTubeSearchService.searchVideos(
+						crawlerItem.getSearch(),
+						new DateTime(fromDate.getTime()),
+						new DateTime(toDate.getTime()), 
+						CrawlerOrderByEnum.getByName(crawlerItem.getOrderBy()),
+						crawlerItem.getPageToken(),
+						count
+					);
+				final List<String> videoIds = youTubeSearchResponseItem.getItems();
+				crawlerItem.setPageToken(youTubeSearchResponseItem.getNextPageToken());
+				crawlerItem.addVideosFound(videoIds.size());
+				
+				// Obtain the videos
+				crawlerItem = this.obtainVideos(crawlerItem, videoIds);
 		
-		// Obtain the videos
-		crawler = this.obtainVideos(crawler, videoIds);
-
-		// Calculate process completion
-		Integer totalVideosToCrawler = crawler.getMaxVideos();
-		if(totalVideosToCrawler.compareTo(youTubeSearchResponseItem.getTotalResults()) > 0) {
-			totalVideosToCrawler = youTubeSearchResponseItem.getTotalResults();
-		}
-		crawler.setCompleted(new Float(crawler.getVideosFound() * 100 / totalVideosToCrawler));
-		
-		// Prepare the crawler to next search
-		if(crawler.getPageToken() == null || crawler.getMaxVideos().compareTo(crawler.getVideosFound()) <= 0) {
-			// Finish the execution
-			crawler.setStatus(CrawlerStatusEnum.FINISHED.getName());	
-			crawler.setCompleted(100F);
-		} 
-		crawler.addExecutionTime(new Date().getTime() - startTime);
-		return crawler;
+				// Calculate process completion
+				Integer totalVideosToCrawler = crawlerItem.getMaxVideos();
+				if(totalVideosToCrawler.compareTo(youTubeSearchResponseItem.getTotalResults()) > 0) {
+					totalVideosToCrawler = youTubeSearchResponseItem.getTotalResults();
+				}
+				crawlerItem.setCompleted(new Float(crawlerItem.getVideosFound() * 100 / totalVideosToCrawler));
+				
+				// Prepare the crawler to next search
+				if(crawlerItem.getPageToken() == null || crawlerItem.getMaxVideos().compareTo(crawlerItem.getVideosFound()) <= 0) {
+					// Finish the execution
+					crawlerItem.setStatus(CrawlerStatusEnum.FINISHED.getName());	
+					crawlerItem.setCompleted(100F);
+				} 
+			} catch (IOException e) {
+				// Exception throw by YouTube to block our petition
+				crawlerItem.setStatus(CrawlerStatusEnum.BLOCKED.getName());
+				e.printStackTrace();
+			} catch (Exception e) {
+				crawlerItem.setStatus(CrawlerStatusEnum.ERROR.getName());
+				e.printStackTrace();
+			}
+			
+			// Synchronized: Ensure crawler status consistency through different threads
+			synchronized (this) {
+				// Check if the process is stopped by user
+				final Crawler crawler = this.crawlerRepository.findById(crawlerItem.getId()).orElse(null);
+				if(crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)) {
+					if(CrawlerStatusEnum.RUNNING.getName().equals(crawlerItem.getStatus())) {
+						crawlerItem.setStatus(CrawlerStatusEnum.STOPPED.getName());
+					}
+				}
+				// Save the current crawler state
+				crawlerItem.addExecutionTime(new Date().getTime() - startTime);
+				final Crawler resultEntity = this.crawlerConverterService.toEntity(crawlerItem);
+				this.crawlerRepository.save(resultEntity);
+			}
+		} while(CrawlerStatusEnum.RUNNING.getName().equals(crawlerItem.getStatus()));
+	
+		return crawlerItem;
 	}
 	
 	/**
@@ -260,7 +262,6 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 */
 	private CrawlerItem obtainVideos(CrawlerItem crawler, List<String> videoIds) throws IOException, Exception {	
 		// Retrieve videos
-		int savedVideos = 0;
 		final List<VideoItem> videoItems = this.youTubeSearchService.findVideos(videoIds);
 		for(VideoItem videoItem : videoItems) {
 			final String videoId = videoItem.getId();
@@ -287,7 +288,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 					final BigInteger scopeRange = newVideo.getViewCount() != null ? newVideo.getViewCount() : BigInteger.valueOf(0L);
 					newVideo.setScopeRange(scopeRange);
 					this.videoRepository.save(newVideo);
-					savedVideos++;
+					crawler.addNewVideos(1);
 				}
 			}
 			/*
@@ -304,7 +305,6 @@ public class CrawlerServiceImpl implements CrawlerService {
 			//crawler.setVideosFound(crawler.getVideosFound() + relatedCrawler.getVideosFound());
 			 */
 		}
-		crawler.addNewVideos(savedVideos);
 
 		return crawler;
 	}
@@ -314,10 +314,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * 
 	 * @param crawler
 	 * @return
-	 * @throws IOException
-	 * @throws Exception
 	 */
-	private CrawlerItem doRelatedCrawler(CrawlerItem crawler) throws IOException, Exception {
+	private CrawlerItem doRelatedCrawler(CrawlerItem crawler) {
 		final String relatedVideoId = crawler.getRelatedVideoId();
 		final Integer relatedLevels = crawler.getRelatedLevels();
 		final Integer relatedVideosPerLevel = crawler.getMaxVideosPerLevel();
