@@ -368,7 +368,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 			
 			// If it is a related crawler process, create a new relationship
 			if(this.isRelatedCrawler(crawler)) {
-				this.createVideoRelation(crawler.getRelatedVideoId(), videoId);
+				this.createVideoRelationship(crawler.getRelatedVideoId(), videoId);
 			}
 			
 			// If necessary, create a new search for related videos
@@ -396,7 +396,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param fromVideoId
 	 * @param toVideoId
 	 */
-	private synchronized void createVideoRelation(String fromVideoId, String toVideoId) {
+	private synchronized void createVideoRelationship(String fromVideoId, String toVideoId) {
 		// Synchronized method: Ensure that the new relationship it's not being created by another thread
 		final Video fromVideo = this.videoRepository.findById(fromVideoId).orElse(null);
 		final Video toVideo = this.videoRepository.findById(toVideoId).orElse(null);
