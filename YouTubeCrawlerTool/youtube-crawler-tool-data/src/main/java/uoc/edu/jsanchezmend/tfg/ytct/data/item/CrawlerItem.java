@@ -122,12 +122,26 @@ public class CrawlerItem extends AbstractItem {
 	public void setVideosFound(Integer videosFound) {
 		this.videosFound = videosFound;
 	}
+	public void addVideosFound(Integer videosFound) {
+		if(this.videosFound != null) {
+			this.videosFound += videosFound;
+		} else {
+			this.videosFound = videosFound;
+		}
+	}
 
 	public Integer getNewVideos() {
 		return newVideos;
 	}
 	public void setNewVideos(Integer newVideos) {
 		this.newVideos = newVideos;
+	}
+	public void addNewVideos(Integer newVideos) {
+		if(this.newVideos != null) {
+			this.newVideos += newVideos;
+		} else {
+			this.newVideos = newVideos;
+		}
 	}
 
 	public Float getCompleted() {
@@ -142,6 +156,14 @@ public class CrawlerItem extends AbstractItem {
 	}
 	public void setExecutionTime(Long executionTime) {
 		this.executionTime = executionTime;
+	}
+	public void addExecutionTime(Long executionTime) {
+		if(this.executionTime != null) {
+			this.executionTime += executionTime;
+		} else {
+			this.executionTime = executionTime;
+		}
+
 	}
 	
 	public String getPageToken() {
