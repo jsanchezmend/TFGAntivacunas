@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
-import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerStatsItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.stats.CrawlerStatsItem;
 
 /**
  * Business logic for @Crawler

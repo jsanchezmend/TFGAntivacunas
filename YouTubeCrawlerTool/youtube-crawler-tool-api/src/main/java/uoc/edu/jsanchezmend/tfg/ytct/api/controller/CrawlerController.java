@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import uoc.edu.jsanchezmend.tfg.ytct.core.service.CrawlerService;
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerStatusEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
-import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerStatsItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.stats.CrawlerStatsItem;
 
 /**
  * Controller for crawlers api
@@ -30,6 +30,7 @@ public class CrawlerController {
 	@Autowired
 	private CrawlerService crawlerService;
 	
+	
 	/**
 	 * List all crawlers
 	 * 
@@ -38,7 +39,7 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<CrawlerItem> listCrawlers() {
-		final List<CrawlerItem> results = crawlerService.listCrawlers();
+		final List<CrawlerItem> results = this.crawlerService.listCrawlers();
 		return results;				
 	}
 	
@@ -53,10 +54,10 @@ public class CrawlerController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public CrawlerItem createCrawler(@RequestBody CrawlerItem crawler) {
 		// Create a new crawler process
-		final CrawlerItem result = crawlerService.createCrawler(crawler);
+		final CrawlerItem result = this.crawlerService.createCrawler(crawler);
 		final Long crawlerId = result.getId();
 		// Execute it in a new thread
-		final CompletableFuture<CrawlerItem> futureResult = crawlerService.executeCrawler(crawlerId);
+		final CompletableFuture<CrawlerItem> futureResult = this.crawlerService.executeCrawler(crawlerId);
 		return futureResult.getNow(result);				
 	}
 	
@@ -69,7 +70,7 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public CrawlerItem getCrawler(@PathVariable(value = "id", required = true) Long id) {
-		final CrawlerItem result = crawlerService.getCrawler(id);
+		final CrawlerItem result = this.crawlerService.getCrawler(id);
 		return result;				
 	}
 	
@@ -87,13 +88,13 @@ public class CrawlerController {
 	public CrawlerItem editCrawler(@PathVariable(value = "id", required = true) Long id, @RequestBody CrawlerItem crawler) {
 		// Save the new crawler status
 		final String newStatus = crawler.getStatus();
-		final CrawlerItem result = crawlerService.editCrawlerStatus(id, newStatus);
+		final CrawlerItem result = this.crawlerService.editCrawlerStatus(id, newStatus);
 		
 		// If the new status is 'Running', execute the crawler process
 		if(result != null && result.getStatus() != null && CrawlerStatusEnum.RUNNING.getName().equals(result.getStatus())) {
 			final Long crawlerId = result.getId();
 			// Execute it in a new thread
-			final CompletableFuture<CrawlerItem> futureResult = crawlerService.executeCrawler(crawlerId);
+			final CompletableFuture<CrawlerItem> futureResult = this.crawlerService.executeCrawler(crawlerId);
 			return futureResult.getNow(result);	
 		} else {
 			return result;	
@@ -110,7 +111,7 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public CrawlerItem deleteCrawler(@PathVariable(value = "id", required = true) Long id) {
-		final CrawlerItem result = crawlerService.deleteCrawler(id);
+		final CrawlerItem result = this.crawlerService.deleteCrawler(id);
 		return result;				
 	}
 	
@@ -123,7 +124,7 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}/stats", method = RequestMethod.GET)
 	public CrawlerStatsItem getCrawlerStats(@PathVariable(value = "id", required = true) Long id) {
-		final CrawlerStatsItem result = crawlerService.getCrawlerStats(id);
+		final CrawlerStatsItem result = this.crawlerService.getCrawlerStats(id);
 		return result;				
 	}
 	
@@ -136,7 +137,7 @@ public class CrawlerController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}/videos", method = RequestMethod.GET)
 	public List<VideoItem> getCrawlerVideos(@PathVariable(value = "id", required = true) Long id) {
-		final List<VideoItem> results = crawlerService.getCrawlerVideos(id);
+		final List<VideoItem> results = this.crawlerService.getCrawlerVideos(id);
 		return results;				
 	}
 	

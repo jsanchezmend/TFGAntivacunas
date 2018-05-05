@@ -38,11 +38,13 @@ GET		/channels/{id}/videos	Lista todos los videos de un canal.
 
 Category component
 ------------------
-GET		/categories				Lista todas las categorias.
-POST	/categories				(R) Crea una nueva categoria.
-GET		/categories/{id}		Devuelve una categoria.
-PUT		/categories/{id}		(R) Modifica una categoria.
-DELETE	/categories/{id}		(R) Borra una categoria.
+GET		/categories					Lista todas las categorias.
+POST	/categories					(R) Crea una nueva categoria.
+GET		/categories/{name}			Devuelve una categoria.
+PUT		/categories/{name}			(R) Modifica una categoria.
+DELETE	/categories/{name}			(R) Borra una categoria.
+GET		/categories/{name}/stats	Devuelve las estadisticas de una categoria.
+GET		/categories/{name}/videos	Lista todos los videos categorizados por una categoria.
 
 
 Analysis component

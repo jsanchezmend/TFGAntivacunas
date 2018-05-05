@@ -30,9 +30,9 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerOrderByEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.CrawlerStatusEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.ChannelItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerItem;
-import uoc.edu.jsanchezmend.tfg.ytct.data.item.CrawlerStatsItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.YouTubeSearchResponseItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.stats.CrawlerStatsItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.repository.CategoryRepository;
 import uoc.edu.jsanchezmend.tfg.ytct.data.repository.ChannelRepository;
 import uoc.edu.jsanchezmend.tfg.ytct.data.repository.CrawlerRepository;
@@ -99,8 +99,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 	
 	@Override
 	public List<CrawlerItem> listCrawlers() {
-		final Iterable<Crawler> crawlerIterable = crawlerRepository.findAll();
-		final List<CrawlerItem> crawlerItems = crawlerConverterService.toListItem(crawlerIterable);
+		final Iterable<Crawler> crawlerIterable = this.crawlerRepository.findAll();
+		final List<CrawlerItem> crawlerItems = this.crawlerConverterService.toListItem(crawlerIterable);
 		return crawlerItems;
 	}
 	
@@ -110,11 +110,11 @@ public class CrawlerServiceImpl implements CrawlerService {
 		crawlerItem = this.initilizeCrawlerItem(crawlerItem);
 
 		// Create a new crawler
-		Crawler crawler = crawlerConverterService.toEntity(crawlerItem);
+		Crawler crawler = this.crawlerConverterService.toEntity(crawlerItem);
 		crawler = this.crawlerRepository.save(crawler);
 				
 		// Return the created crawler as a result
-		final CrawlerItem result = crawlerConverterService.toItem(crawler);
+		final CrawlerItem result = this.crawlerConverterService.toItem(crawler);
 		return result;
 	}
 
@@ -146,8 +146,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 	@Override
 	public CrawlerItem getCrawler(Long id) {
-		final Crawler crawler = crawlerRepository.findById(id).orElse(null);
-		final CrawlerItem crawlerItem = crawlerConverterService.toItem(crawler);
+		final Crawler crawler = this.crawlerRepository.findById(id).orElse(null);
+		final CrawlerItem crawlerItem = this.crawlerConverterService.toItem(crawler);
 		return crawlerItem;
 	}
 
@@ -158,7 +158,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 		if(newStatus != null) {
 			// Synchronized: Ensure crawler status consistency through different threads
 			synchronized (this) {
-				final Crawler crawler = crawlerRepository.findById(id).orElse(null);
+				final Crawler crawler = this.crawlerRepository.findById(id).orElse(null);
 				if(crawler != null) {
 					// Allow change crawler status if:
 					// - crawler not 'Finished'
@@ -172,8 +172,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 						&& (newStatus.equals(CrawlerStatusEnum.RUNNING) || newStatus.equals(CrawlerStatusEnum.STOPPING))
 						&& !crawler.getStatusByEnum().equals(newStatus)) {
 						crawler.setStatusByEnum(newStatus);
-						crawlerRepository.save(crawler);
-						result = crawlerConverterService.toItem(crawler);
+						this.crawlerRepository.save(crawler);
+						result = this.crawlerConverterService.toItem(crawler);
 					}
 				}
 			}

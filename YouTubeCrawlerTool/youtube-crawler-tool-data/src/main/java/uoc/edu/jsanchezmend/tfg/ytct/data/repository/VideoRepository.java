@@ -28,9 +28,9 @@ public interface VideoRepository extends Neo4jRepository<Video, String> {
 	List<Video> findByChannelId(String channelId);
 	
 	@Depth(1)
-	@Query("MATCH (video:Video) -[:CATEGORIZED_AS]-> (c:Category) WHERE ID(c)={0} WITH video "
+	@Query("MATCH (video:Video) -[:CATEGORIZED_AS]-> (c:Category) WHERE c.name={0} WITH video "
 			+ "MATCH v=(video)-[r*0..1]-() RETURN video, nodes(v), rels(v)")
-	List<Video> findByCategoryName(String channelId);
+	List<Video> findByCategoryName(String categoryName);
 	
 	// TODO: Test it!
 	//"MATCH (v:Video) WHERE v.publishedAt >= '2015-02-27' and v.publishedAt <='2018-03-01' RETURN v"
@@ -53,7 +53,7 @@ public interface VideoRepository extends Neo4jRepository<Video, String> {
 	@Query("MATCH (v:Video) -[:UPLOADED_BY]-> (c:Channel) WHERE ID(c)={0} DETACH DELETE v")
 	void removeByChannelId(String channelId);
 	
-	@Query("MATCH (v:Video) -[:CATEGORIZED_AS]-> (c:Category) WHERE ID(c)={0} DETACH DELETE v")
+	@Query("MATCH (v:Video) -[:CATEGORIZED_AS]-> (c:Category) WHERE c.name={0} DETACH DELETE v")
 	void removeByCategoryName(String categoryName);
 	
 }
