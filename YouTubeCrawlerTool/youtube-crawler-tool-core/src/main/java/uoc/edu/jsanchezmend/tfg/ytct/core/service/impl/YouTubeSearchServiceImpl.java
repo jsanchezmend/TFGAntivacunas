@@ -174,7 +174,9 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
         if(pageToken != null) {
         	search.setPageToken(pageToken);
         }
-        final Long searchCount = count != null && count.compareTo(SEARCH_MAX_COUNT) < 0  ? count : SEARCH_MAX_COUNT;
+        // We use the count of videos request by the user only if it's provided 
+        // and is less than the maximum allowed per request by YouTube API
+        final Long searchCount = count!=null && count.compareTo(SEARCH_MAX_COUNT) < 0  ? count : SEARCH_MAX_COUNT;
         search.setMaxResults(searchCount);
         
         // Execute the search and obtain the results

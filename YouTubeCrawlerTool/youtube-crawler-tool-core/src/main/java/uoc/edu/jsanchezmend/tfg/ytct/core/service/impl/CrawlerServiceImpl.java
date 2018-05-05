@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +46,9 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.repository.VideoRepository;
  */
 @Service("crawlerService")
 public class CrawlerServiceImpl implements CrawlerService {
+	
+	private final static Logger log = LoggerFactory.getLogger(CrawlerServiceImpl.class);
+	
 	
 	@Value("${crawler.search.default.fromdate}")
 	private String defaultFromDate;
@@ -112,6 +117,112 @@ public class CrawlerServiceImpl implements CrawlerService {
 		final CrawlerItem result = crawlerConverterService.toItem(crawler);
 		return result;
 	}
+
+	@Async
+	@Override
+	public CompletableFuture<CrawlerItem> executeCrawler(Long crawlerId) {
+		final Crawler crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
+		if(crawler == null) {
+			return null;
+		} else if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.RUNNING)) {
+			// Only 'Running' crawlers can be executed
+			return null;
+		}
+		CrawlerItem result = this.crawlerConverterService.toItem(crawler);
+
+		// Start the execution
+		if(this.isSearchCrawler(result)) {
+			// Do a search crawler
+			result = this.doCrawler(result);
+		} else if(this.isRelatedCrawler(result)) {
+			// Do a related by video id crawler
+			result = this.doRelatedCrawler(result);
+		} else {
+			return null;
+		}
+		
+		return CompletableFuture.completedFuture(result);
+	}
+
+	@Override
+	public CrawlerItem getCrawler(Long id) {
+		final Crawler crawler = crawlerRepository.findById(id).orElse(null);
+		final CrawlerItem crawlerItem = crawlerConverterService.toItem(crawler);
+		return crawlerItem;
+	}
+
+	@Override
+	public CrawlerItem editCrawlerStatus(Long id, String newStatusName) {
+		CrawlerItem result = null;
+		final CrawlerStatusEnum newStatus = CrawlerStatusEnum.getByName(newStatusName);
+		if(newStatus != null) {
+			// Synchronized: Ensure crawler status consistency through different threads
+			synchronized (this) {
+				final Crawler crawler = crawlerRepository.findById(id).orElse(null);
+				if(crawler != null) {
+					// Allow change crawler status if:
+					// - crawler not 'Finished'
+					// - crawler not 'Error'
+					// - crawler not 'Stopping'
+					// - new status is 'Running' or 'Stopping'
+					// - new status is different than the actual one
+					if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.FINISHED)
+						&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.ERROR)
+						&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)
+						&& (newStatus.equals(CrawlerStatusEnum.RUNNING) || newStatus.equals(CrawlerStatusEnum.STOPPING))
+						&& !crawler.getStatusByEnum().equals(newStatus)) {
+						crawler.setStatusByEnum(newStatus);
+						crawlerRepository.save(crawler);
+						result = crawlerConverterService.toItem(crawler);
+					}
+				}
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public CrawlerItem deleteCrawler(Long id) {
+		CrawlerItem result = null;
+		// Synchronized: Ensure crawler status consistency through different threads
+		synchronized (this) {
+			final Crawler crawler = this.crawlerRepository.findById(id).orElse(null);
+			if(crawler != null) {
+				// Delete crawler process is only allowed if it's not 'Running' or 'Stopping'
+				if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.RUNNING)
+						&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)) {
+					// Delete first all crawler related videos
+					this.videoRepository.removeByCrawlerId(id);
+					// Delete orphan channels 
+					this.channelRepository.removeOrphanChannels();
+					// Delete the crawler 
+					this.crawlerRepository.delete(crawler);
+					result = this.crawlerConverterService.toItem(crawler);
+				}
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public CrawlerStatsItem getCrawlerStats(Long id) {
+		CrawlerStatsItem result = null;
+		//TODO
+		return result;
+	}
+
+	@Override
+	public List<VideoItem> getCrawlerVideos(Long id) {
+		final List<VideoItem> results = new ArrayList<VideoItem>();
+		final List<Video> entities = this.videoRepository.findByCrawlerId(id);
+		if(entities != null && !entities.isEmpty()) {
+			results.addAll(this.videoConverterService.toListItem(entities));
+		}
+		return results;
+	}
+	
 	
 	/**
 	 * Initialize a @CrawlerItem to start a new crawler process
@@ -145,6 +256,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 		if(crawlerItem.getMaxVideos() == null) {
 			crawlerItem.setMaxVideos(defaultTotalvideos);
 		}
+		
 		// Initialize crawler process values
 		crawlerItem.setVideosFound(0);
 		crawlerItem.setNewVideos(0);
@@ -154,31 +266,6 @@ public class CrawlerServiceImpl implements CrawlerService {
 		crawlerItem.setStatus(CrawlerStatusEnum.RUNNING.getName());
 		
 		return crawlerItem;
-	}
-	
-	@Async
-	@Override
-	public CompletableFuture<CrawlerItem> executeCrawler(Long crawlerId) {
-		final Crawler crawler = this.crawlerRepository.findById(crawlerId).orElse(null);
-		if(crawler == null) {
-			return null;
-		} else if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.RUNNING)) {
-			return null;
-		}
-		CrawlerItem result = this.crawlerConverterService.toItem(crawler);
-
-		// Start the execution
-		if(this.isSearchCrawler(result)) {
-			// Do a search crawler
-			result = this.doCrawler(result);
-		} else if(this.isRelatedCrawler(result)) {
-			// Do a related by video id crawler
-			result = this.doRelatedCrawler(result);
-		} else {
-			return null;
-		}
-		
-		return CompletableFuture.completedFuture(result);
 	}
 	
 	/**
@@ -228,7 +315,6 @@ public class CrawlerServiceImpl implements CrawlerService {
 				if(crawlerItem.getPageToken() == null || crawlerItem.getMaxVideos().compareTo(searchedVideos) <= 0) {
 					// Finish the execution
 					crawlerItem.setStatus(CrawlerStatusEnum.FINISHED.getName());	
-					//crawlerItem.setCompleted(100F);
 				} 
 			} catch (IOException e) {
 				// Exception throw by YouTube to block our petition
@@ -309,7 +395,6 @@ public class CrawlerServiceImpl implements CrawlerService {
 				if(crawlerItem.getPageToken() == null || crawlerItem.getMaxVideosPerLevel().compareTo(searchedVideos) <= 0) {
 					// Finish the execution
 					crawlerItem.setStatus(CrawlerStatusEnum.FINISHED.getName());
-					//crawlerItem.setCompleted(100F);
 				} 
 			} catch (IOException e) {
 				// Exception throw by YouTube to block our petition
@@ -342,6 +427,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	
 	/**
 	 * Given a crawler process and a list of video id's, retrieve it from YouTube and persist them
+	 * Also, if needed, starts a related by video id search
 	 * 
 	 * @param crawler
 	 * @param videoIds
@@ -404,6 +490,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 				relatedCrawler = this.initilizeCrawlerItem(relatedCrawler);
 				// Search for related videos
 				relatedCrawler = this.searchRelatedVideos(relatedCrawler);
+				// Update to the current crawler the videos found and save by the related search process
 				crawler.addVideosFound(relatedCrawler.getVideosFound());
 				crawler.addNewVideos(relatedCrawler.getNewVideos());
 			}
@@ -419,8 +506,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 					// Check if the process is stopped by user
 					final Crawler crawlerEntity = this.crawlerRepository.findById(crawler.getId()).orElse(null);
 					// Save the current crawler state
-					crawlerEntity.setNewVideos(crawler.getNewVideos());
 					crawlerEntity.setVideosFound(crawler.getVideosFound());
+					crawlerEntity.setNewVideos(crawler.getNewVideos());
 					crawlerEntity.setCompleted(crawler.getCompleted());
 					crawler.addExecutionTime(new Date().getTime() - startTime);
 					crawlerEntity.setExecutionTime(crawler.getExecutionTime());
@@ -432,6 +519,32 @@ public class CrawlerServiceImpl implements CrawlerService {
 		
 		crawler.addExecutionTime(new Date().getTime() - startTime);
 		return crawler;
+	}
+	
+	/**
+	 * Given a channel id, returns a @Channel from database or fall back into YouTube API
+	 * 
+	 * @param channelId
+	 * @return
+	 * @throws IOException
+	 */
+	private Channel getChannel(final String channelId) throws IOException {
+		// Synchronized: This method will be executed synchronized as it is being called inside a synchronized block
+		Channel channel = this.channelRepository.findById(channelId).orElse(null);
+		if(channel != null) {
+			log.info("Video channel read from DB");
+		} else {
+			final ChannelItem channelItem = this.youTubeSearchService.findChannel(channelId);
+			if(channelItem != null) {
+				log.info("Video channel read from API");
+				channel = this.channelConverterService.toEntity(channelItem);
+				channel = this.channelRepository.save(channel);
+			}
+		}
+		if(channel == null) {
+			log.info("Video channel impossible to find");
+		}
+		return channel;
 	}
 		
 	/**
@@ -460,6 +573,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 */
 	private CrawlerItem searchRelatedVideos(CrawlerItem crawlerItem) throws IOException, Exception {
 		int searchedVideos = 0;
+		
 		do {
 			// Search for related videos
 			final Long count = new Long(crawlerItem.getMaxVideosPerLevel() - searchedVideos);
@@ -485,112 +599,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 		return crawlerItem;
 	}
-	
-	/**
-	 * Given a channel id, returns a @Channel from database or fall back into YouTube API
-	 * 
-	 * @param channelId
-	 * @return
-	 * @throws IOException
-	 */
-	private Channel getChannel(final String channelId) throws IOException {
-		// Synchronized: This method will be executed synchronized as it is being called inside a synchronized block
-		Channel channel = this.channelRepository.findById(channelId).orElse(null);
-		if(channel != null) {
-			System.out.println("Video channel read from DB");
-		} else {
-			final ChannelItem channelItem = this.youTubeSearchService.findChannel(channelId);
-			if(channelItem != null) {
-				System.out.println("Video channel read from API");
-				channel = this.channelConverterService.toEntity(channelItem);
-				channel = this.channelRepository.save(channel);
-			}
-		}
-		if(channel == null) {
-			System.out.println("Video channel impossible to find");
-		}
-		return channel;
-	}
-
-	@Override
-	public CrawlerItem getCrawler(Long id) {
-		final Crawler crawler = crawlerRepository.findById(id).orElse(null);
-		final CrawlerItem crawlerItem = crawlerConverterService.toItem(crawler);
-		return crawlerItem;
-	}
-
-	@Override
-	public CrawlerItem editCrawlerStatus(Long id, String newStatusName) {
-		CrawlerItem result = null;
-		final CrawlerStatusEnum newStatus = CrawlerStatusEnum.getByName(newStatusName);
-		if(newStatus != null) {
-			// Synchronized: Ensure crawler status consistency through different threads
-			synchronized (this) {
-				final Crawler crawler = crawlerRepository.findById(id).orElse(null);
-				if(crawler != null) {
-					// Allow change crawler status if:
-					// - crawler not 'Finished'
-					// - crawler not 'Error'
-					// - crawler not 'Stopping'
-					// - new status is 'Running' or 'Stopping'
-					// - new status is different than the actual one
-					if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.FINISHED)
-						&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.ERROR)
-						&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)
-						&& (newStatus.equals(CrawlerStatusEnum.RUNNING) || newStatus.equals(CrawlerStatusEnum.STOPPING))
-						&& !crawler.getStatusByEnum().equals(newStatus)) {
-						crawler.setStatusByEnum(newStatus);
-						crawlerRepository.save(crawler);
-						result = crawlerConverterService.toItem(crawler);
-					}
-				}
-			}
-		}
-		
-		return result;
-	}
-
-	@Override
-	public CrawlerItem deleteCrawler(Long id) {
-		CrawlerItem result = null;
-		// Synchronized: Ensure crawler status consistency through different threads
-		synchronized (this) {
-			final Crawler crawler = this.crawlerRepository.findById(id).orElse(null);
-			if(crawler != null) {
-				// Delete crawler process is only allowed if it's not 'Running'
-				if(!crawler.getStatusByEnum().equals(CrawlerStatusEnum.RUNNING)
-						&& !crawler.getStatusByEnum().equals(CrawlerStatusEnum.STOPPING)) {
-					// Delete first all crawler related videos
-					this.videoRepository.removeByCrawlerId(id);
-					// Delete orphan channels 
-					this.channelRepository.removeOrphanChannels();
-					// Delete the crawler 
-					this.crawlerRepository.delete(crawler);
-					result = this.crawlerConverterService.toItem(crawler);
-				}
-			}
-		}
-		
-		return result;
-	}
-
-	@Override
-	public CrawlerStatsItem getCrawlerStats(Long id) {
-		CrawlerStatsItem result = null;
-		//TODO
-		return result;
-	}
-
-	@Override
-	public List<VideoItem> getCrawlerVideos(Long id) {
-		final List<VideoItem> results = new ArrayList<VideoItem>();
-		final List<Video> entities = this.videoRepository.findByCrawlerId(id);
-		if(entities != null) {
-			results.addAll(this.videoConverterService.toListItem(entities));
-		}
-		return results;
-	}
-	
+			
 	/**
 	 * Returns if a crawler process represented by a @CrawlerItem is a search process
 	 * 

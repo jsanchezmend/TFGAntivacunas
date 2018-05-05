@@ -53,7 +53,7 @@ public class Crawler {
 	
 	protected String status;
 	
-	@Relationship(type = "CATEGORIZED_BY_DEFAULT", direction = Relationship.UNDIRECTED)
+	@Relationship(type = "CATEGORIZED_BY_DEFAULT", direction = Relationship.OUTGOING)
 	protected Category categoryByDefault;
 	
 	

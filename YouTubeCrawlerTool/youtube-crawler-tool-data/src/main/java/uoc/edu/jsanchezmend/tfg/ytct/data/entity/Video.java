@@ -41,16 +41,16 @@ public class Video {
 	
 	protected String embedHtml;
 	
-	@Relationship(type = "UPLOADED_BY", direction = Relationship.UNDIRECTED)
+	@Relationship(type = "UPLOADED_BY", direction = Relationship.OUTGOING)
 	protected Channel channel;
 	
-	@Relationship(type = "RELATED_TO", direction = Relationship.UNDIRECTED)
+	@Relationship(type = "RELATED_TO", direction = Relationship.OUTGOING)
 	public Set<Video> related;
 	
-	@Relationship(type = "DISCOVERED_BY", direction = Relationship.UNDIRECTED)
+	@Relationship(type = "DISCOVERED_BY", direction = Relationship.OUTGOING)
 	protected Crawler crawler;
 	
-	@Relationship(type = "CATEGORIZED_AS", direction = Relationship.UNDIRECTED)
+	@Relationship(type = "CATEGORIZED_AS", direction = Relationship.OUTGOING)
 	protected Category category;
 	
 
