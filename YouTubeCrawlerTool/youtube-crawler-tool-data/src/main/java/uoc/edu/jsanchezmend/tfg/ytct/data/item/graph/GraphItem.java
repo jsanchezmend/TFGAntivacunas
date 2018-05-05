@@ -39,19 +39,17 @@ public class GraphItem extends AbstractItem {
 		this.nodes.add(node);
 	}
 
-
 	public List<EdgeItem> getEdges() {
 		return edges;
 	}
 	public void setEdges(List<EdgeItem> edges) {
+		this.edges = edges;
+	}
+	public void addEdge(EdgeItem edge) {
 		if(this.edges == null) {
 			this.edges = new ArrayList<EdgeItem>();
 		}
-		this.edges = edges;
-	}
-	public void addEdges(EdgeItem edge) {
 		this.edges.add(edge);
 	}
-	
 
 }

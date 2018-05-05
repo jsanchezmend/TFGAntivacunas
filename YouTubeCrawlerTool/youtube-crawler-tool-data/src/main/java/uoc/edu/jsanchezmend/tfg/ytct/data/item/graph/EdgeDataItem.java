@@ -1,5 +1,7 @@
 package uoc.edu.jsanchezmend.tfg.ytct.data.item.graph;
 
+import org.springframework.data.neo4j.annotation.QueryResult;
+
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.AbstractItem;
 
 /**
@@ -8,6 +10,7 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.item.AbstractItem;
  * @author jsanchezmend
  *
  */
+@QueryResult
 public class EdgeDataItem extends AbstractItem {
 	
 	private static final long serialVersionUID = -6081169770827222402L;

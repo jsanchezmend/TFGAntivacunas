@@ -17,6 +17,8 @@ public class AnalysisSearchItem extends AbstractItem {
 	
 	protected String toDate;
 	
+	protected Boolean includeChannels;
+	
 	
 	public AnalysisSearchItem() {
 		super();
@@ -35,6 +37,13 @@ public class AnalysisSearchItem extends AbstractItem {
 	}
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
+	}
+
+	public Boolean isIncludeChannels() {
+		return includeChannels;
+	}
+	public void setIncludeChannels(Boolean includeChannels) {
+		this.includeChannels = includeChannels;
 	}
 
 }

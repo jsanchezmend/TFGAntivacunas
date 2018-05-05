@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.neo4j.annotation.Depth;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.repository.query.Param;
 
 import uoc.edu.jsanchezmend.tfg.ytct.data.entity.Video;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.EdgeDataItem;
 
 /**
  * Video @Neo4jRepository
@@ -37,21 +37,22 @@ public interface VideoRepository extends Neo4jRepository<Video, String> {
 			+ "MATCH v=(realtedVideo)-[r*0..1]->() RETURN realtedVideo, nodes(v), rels(v)")
 	List<Video> findRelatedVideos(String videoId);
 	
-	// TODO: Test it!
-	//"MATCH (v:Video) WHERE v.publishedAt >= '2015-02-27' and v.publishedAt <='2018-03-01' RETURN v"
+	
+	// TODO: Add more fields
 	@Depth(1)
-	@Query("select v from Video v where "
-			  +"(:fromDate = '' or v.publishedAt >= :fromDate) and "
-			  +"(:toDate = '' or v.publishedAt <= :toDate) and "
-		      +"(:categoryName = '' or v.category.name = :categoryName) and "
-		      +"(:channelId = '' or v.channel.id = :channelId) and "
-		      +"(:crawlerId = '' or v.crawler.id = :crawlerId)")
-	List<Video> analysisSearch(@Param("fromDate") String fromDate,
-									@Param("toDate") String toDate,
-		                            @Param("categoryName") String categoryName,
-		                            @Param("channelId") String channelId,
-		                            @Param("crawlerId") String crawlerId);
-			
+	@Query("MATCH (video:Video) WHERE video.publishedAt >= {0} and video.publishedAt <= {1} WITH video "
+			+ "MATCH v=(video)-[r*0..1]->() RETURN video, nodes(v), rels(v)")
+	List<Video> analysisSearchNodes(String fromDate, String toDate);
+		
+	@Depth(1)
+	@Query("MATCH (video:Video) -[:RELATED_TO]-> (realtedVideo:Video) "
+			+ "WHERE video.publishedAt >= {0} and video.publishedAt <= {1} "
+			+ "and realtedVideo.publishedAt >= {0} and realtedVideo.publishedAt <= {1}"
+			+ "RETURN video.id as source, realtedVideo.id as target")
+	List<EdgeDataItem> analysisSearchEdges(String fromDate, String toDate);
+	
+	
+				
 	@Query("MATCH (v:Video) -[:DISCOVERED_BY]-> (c:Crawler) WHERE ID(c)={0} DETACH DELETE v")
 	void removeByCrawlerId(Long crawlerId);
 	
