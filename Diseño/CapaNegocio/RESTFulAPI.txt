@@ -34,7 +34,6 @@ DELETE	/channels/{id}			(R) Borra un canal.
 GET		/channels/{id}/stats	Devuelve las estadisticas de un canal.
 GET		/channels/{id}/videos	Lista todos los videos de un canal.
 
-
 Category component
 ------------------
 GET		/categories					Lista todas las categorias.
@@ -45,10 +44,7 @@ DELETE	/categories/{name}			(R) Borra una categoria.
 GET		/categories/{name}/stats	Devuelve las estadisticas de una categoria.
 GET		/categories/{name}/videos	Lista todos los videos categorizados por una categoria.
 
-
 Analysis component
 ------------------
 POST /graphs					Crea un nuevo grafo (no se persiste, se muestra por pantalla).
 POST /exports					Crea una nueva exportación a fichero.
-
-
