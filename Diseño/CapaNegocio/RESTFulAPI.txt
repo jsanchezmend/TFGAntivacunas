@@ -29,7 +29,6 @@ GET		/videos/{id}/videos		Lista todos los videos relacionados con un video.
 Channel component
 -----------------
 GET		/channels				Lista todos los canales.
-GET		/channels/stats			Devuelve las estadisticas de todos los canales.
 GET		/channels/{id}			Devuelve un canal.
 DELETE	/channels/{id}			(R) Borra un canal.
 GET		/channels/{id}/stats	Devuelve las estadisticas de un canal.
