@@ -1,4 +1,4 @@
-<thymeleaf xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:fragment="leftMenu" th:remove="tag">
+<thymeleaf xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org" th:fragment="leftMenu" th:remove="tag">
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     	<!-- Logo -->
     	<div class="navbar-header">
@@ -12,10 +12,25 @@
     	</div>
     	<!-- Top menu -->
     	<ul class="nav navbar-top-links navbar-right">
-    		<li class="dropdown">
+    		<li class="dropdown" sec:authorize="isAuthenticated()==false">
     			<a class="dropdown-toggle" th:href="@{/login}">
-    				Login <i class="fa fa-user fa-fw"></i>
+    				Login <i class="fa fa-sign-in fa-fw"></i>
     			</a>
+            </li>
+            <li class="dropdown" sec:authorize="isAuthenticated()">
+    			<span class="dropdown-toggle">
+    				Logged user: <span sec:authentication="name"></span> <i class="fa fa-user fa-fw"></i>
+    			</span>
+            </li>
+            <li class="dropdown" sec:authorize="isAuthenticated()">
+    			<a class="dropdown-toggle" sec:authorize="isAuthenticated()" href="#" onclick="document.getElementById('form-logout').submit()">
+    				Sign Out <i class="fa fa-sign-out fa-fw"></i>
+    			</a>
+    			<div sec:authorize="isAuthenticated()" style="display: none;">
+	    			<form th:action="@{/logout}" method="post" id="form-logout">
+			            <input type="submit" value="Sign Out"/>
+			        </form>
+		        </div>
             </li>
 		</ul>
 		<!-- Left menu -->

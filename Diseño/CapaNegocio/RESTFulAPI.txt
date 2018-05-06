@@ -1,12 +1,6 @@
 YouTubeCrawlerTool RESTFul API
 ==============================
 
-User session component
-----------------------
-GET		/session				Devuelve la session actual.
-POST	/session				Crea una nueva session autentificando las credenciales.
-DELETE	/session				(R) Destruye la session actual.
-
 Crawler component
 -----------------
 GET		/crawlers				Lista todos los crawlers.
