@@ -16,8 +16,9 @@ public class NodeItem extends AbstractItem {
 	protected NodeDataItem data;
 	
 	
-	public NodeItem() {
+	public NodeItem(NodeDataItem data) {
 		super();
+		this.data = data;
 	}
 
 	

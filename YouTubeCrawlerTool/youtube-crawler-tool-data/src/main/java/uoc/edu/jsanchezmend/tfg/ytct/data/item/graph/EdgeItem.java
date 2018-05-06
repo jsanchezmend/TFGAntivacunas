@@ -16,8 +16,9 @@ public class EdgeItem extends AbstractItem {
 	protected EdgeDataItem data;
 	
 	
-	public EdgeItem() {
+	public EdgeItem(EdgeDataItem data) {
 		super();
+		this.data = data;
 	}
 
 	

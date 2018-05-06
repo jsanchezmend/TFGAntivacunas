@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>YouTubeCrawlerTool</title>
+    
+ 	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- jQuery -->
+    <script src="js/jquery/jquery.min.js"></script>
+    <!-- Cytoscape -->
+	<script src="js/cytoscape/cytoscape.min.js"></script>
+
+	<style>
+		#cy {
+		  width: 1200px;
+		  height: 800px;
+		  display: block;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="cy"></div>
+	
+	<script>
+		var cy = cytoscape({
+		  container: document.querySelector('#cy'),
+
+		  boxSelectionEnabled: false,
+		  autounselectify: true,
+
+		  style: cytoscape.stylesheet()
+		    .selector('node')
+		      .css({
+		        'content': 'data(name)',
+		        'text-valign': 'center',
+		        'color': 'white',
+		        'text-outline-width': 2,
+		        'text-outline-color': '#999',
+		       	'shape': 'data(shape)',
+		        'background-color': 'data(color)',
+		        'width': 'data(size)',
+		        'height': 'data(size)'
+		      })
+		    .selector('edge')
+		      .css({
+		        'curve-style': 'bezier',
+		        'target-arrow-shape': 'triangle',
+		        'target-arrow-color': '#ccc',
+		        'line-color': '#ccc',
+		        'width': 1
+		      })
+		    .selector(':selected')
+		      .css({
+		        'background-color': 'black',
+		        'line-color': 'black',
+		        'target-arrow-color': 'black',
+		        'source-arrow-color': 'black'
+		      })
+		    .selector('.faded')
+		      .css({
+		        'opacity': 0.25,
+		        'text-opacity': 0
+		      }),
+
+		  elements: {
+			  /*
+		    nodes: JSON.parse(getJsonFromAPI("/graph/nodes")),
+		    edges: JSON.parse(getJsonFromAPI("/graph/edges"))
+		    */
+		    nodes: [
+		      { data: { id: 'j', name: 'Jerry', size: 50, color: '#6FB1FC', shape: 'diamond', category: 'Anti' } },
+		      { data: { id: 'e', name: 'Elaine', size: 50, color: '#6FB1FC', shape: 'ellipse',  category: 'Pro' } },
+		      { data: { id: 'k', name: 'Kramer', size: 50, color: '#6FB1FC', shape: 'ellipse',  category: 'Pro' } },
+		      { data: { id: 'g', name: 'George', size: 50, color: '#6FB1FC', shape: 'ellipse',  category: 'Anti' } }
+		    ],
+		    edges: [
+		      { data: { source: 'j', target: 'e' } },
+		      { data: { source: 'j', target: 'k' } },
+		      { data: { source: 'j', target: 'g' } },
+		      { data: { source: 'e', target: 'j' } },
+		      { data: { source: 'e', target: 'k' } },
+		      { data: { source: 'k', target: 'j' } },
+		      { data: { source: 'k', target: 'e' } },
+		      { data: { source: 'k', target: 'g' } },
+		      { data: { source: 'g', target: 'j' } }
+		    ]
+			
+		  },
+
+		  /*
+		  layout: {
+		    name: 'grid',
+		    padding: 10
+		  }*/
+		  
+		  layout: {
+		        name: 'cose',
+		        idealEdgeLength: 100,
+		        nodeOverlap: 20,
+		        refresh: 20,
+		        fit: true,
+		        padding: 30,
+		        randomize: false,
+		        componentSpacing: 100,
+		        nodeRepulsion: 400000,
+		        edgeElasticity: 100,
+		        nestingFactor: 5,
+		        gravity: 80,
+		        numIter: 1000,
+		        initialTemp: 200,
+		        coolingFactor: 0.95,
+		        minTemp: 1.0
+		      }
+		});
+
+		cy.on('tap', 'node', function(e){
+		  var node = e.cyTarget;
+		  var neighborhood = node.neighborhood().add(node);
+
+		  cy.elements().addClass('faded');
+		  neighborhood.removeClass('faded');
+		});
+
+		cy.on('tap', function(e){
+		  if( e.cyTarget === cy ){
+		    cy.elements().removeClass('faded');
+		  }
+		});
+		
+		function getJsonFromAPI(yourUrl){
+		    var Httpreq = new XMLHttpRequest(); // a new request
+		    Httpreq.open("GET",yourUrl,false);
+		    Httpreq.send(null);
+		    return Httpreq.responseText;          
+		}
+	</script>
+
+</body>
+</html>

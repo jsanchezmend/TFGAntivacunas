@@ -38,19 +38,17 @@ public interface VideoRepository extends Neo4jRepository<Video, String> {
 	List<Video> findRelatedVideos(String videoId);
 	
 	
-	// TODO: Add more fields
 	@Depth(1)
 	@Query("MATCH (video:Video) WHERE video.publishedAt >= {0} and video.publishedAt <= {1} WITH video "
-			+ "MATCH v=(video)-[r*0..1]->() RETURN video, nodes(v), rels(v)")
+			+ "MATCH c=(video)-[:UPLOADED_BY|DISCOVERED_BY|CATEGORIZED_AS]->() RETURN video, nodes(c), rels(c)")
 	List<Video> analysisSearchNodes(String fromDate, String toDate);
 		
 	@Depth(1)
 	@Query("MATCH (video:Video) -[:RELATED_TO]-> (realtedVideo:Video) "
 			+ "WHERE video.publishedAt >= {0} and video.publishedAt <= {1} "
 			+ "and realtedVideo.publishedAt >= {0} and realtedVideo.publishedAt <= {1}"
-			+ "RETURN video.id as source, realtedVideo.id as target")
-	List<EdgeDataItem> analysisSearchEdges(String fromDate, String toDate);
-	
+			+ "RETURN 'v-' + video.id as source, 'v-' + realtedVideo.id as target")
+	List<EdgeDataItem> analysisSearchVideoEdges(String fromDate, String toDate);
 	
 				
 	@Query("MATCH (v:Video) -[:DISCOVERED_BY]-> (c:Crawler) WHERE ID(c)={0} DETACH DELETE v")
