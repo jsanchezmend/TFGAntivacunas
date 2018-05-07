@@ -73,10 +73,10 @@ public class YouTubeSearchServiceImpl implements YouTubeSearchService {
     		+ "statistics/videoCount"
 		+ ")";
 		
-	@Value("${youtube.api.key}")
+	@Value("${ytct.youtube.api.key}")
 	private String apiKey;
 	
-	@Value("${youtube.search.language}")
+	@Value("${ytct.youtube.search.language}")
 	private String relevanceLanguage;
 	
 	@Autowired

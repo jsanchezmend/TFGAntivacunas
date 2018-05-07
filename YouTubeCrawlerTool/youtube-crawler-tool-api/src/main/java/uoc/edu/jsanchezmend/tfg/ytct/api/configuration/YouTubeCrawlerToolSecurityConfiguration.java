@@ -1,5 +1,6 @@
 package uoc.edu.jsanchezmend.tfg.ytct.api.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,12 +10,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
 public class YouTubeCrawlerToolSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
+	private final static String USER_ROLE = "USER";
+	
+	@Value("${ytct.security.default.username}")
+	private String defaultUsername;
+	
+	@Value("${ytct.security.default.password}")
+	private String defaultPassword;
+	
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -47,11 +59,11 @@ public class YouTubeCrawlerToolSecurityConfiguration extends WebSecurityConfigur
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        UserDetails user =
-             User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
+    	final PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        final UserDetails user =
+             User.withUsername(defaultUsername)
+                .password(encoder.encode(defaultPassword))
+                .roles(USER_ROLE)
                 .build();
 
         return new InMemoryUserDetailsManager(user);

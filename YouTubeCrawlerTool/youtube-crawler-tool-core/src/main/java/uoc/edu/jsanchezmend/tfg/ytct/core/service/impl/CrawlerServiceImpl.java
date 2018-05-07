@@ -50,22 +50,22 @@ public class CrawlerServiceImpl implements CrawlerService {
 	private final static Logger log = LoggerFactory.getLogger(CrawlerServiceImpl.class);
 	
 	
-	@Value("${crawler.search.default.fromdate}")
+	@Value("${ytct.crawler.search.default.fromdate}")
 	private String defaultFromDate;
 	
-	@Value("${crawler.search.default.todate}")
+	@Value("${ytct.crawler.search.default.todate}")
 	private String defaultToDate;
 	
-	@Value("${crawler.search.default.order}")
+	@Value("${ytct.crawler.search.default.order}")
 	private String defaultOrder;
 	
-	@Value("${crawler.search.default.relatedlevels}")
+	@Value("${ytct.crawler.search.default.relatedlevels}")
 	private int defaultRelatedlevels;
 	
-	@Value("${crawler.search.default.maxrelated}")
+	@Value("${ytct.crawler.search.default.maxrelated}")
 	private int defaultMaxrelated;
 	
-	@Value("${crawler.search.default.totalvideos}")
+	@Value("${ytct.crawler.search.default.totalvideos}")
 	private int defaultTotalvideos;
 	
 	
