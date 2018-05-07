@@ -4,16 +4,16 @@
     <thymeleaf th:replace="sections/header :: header" />
 </head>
 
-<body>
+<body class="login">
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
+            
+                <div class="login-panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                       	<div th:if="${param.error}">Invalid username and password.</div>
-				        <div th:if="${param.logout}">You have been logged out.</div>
+                        <h1 class="panel-title"><a th:href="@{/}"><i class="fa fa-lg fa-youtube-play"></i> YouTubeCrawlerTool</a></h1>
                     </div>
+                    
                     <div class="panel-body">
                         <form role="form" th:action="@{/login}" method="post">
                             <fieldset>
@@ -23,11 +23,19 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
-                                <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In"/>
+                                <div class="form-group" style="margin-top:30px">
+                                	<input type="submit" class="btn btn-lg btn-default btn-block" value="Sign In"/>
+                                </div>
                             </fieldset>
-                        </form>                       
+                        </form>                     
                 	</div>
+                	
+                	<div class="panel-body" style="padding-top: 0px;">
+                		<div th:if="${param.error}" class="alert alert-danger">Invalid username and/or password.</div>
+                    	<div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>

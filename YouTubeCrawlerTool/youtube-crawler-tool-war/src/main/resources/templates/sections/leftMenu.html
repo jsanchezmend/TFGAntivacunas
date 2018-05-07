@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
             </button>
-    		<a class="navbar-brand" th:href="@{/}"><i class="fa fa-youtube-play"></i> YouTubeCrawlerTool</a>
+    		<a class="navbar-brand" th:href="@{/}"><i class="fa fa-lg fa-youtube-play"></i> YouTubeCrawlerTool</a>
     	</div>
     	<!-- Top menu -->
     	<ul class="nav navbar-top-links navbar-right">
@@ -19,7 +19,7 @@
             </li>
             <li class="dropdown" sec:authorize="isAuthenticated()">
     			<span class="dropdown-toggle">
-    				Logged user: <span sec:authentication="name"></span> <i class="fa fa-user fa-fw"></i>
+    				Logged as: <span sec:authentication="name"></span> <i class="fa fa-user fa-fw"></i>
     			</span>
             </li>
             <li class="dropdown" sec:authorize="isAuthenticated()">

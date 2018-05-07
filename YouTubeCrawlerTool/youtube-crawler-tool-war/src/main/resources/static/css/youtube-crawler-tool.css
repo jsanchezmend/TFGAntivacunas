@@ -1,0 +1,35 @@
+/**
+* YoutubeCrawlerTool web application customization styles
+*
+* @author jsanchezmend
+*
+*/
+
+/*
+* Login page
+*/
+body.login {
+  background-color: #dd2c00;
+}
+body.login a:hover {
+	text-decoration: none;
+}
+body.login .panel-default {
+    border: none;
+    /* -webkit-box-shadow: none; */
+  	/* box-shadow: none; */
+}
+body.login .panel-default > .panel-heading {
+	background-color: #dd2c00;
+	border: none;
+}
+body.login .panel-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+}
+body.login .panel-body {
+    background-color: #dd2c00;
+}
