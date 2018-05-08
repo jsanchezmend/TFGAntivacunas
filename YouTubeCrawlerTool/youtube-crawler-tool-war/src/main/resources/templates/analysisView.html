@@ -7,15 +7,213 @@
 	<div id="wrapper">
 		<thymeleaf th:replace="sections/leftMenu :: leftMenu" />
         <div id="page-wrapper">
+        
         	<div class="row">
         		<div class="col-lg-12">
-                	<!-- VIEW -->
-                	<h1>Analysis view</h1>
-                	 <!-- END VIEW -->
+        			<h1 class="page-header">Analysis</h1>
+        		</div>
+        	</div>
+        
+        	<div class="row">
+        		<div class="col-lg-12">
+                	<div class="panel panel-default">
+                        <div class="panel-heading">Search</div>
+                        <div class="panel-body">
+	                        <form role="form">
+	                            <fieldset>
+	                            	<div class="row">
+		                            	<div class="form-group col-md-6">
+	                                    	<label>From:</label>
+	                                        <input class="form-control" name="fromDate" type="text">
+	                                       	<p class="help-block">Default value: 14/02/2005</p>
+	                                    </div>
+	                                    <div class="form-group col-md-6">
+	                                    	<label>To:</label>
+	                                        <input class="form-control" name="toDate" type="text">
+	                                       	<p class="help-block">Default value: today</p>
+	                                    </div>
+                                    </div>
+                                    <div class="row">
+		                                <div class="form-group col-md-12">
+		                                	<input type="submit" class="btn btn-danger" value="Search"/>
+		                                	<button type="button" class="btn btn-danger" id="search">Search</button>
+		                                </div>
+	                                </div>
+	                            </fieldset>
+	                        </form> 
+                        </div>
+                    </div>
                 </div>
         	</div>
+        	
+        	<div class="row">
+        		<div class="col-lg-12">
+        			<div class="panel panel-default panel-graph">
+                        <div class="panel-body">
+                        	<div id="cy">
+                        		<button type="button" class="btn btn-default" id="toggle_fullscreen">
+                        			<i class="fa fa-lg fa-arrows-alt"></i>
+                        		</button>
+                        	</div>
+                        </div>
+                    </div>
+        		</div>
+        	</div>
+        	
         </div>	    
 	</div>	
+	
+	<script>
+		//GRAPH	
+	    $('#search').on('click', function(){
+	    	$.ajax({ 
+                url: "/api/graphs", 
+                method: 'POST', 
+                dataType: 'json', 
+                data: "{}",
+                contentType: 'application/json',
+                mimeType: 'application/json',
+	    		}).then(function(data) {
+	    			//cy.json(data);
+	    			
+	    			var cy = cytoscape({
+	    				  container: document.querySelector('#cy'),
+
+	    				  boxSelectionEnabled: false,
+	    				  autounselectify: true,
+
+	    				  style: cytoscape.stylesheet()
+	    				    .selector('node')
+	    				      .css({
+	    				        //'content': 'data(name)',
+	    				        'text-valign': 'center',
+	    				        'color': 'white',
+	    				        'text-outline-width': 2,
+	    				        'text-outline-color': '#999',
+	    				       	//'shape': 'data(shape)',
+	    				        //'background-color': 'data(color)',
+	    				        //'width': 'data(size)',
+	    				        //'height': 'data(size)'
+	    				      })
+	    				    .selector('edge')
+	    				      .css({
+	    				        'curve-style': 'bezier',
+	    				        'target-arrow-shape': 'triangle',
+	    				        'target-arrow-color': '#ccc',
+	    				        'line-color': '#ccc',
+	    				        'width': 1
+	    				      })
+	    				    .selector(':selected')
+	    				      .css({
+	    				        'background-color': 'black',
+	    				        'line-color': 'black',
+	    				        'target-arrow-color': 'black',
+	    				        'source-arrow-color': 'black'
+	    				      })
+	    				    .selector('.faded')
+	    				      .css({
+	    				        'opacity': 0.25,
+	    				        'text-opacity': 0
+	    				      }),
+
+	    				      
+	    				  elements: {data},
+	    			  
+	    				  layout: {
+	    				        name: 'cose',
+	    				        idealEdgeLength: 100,
+	    				        nodeOverlap: 20,
+	    				        refresh: 20,
+	    				        fit: true,
+	    				        padding: 30,
+	    				        randomize: false,
+	    				        componentSpacing: 100,
+	    				        nodeRepulsion: 400000,
+	    				        edgeElasticity: 100,
+	    				        nestingFactor: 5,
+	    				        gravity: 80,
+	    				        numIter: 1000,
+	    				        initialTemp: 200,
+	    				        coolingFactor: 0.95,
+	    				        minTemp: 1.0
+	    				      }
+	    				});
+
+	    				cy.on('tap', 'node', function(e){
+	    				  var node = e.cyTarget;
+	    				  var neighborhood = node.neighborhood().add(node);
+
+	    				  cy.elements().addClass('faded');
+	    				  neighborhood.removeClass('faded');
+	    				});
+
+	    				cy.on('tap', function(e){
+	    				  if( e.cyTarget === cy ){
+	    				    cy.elements().removeClass('faded');
+	    				  }
+	    				});
+	    	    });
+    
+	    	
+	    	/*
+	    	cy.json({ elements: {
+			    nodes: [
+			      { data: { id: 'j', name: 'Jerry', size: 50, color: '#6FB1FC', shape: 'diamond', category: 'Anti' } },
+			      { data: { id: 'e', name: 'Elaine', size: 50, color: '#6FB1FC', shape: 'ellipse',  category: 'Pro' } },
+			      { data: { id: 'k', name: 'Kramer', size: 50, color: '#6FB1FC', shape: 'ellipse',  category: 'Pro' } },
+			      { data: { id: 'g', name: 'George', size: 50, color: '#6FB1FC', shape: 'ellipse',  category: 'Anti' } }
+			    ],
+			    edges: [
+			      { data: { source: 'j', target: 'e' } },
+			      { data: { source: 'j', target: 'k' } },
+			      { data: { source: 'j', target: 'g' } },
+			      { data: { source: 'e', target: 'j' } },
+			      { data: { source: 'e', target: 'k' } },
+			      { data: { source: 'k', target: 'j' } },
+			      { data: { source: 'k', target: 'e' } },
+			      { data: { source: 'k', target: 'g' } },
+			      { data: { source: 'g', target: 'j' } }
+			    ]	
+			  }});
+	    	*/
+			
+	    })
+	    
+	    // FULLSCREAN GRAPH
+	    $('#toggle_fullscreen').on('click', function(){
+    	  // if already full screen; exit
+    	  // else go fullscreen
+    	  if (
+    	    document.fullscreenElement ||
+    	    document.webkitFullscreenElement ||
+    	    document.mozFullScreenElement ||
+    	    document.msFullscreenElement
+    	  ) {
+    	    if (document.exitFullscreen) {
+    	      document.exitFullscreen();
+    	    } else if (document.mozCancelFullScreen) {
+    	      document.mozCancelFullScreen();
+    	    } else if (document.webkitExitFullscreen) {
+    	      document.webkitExitFullscreen();
+    	    } else if (document.msExitFullscreen) {
+    	      document.msExitFullscreen();
+    	    }
+    	  } else {
+    	    element = $('#cy').get(0);
+    	    if (element.requestFullscreen) {
+    	      element.requestFullscreen();
+    	    } else if (element.mozRequestFullScreen) {
+    	      element.mozRequestFullScreen();
+    	    } else if (element.webkitRequestFullscreen) {
+    	      element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    	    } else if (element.msRequestFullscreen) {
+    	      element.msRequestFullscreen();
+    	    }
+    	  }
+    	});
+
+	</script>
+	
 	<thymeleaf th:replace="sections/footer :: footer" />
 </body>
 </html>

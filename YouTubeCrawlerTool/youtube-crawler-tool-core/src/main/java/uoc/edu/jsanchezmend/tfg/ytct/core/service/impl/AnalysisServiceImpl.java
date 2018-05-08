@@ -60,7 +60,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 		for(Video video : videos) {
 			// Create video node
 			final NodeDataItem videoNodeData = new NodeDataItem(GraphNodeTypeEnum.VIDEO);
-			videoNodeData.setId(video.getId());
+			videoNodeData.setVideoId(video.getId());
 			videoNodeData.setName(video.getTitle());
 			final Category category = video.getCategory();
 			if(category != null) {
@@ -68,7 +68,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 			}
 			videoNodeData.setSize(video.getScopeRange().intValue());
 			final NodeItem videoNode = new NodeItem(videoNodeData);
-			result.addNode(videoNode);
+			//result.addNode(videoNode);
+			result.addElement(videoNode);
 
 			if(includeChannels) {
 				final Channel channel = video.getChannel();
@@ -77,16 +78,18 @@ public class AnalysisServiceImpl implements AnalysisService {
 					channelIds.add(channel.getId());
 					// Create channel node
 					final NodeDataItem channelNodeData = new NodeDataItem(GraphNodeTypeEnum.CHANNEL);
-					channelNodeData.setId(channel.getId());
+					channelNodeData.setVideoId(channel.getId());
 					channelNodeData.setName(channel.getName());
 					final NodeItem channelNode = new NodeItem(channelNodeData);
-					result.addNode(channelNode);
+					//result.addNode(channelNode);
+					result.addElement(channelNode);
 					// Create video-channel edge
 					final EdgeDataItem videoChannelEdgeData = new EdgeDataItem();
-					videoChannelEdgeData.setSource(videoNode.getData().getId());
-					videoChannelEdgeData.setTarget(channelNode.getData().getId());
+					videoChannelEdgeData.setSource(videoNode.getData().getVideoId());
+					videoChannelEdgeData.setTarget(channelNode.getData().getVideoId());
 					final EdgeItem videoChannelEdge = new EdgeItem(videoChannelEdgeData);
-					result.addEdge(videoChannelEdge);
+					//result.addEdge(videoChannelEdge);
+					result.addElement(videoChannelEdge);
 				}
 			}
 		}
@@ -95,7 +98,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 		final List<EdgeDataItem> videoRelatedEdgesData = this.videoRepository.analysisSearchVideoEdges(fromDate, toDate);
 		for(EdgeDataItem edgeDataItem : videoRelatedEdgesData) {
 			final EdgeItem videoRelatedEdge = new EdgeItem(edgeDataItem);
-			result.addEdge(videoRelatedEdge);
+			//result.addEdge(videoRelatedEdge);
+			result.addElement(videoRelatedEdge);
 		}
 		
 		return result;

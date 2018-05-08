@@ -30,6 +30,7 @@ public class YouTubeCrawlerToolSecurityConfiguration extends WebSecurityConfigur
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+        	.csrf().disable()
             .authorizeRequests()
             	// Crawler component security
                 .antMatchers(HttpMethod.POST,	"/api/crawlers").authenticated()

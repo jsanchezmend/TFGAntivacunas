@@ -16,9 +16,7 @@ public class GraphItem extends AbstractItem {
 	private static final long serialVersionUID = 2985223510157751440L;
 	
 	
-	protected List<NodeItem> nodes;
-	
-	protected List<EdgeItem> edges;
+	protected List<Object> elements;
 	
 	
 	public GraphItem() {
@@ -26,6 +24,26 @@ public class GraphItem extends AbstractItem {
 	}
 
 
+	public List<Object> getElements() {
+		return elements;
+	}
+	public void setElements(List<Object> elements) {
+		this.elements = elements;
+	}
+	public void addElement(Object element) {
+		if(this.elements == null) {
+			this.elements = new ArrayList<Object>();
+		}
+		this.elements.add(element);
+	}
+	
+	
+
+	
+	
+
+
+	/*
 	public List<NodeItem> getNodes() {
 		return nodes;
 	}
@@ -51,5 +69,6 @@ public class GraphItem extends AbstractItem {
 		}
 		this.edges.add(edge);
 	}
+	*/
 
 }

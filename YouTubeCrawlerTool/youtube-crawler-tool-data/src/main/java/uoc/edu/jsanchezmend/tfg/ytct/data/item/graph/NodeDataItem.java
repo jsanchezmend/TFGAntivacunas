@@ -14,9 +14,9 @@ public class NodeDataItem extends AbstractItem {
 	private static final long serialVersionUID = 7293284953107931279L;
 	
 
-	protected String nodeId;
-	
 	protected String id;
+	
+	protected String videoId;
 	
 	protected String typeCode;
 	
@@ -37,16 +37,16 @@ public class NodeDataItem extends AbstractItem {
 		this.size = type.getDefaultSize();
 	}
 	
-	public String getNodeId() {
-		return nodeId;
-	}
-
 	public String getId() {
 		return id;
 	}
-	public void setId(String id) {
-		this.id = id;
-		this.nodeId = this.typeCode + "-" + id;
+
+	public String getVideoId() {
+		return videoId;
+	}
+	public void setVideoId(String videoId) {
+		this.videoId = videoId;
+		this.id = this.typeCode + "-" + videoId;
 	}
 	
 	public String getName() {
