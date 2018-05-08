@@ -17,6 +17,7 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.GraphNodeTypeEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.AnalysisSearchItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.EdgeDataItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.EdgeItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.GraphElementsItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.GraphItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.NodeDataItem;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.NodeItem;
@@ -41,13 +42,14 @@ public class AnalysisServiceImpl implements AnalysisService {
 	@Override
 	public GraphItem createGraph(AnalysisSearchItem analysisSearch) {
 		final GraphItem result = new GraphItem();
+		final GraphElementsItem elements = new GraphElementsItem();
 						
 		// Search for videos
 		String fromDate = null;
 		String toDate = null;
 		try {
-			fromDate = analysisSearch.getFromDate() != null ? DateUtil.toNeo4jString(analysisSearch.getFromDate()) : DEFAULT_FROM_DATE;
-			toDate = analysisSearch.getToDate() != null ? DateUtil.toNeo4jString(analysisSearch.getToDate()) : DateUtil.toNeo4jString(new Date());
+			fromDate = analysisSearch.getFromDate() != null && !analysisSearch.getFromDate().isEmpty() ? DateUtil.toNeo4jString(analysisSearch.getFromDate()) : DEFAULT_FROM_DATE;
+			toDate = analysisSearch.getToDate() != null && !analysisSearch.getToDate().isEmpty() ? DateUtil.toNeo4jString(analysisSearch.getToDate()) : DateUtil.toNeo4jString(new Date());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -60,7 +62,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 		for(Video video : videos) {
 			// Create video node
 			final NodeDataItem videoNodeData = new NodeDataItem(GraphNodeTypeEnum.VIDEO);
-			videoNodeData.setVideoId(video.getId());
+			videoNodeData.setResourceId(video.getId());
 			videoNodeData.setName(video.getTitle());
 			final Category category = video.getCategory();
 			if(category != null) {
@@ -68,8 +70,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 			}
 			videoNodeData.setSize(video.getScopeRange().intValue());
 			final NodeItem videoNode = new NodeItem(videoNodeData);
-			//result.addNode(videoNode);
-			result.addElement(videoNode);
+			elements.addNode(videoNode);
 
 			if(includeChannels) {
 				final Channel channel = video.getChannel();
@@ -78,18 +79,16 @@ public class AnalysisServiceImpl implements AnalysisService {
 					channelIds.add(channel.getId());
 					// Create channel node
 					final NodeDataItem channelNodeData = new NodeDataItem(GraphNodeTypeEnum.CHANNEL);
-					channelNodeData.setVideoId(channel.getId());
+					channelNodeData.setResourceId(channel.getId());
 					channelNodeData.setName(channel.getName());
 					final NodeItem channelNode = new NodeItem(channelNodeData);
-					//result.addNode(channelNode);
-					result.addElement(channelNode);
+					elements.addNode(channelNode);
 					// Create video-channel edge
 					final EdgeDataItem videoChannelEdgeData = new EdgeDataItem();
-					videoChannelEdgeData.setSource(videoNode.getData().getVideoId());
-					videoChannelEdgeData.setTarget(channelNode.getData().getVideoId());
+					videoChannelEdgeData.setSource(videoNode.getData().getId());
+					videoChannelEdgeData.setTarget(channelNode.getData().getId());
 					final EdgeItem videoChannelEdge = new EdgeItem(videoChannelEdgeData);
-					//result.addEdge(videoChannelEdge);
-					result.addElement(videoChannelEdge);
+					elements.addEdge(videoChannelEdge);
 				}
 			}
 		}
@@ -98,10 +97,10 @@ public class AnalysisServiceImpl implements AnalysisService {
 		final List<EdgeDataItem> videoRelatedEdgesData = this.videoRepository.analysisSearchVideoEdges(fromDate, toDate);
 		for(EdgeDataItem edgeDataItem : videoRelatedEdgesData) {
 			final EdgeItem videoRelatedEdge = new EdgeItem(edgeDataItem);
-			//result.addEdge(videoRelatedEdge);
-			result.addElement(videoRelatedEdge);
+			elements.addEdge(videoRelatedEdge);
 		}
 		
+		result.setElements(elements);
 		return result;
 	}
 

@@ -16,7 +16,7 @@ public class NodeDataItem extends AbstractItem {
 
 	protected String id;
 	
-	protected String videoId;
+	protected String resourceId;
 	
 	protected String typeCode;
 	
@@ -41,12 +41,12 @@ public class NodeDataItem extends AbstractItem {
 		return id;
 	}
 
-	public String getVideoId() {
-		return videoId;
+	public String getResourceId() {
+		return resourceId;
 	}
-	public void setVideoId(String videoId) {
-		this.videoId = videoId;
-		this.id = this.typeCode + "-" + videoId;
+	public void setResourceId(String resourceId) {
+		this.resourceId = resourceId;
+		this.id = this.typeCode + "-" + resourceId;
 	}
 	
 	public String getName() {

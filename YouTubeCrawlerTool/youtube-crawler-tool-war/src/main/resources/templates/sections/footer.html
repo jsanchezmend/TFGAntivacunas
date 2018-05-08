@@ -1,7 +1,16 @@
 <thymeleaf xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:fragment="footer" th:remove="tag">
     <script>
 	    $(document).ready(function() {
+	    	// Menu active option
 	        $($('#menuValue').html()).addClass("active");
-	    });
+	        
+	    	// Enable datepickers
+            $('.datePicker').datepicker({
+            	format: 'dd/mm/yyyy',
+            	startView: 2,
+            	clearBtn: true,
+            	autoclose: true
+            });
+	    }); 
     </script>  
 </thymeleaf>

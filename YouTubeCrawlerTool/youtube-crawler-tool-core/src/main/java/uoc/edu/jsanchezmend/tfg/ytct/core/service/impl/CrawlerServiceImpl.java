@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -436,6 +437,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @throws Exception
 	 */
 	private CrawlerItem obtainVideos(CrawlerItem crawler, List<String> videoIds, Integer searchedVideos, Integer totalVideosToCrawler) throws IOException, Exception {			
+		Random r = new Random();
 		Long startTime = new Date().getTime();
 		
 		// Retrieve videos
@@ -467,8 +469,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 						}
 					}
 					// Calculation of video scopeRange value
-					final BigInteger scopeRange = newVideo.getViewCount() != null ? newVideo.getViewCount() : BigInteger.valueOf(0L);
-					newVideo.setScopeRange(scopeRange);
+					final long fakeScopeRange = r.nextInt(100-70) + 70;
+					newVideo.setScopeRange(BigInteger.valueOf(fakeScopeRange));
 					this.videoRepository.save(newVideo);
 					crawler.addNewVideos(1);
 				}
