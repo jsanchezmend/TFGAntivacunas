@@ -151,7 +151,7 @@
 			cy.nodes().forEach(function(node){
 			  nodeJson = node.json();
 			  cy.$('#'+node.id()).qtip({
-				  content: nodeJson.data.name,
+				  content: generateNodeContent(nodeJson.data),
 				  position: {
 				    my: 'top center',
 				    at: 'bottom center'

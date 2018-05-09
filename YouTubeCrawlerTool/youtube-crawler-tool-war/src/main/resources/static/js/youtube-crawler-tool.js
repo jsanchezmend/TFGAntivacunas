@@ -57,6 +57,48 @@ var getFormFields = function (formId) {
 	return formFields
 }
 
+var generateNodeContent = function(nodeData) {
+	if(nodeData.typeCode == "v") {
+		return generateVideoNodeContent(nodeData.video);
+	} else if(nodeData.typeCode == "c") {
+		return generateChannelNodeContent(nodeData.channel);
+	}
+	return "";
+}
+
+var generateVideoNodeContent = function(video) {
+	var html =
+	  "<div class='panel panel-default panel-node'>"
+	+ "<div class='panel-heading node-title'>"+ video.embedHtml.replace("width=\"480\" height=\"270\"", "width=\"200\" height=\"140\"") +"</div>"
+	+ "  <div class='panel-body'>"
+	+ "  <h5 class='node-title'>"+ trimString(video.title, 50) +"<h5>"
+	+ "  <p><small><b>Published:</b> " + video.publishedAt.substring(0, 10) +"</small></p>"
+	+ "  <p><small><b>Scope range:</b> " + video.scopeRange +"</small></p>";
+	if(video.category) {
+		html+= "  <p><small><b>Category:</b> " + video.category.name +"</small></p>"
+	}
+	html+= "  <p><small><a href='videos/"+ video.id +"'>View more</a></small></p>"
+	+ "</div>";
+	return html;
+}
+
+var generateChannelNodeContent = function(channel) {
+	var html =
+		  "<div class='panel panel-default panel-node'>"
+		+ "<div class='panel-heading'><image src='"+ channel.thumbnailUrl +"' class='center'></div>"
+		+ "  <div class='panel-body'>"
+		+ "  <h5 class='node-title'>"+ trimString(channel.name, 50) +"<h5>"
+		+ "  <p><small>" + trimString(channel.description, 100) +"</small></p>"
+		+ "  <p><small><b>Published:</b> " + channel.publishedAt.substring(0, 10) +"</small></p>"
+		+ "  <p><small><a href='channels/"+ channel.id +"'>View more</a></small></p>"
+		+ "</div>";
+	return html;
+}
+
+var trimString = function(string, length) {
+	return string.length > length ? string.substring(0, length) + "..." : string;
+}
+
 var convertVideoNodesToCSV = function (objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
