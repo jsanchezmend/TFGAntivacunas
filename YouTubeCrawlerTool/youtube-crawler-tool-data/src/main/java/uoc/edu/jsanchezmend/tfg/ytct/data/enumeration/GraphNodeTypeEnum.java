@@ -9,7 +9,7 @@ package uoc.edu.jsanchezmend.tfg.ytct.data.enumeration;
 public enum GraphNodeTypeEnum {
 	
 	VIDEO("Video", "v", "ellipse", "#999999", 50),
-	CHANNEL("Channel", "c", "diamond", "#999999", 100);
+	CHANNEL("Channel", "c", "star", "#999999", 100);
 	
 	protected String name;
 	protected String code;

@@ -20,6 +20,14 @@ public class EdgeDataItem extends AbstractItem {
 	
 	protected String target;
 	
+	protected String outgoing;
+	
+	protected String incoming;
+	
+	protected String outgoingType;
+	
+	protected String incomingType;
+	
 	
 	public EdgeDataItem() {
 		super();
@@ -38,6 +46,34 @@ public class EdgeDataItem extends AbstractItem {
 	}
 	public void setTarget(String target) {
 		this.target = target;
+	}
+
+	public String getOutgoing() {
+		return outgoing;
+	}
+	public void setOutgoing(String outgoing) {
+		this.outgoing = outgoing;
+	}
+
+	public String getIncoming() {
+		return incoming;
+	}
+	public void setIncoming(String incoming) {
+		this.incoming = incoming;
+	}
+
+	public String getOutgoingType() {
+		return outgoingType;
+	}
+	public void setOutgoingType(String outgoingType) {
+		this.outgoingType = outgoingType;
+	}
+
+	public String getIncomingType() {
+		return incomingType;
+	}
+	public void setIncomingType(String incomingType) {
+		this.incomingType = incomingType;
 	}
 
 }

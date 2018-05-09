@@ -45,9 +45,12 @@ body.login .panel-body {
 .panel-graph .panel-body {
 	height:600px;
 }
-.panel-graph .btn {
+#cyOptions {
 	position: absolute;
    	top: 10px;
    	left: 10px;
    	z-index: 1;
+}
+#cyOptions .btn {
+	float:left;
 }

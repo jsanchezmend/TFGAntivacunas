@@ -46,8 +46,10 @@ public interface VideoRepository extends Neo4jRepository<Video, String> {
 	@Depth(1)
 	@Query("MATCH (video:Video) -[:RELATED_TO]-> (realtedVideo:Video) "
 			+ "WHERE video.publishedAt >= {0} and video.publishedAt <= {1} "
-			+ "and realtedVideo.publishedAt >= {0} and realtedVideo.publishedAt <= {1}"
-			+ "RETURN 'v-' + video.id as source, 'v-' + realtedVideo.id as target")
+			+ "and realtedVideo.publishedAt >= {0} and realtedVideo.publishedAt <= {1} "
+			+ "RETURN 'v-' + video.id as source, 'v-' + realtedVideo.id as target, "
+			+ "video.id as outgoing, realtedVideo.id as incoming, "
+			+ "'v' as outgoingType, 'v' as incomingType")
 	List<EdgeDataItem> analysisSearchVideoEdges(String fromDate, String toDate);
 	
 				

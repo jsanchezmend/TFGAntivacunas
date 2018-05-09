@@ -87,6 +87,10 @@ public class AnalysisServiceImpl implements AnalysisService {
 					final EdgeDataItem videoChannelEdgeData = new EdgeDataItem();
 					videoChannelEdgeData.setSource(videoNode.getData().getId());
 					videoChannelEdgeData.setTarget(channelNode.getData().getId());
+					videoChannelEdgeData.setOutgoing(videoNode.getData().getResourceId());
+					videoChannelEdgeData.setIncoming(channelNode.getData().getResourceId());
+					videoChannelEdgeData.setOutgoingType(videoNode.getData().getTypeCode());
+					videoChannelEdgeData.setIncomingType(channelNode.getData().getTypeCode());
 					final EdgeItem videoChannelEdge = new EdgeItem(videoChannelEdgeData);
 					elements.addEdge(videoChannelEdge);
 				}

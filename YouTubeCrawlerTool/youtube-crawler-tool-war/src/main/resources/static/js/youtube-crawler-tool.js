@@ -5,6 +5,8 @@
 *
 */
 
+var csvExportEdgesFields = ["outgoing", "incoming", "outgoingType", "incomingType"];
+
 var doGet = function (requestUrl, callback) {
 	console.log("doGet for url: " + requestUrl);
 	$.ajax({ 
@@ -96,17 +98,30 @@ var convertEdgesToCSV = function (objArray) {
     for (var i = 0; i < array.length; i++) {
     	var data = array[i].data;
     	if(str == '') {
-    		var header = Object.keys(data);
-    		str += header.join(',') + '\r\n';
+    		var header = '';
+    		for(var property in data) {
+    			console.log(property);
+    			if(arrayContains(property,csvExportEdgesFields)) {
+    				if(header != '') header += ',';
+    				header += property;
+    			}
+    		}
+    		str += header + '\r\n';
     	}
     	var line = '';
         for (var index in data) {
-            if (line != '') line += ','
-            line += data[index];
+        	if(arrayContains(index,csvExportEdgesFields)) {
+	            if (line != '') line += ','
+	            line += data[index];
+	        }
         }
         str += line + '\r\n';
     }
     return str;
+}
+
+var arrayContains = function(needle, arrhaystack) {
+    return (arrhaystack.indexOf(needle) > -1);
 }
 
 var sleep = function (time) {
