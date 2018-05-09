@@ -38,17 +38,4 @@ public class AnalysisController {
 		return result;				
 	}
 	
-	/**
-	 * Create a new export
-	 * 
-	 * @param analysisSearch
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/exports", method = RequestMethod.POST)
-	public GraphItem createExport(@RequestBody AnalysisSearchItem analysisSearch) {
-		final GraphItem result = this.analysisService.createExport(analysisSearch);
-		return result;						
-	}
-
 }

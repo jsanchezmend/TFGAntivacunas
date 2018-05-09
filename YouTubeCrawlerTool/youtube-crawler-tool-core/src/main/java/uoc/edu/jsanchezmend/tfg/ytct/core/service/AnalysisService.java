@@ -18,13 +18,5 @@ public interface AnalysisService {
 	 * @return
 	 */
 	GraphItem createGraph(AnalysisSearchItem analysisSearch);
-	
-	/**
-	 * Given a @AnalysisSearchItem, returns a new export file
-	 * 
-	 * @param analysisSearch
-	 * @return
-	 */
-	GraphItem createExport(AnalysisSearchItem analysisSearch);
 
 }

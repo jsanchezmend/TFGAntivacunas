@@ -42,7 +42,7 @@
 	                                    	<label>Include channels:</label>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="includeChannels" value="">
+                                                    <input type="checkbox" name="includeChannels" id="includeChannels" value="">
                                                 </label>
                                             </div>
 	                                    </div>
@@ -75,16 +75,20 @@
 	<script>
 		// The graph variable
 		var cy;
+		var currentSearch;
+		var areChannels;
 		
 		// Perform analysis search and create a new graph
 	    $('#search').on('click', function() {
+	    	areChannels =  $('#includeChannels').is(":checked");
 	    	var searchFields = getFormFields("searchForm");
 	    	doPost("/api/graphs", searchFields, function (data) {  
-		    	if (data.elements.nodes == null) {
+	    		currentSearch = data;
+		    	if (currentSearch.elements.nodes == null) {
 	    			$('#cy').html("<div class='alert alert-warning text-center'>No results found</div>");
 	    		} else {
 	    			$('#cy').html("");
-	    			initCytoscape(data.elements);
+	    			initCytoscape(currentSearch.elements);
 	    		}
 	    	});
 	    })
@@ -212,6 +216,40 @@
 				dlbtn.href = png64;
 				dlbtn.download = "YouTubeCrawlerTool-GraphExport-"+ dateFormat(new Date(),"dd/mm/yy h:MM TT") + ".png";
 				dlbtn.click();
+			});
+			// Enable export to csv
+			$('#cyOptions').append("<button type='button' class='btn btn-default' style='left:99px' id='export_csv' data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Export as a csv'><i class='fa fa-lg fa-download'></i></button><a id='dowloadVideosCsv' href='#' style='display:none'>dowload</a><a id='dowloadChannelsCsv' href='#' style='display:none'>dowload</a><a id='dowloadEdgesCsv' href='#' style='display:none'>dowload</a>");
+			$('#export_csv').on('click', function(){
+				var dateStr = dateFormat(new Date(),"dd/mm/yy h:MM TT");
+
+				// Dowload video nodes
+				var dowloadVideosCsv = document.getElementById("dowloadVideosCsv");
+				var videoNodesCsv = convertVideoNodesToCSV(currentSearch.elements.nodes);
+				var videosBlob = new Blob([videoNodesCsv], { type: 'text/csv;charset=utf-8;' });
+				var videosUrl = URL.createObjectURL(videosBlob);
+				dowloadVideosCsv.href = videosUrl;
+				dowloadVideosCsv.download = "YouTubeCrawlerTool-Videos-"+ dateStr + ".csv";
+				dowloadVideosCsv.click();
+				
+				// Dowload channels nodes
+				if(areChannels == true) {
+					var dowloadChannelsCsv = document.getElementById("dowloadChannelsCsv");
+					var channelNodesCsv = convertChannelNodesToCSV(currentSearch.elements.nodes);
+					var channelsBlob = new Blob([channelNodesCsv], { type: 'text/csv;charset=utf-8;' });
+					var channelsUrl = URL.createObjectURL(channelsBlob);
+					dowloadChannelsCsv.href = channelsUrl;
+					dowloadChannelsCsv.download = "YouTubeCrawlerTool-Channels-"+ dateStr + ".csv";
+					dowloadChannelsCsv.click();
+				}
+				
+				// Dowload edges
+				var dowloadEdgesCsv = document.getElementById("dowloadEdgesCsv");
+				var edgesCsv = convertEdgesToCSV(currentSearch.elements.edges);
+				var edgesBlob = new Blob([edgesCsv], { type: 'text/csv;charset=utf-8;' });
+				var edgesUrl = URL.createObjectURL(edgesBlob);
+				dowloadEdgesCsv.href = edgesUrl;
+				dowloadEdgesCsv.download = "YouTubeCrawlerTool-Edges-"+ dateStr + ".csv";
+				dowloadEdgesCsv.click();
 			});
             // Enable tooltips
             $('#cyOptions').tooltip({

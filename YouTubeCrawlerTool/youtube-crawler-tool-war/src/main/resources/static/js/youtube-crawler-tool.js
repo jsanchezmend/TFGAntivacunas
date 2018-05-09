@@ -48,6 +48,72 @@ var getFormFields = function (formId) {
 	return formFields
 }
 
+var convertVideoNodesToCSV = function (objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    for (var i = 0; i < array.length; i++) {
+    	var data = array[i].data;
+    	if(data.typeCode == "v") {
+	    	if(str == '') {
+	    		var header = Object.keys(data);
+	    		str += header.join(',') + '\r\n';
+	    	}
+	    	var line = '';
+	        for (var index in data) {
+	            if (line != '') line += ','
+	            line += data[index];
+	        }
+	        str += line + '\r\n';
+    	}
+    }
+    return str;
+}
+
+var convertChannelNodesToCSV = function (objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    for (var i = 0; i < array.length; i++) {
+    	var data = array[i].data;
+    	if(data.typeCode == "c") {
+	    	if(str == '') {
+	    		var header = Object.keys(data);
+	    		str += header.join(',') + '\r\n';
+	    	}
+	    	var line = '';
+	        for (var index in data) {
+	            if (line != '') line += ','
+	            line += data[index];
+	        }
+	        str += line + '\r\n';
+    	}
+    }
+    return str;
+}
+
+var convertEdgesToCSV = function (objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    for (var i = 0; i < array.length; i++) {
+    	var data = array[i].data;
+    	if(str == '') {
+    		var header = Object.keys(data);
+    		str += header.join(',') + '\r\n';
+    	}
+    	var line = '';
+        for (var index in data) {
+            if (line != '') line += ','
+            line += data[index];
+        }
+        str += line + '\r\n';
+    }
+    return str;
+}
+
+var sleep = function (time) {
+	 var now = new Date().getTime();
+	 while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+}
+
 var dateFormat = function () {
     var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
         timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,

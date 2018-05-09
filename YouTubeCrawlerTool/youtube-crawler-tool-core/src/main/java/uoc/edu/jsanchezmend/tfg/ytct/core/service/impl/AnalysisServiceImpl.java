@@ -103,12 +103,5 @@ public class AnalysisServiceImpl implements AnalysisService {
 		result.setElements(elements);
 		return result;
 	}
-
-	@Override
-	public GraphItem createExport(AnalysisSearchItem analysisSearch) {
-		GraphItem result = null;
-		// TODO
-		return result;
-	}
 	
 }

@@ -41,4 +41,3 @@ GET		/categories/{name}/videos	Lista todos los videos categorizados por una cate
 Analysis component
 ------------------
 POST /graphs					Crea un nuevo grafo (no se persiste, se muestra por pantalla).
-POST /exports					Crea una nueva exportación a fichero.
