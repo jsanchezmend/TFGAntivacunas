@@ -38,8 +38,6 @@ public class VideoItem extends AbstractItem {
 
 	protected ChannelItem channel;
 
-	//protected Set<VideoItem> related;
-
 	protected CrawlerItem crawler;
 	
 	protected CategoryItem category;
@@ -133,21 +131,6 @@ public class VideoItem extends AbstractItem {
 	public void setChannel(ChannelItem channel) {
 		this.channel = channel;
 	}
-
-	/*
-	public Set<VideoItem> getRelated() {
-		return related;
-	}
-	public void setRelated(Set<VideoItem> related) {
-		this.related = related;
-	}
-	public void addRelated(VideoItem video) {
-		if (this.related == null) {
-			this.related = new HashSet<>();
-		}
-		this.related.add(video);
-	}
-	*/
 
 	public CrawlerItem getCrawler() {
 		return crawler;

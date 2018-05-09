@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.api.services.youtube.model.VideoContentDetails;
@@ -35,6 +37,11 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
 public class VideoConverterServiceImpl 
 		extends AbstractConverterService<Video, VideoItem> 
 		implements YouTubeConverterService<com.google.api.services.youtube.model.Video, Video, VideoItem> {
+	
+	@Autowired
+	@Qualifier("channelConverterService")
+	private YouTubeConverterService<com.google.api.services.youtube.model.Channel, Channel, ChannelItem> channelConverterService;
+	
 
 	@Override
 	public Video getEntity() {
@@ -50,9 +57,12 @@ public class VideoConverterServiceImpl
 	protected void customToItem(Video entity, VideoItem item) {
 		final Channel channel = entity.getChannel();
 		if(channel != null) {
+			final ChannelItem channelItem = this.channelConverterService.toItem(channel);
+			/*
 			final ChannelItem channelItem = new ChannelItem();
 			channelItem.setId(channel.getId());
 			channelItem.setName(channel.getName());
+			*/
 			item.setChannel(channelItem);
 		}
 		

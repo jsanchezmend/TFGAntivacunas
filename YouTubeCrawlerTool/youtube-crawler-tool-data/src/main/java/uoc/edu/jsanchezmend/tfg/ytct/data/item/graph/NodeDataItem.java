@@ -2,6 +2,8 @@ package uoc.edu.jsanchezmend.tfg.ytct.data.item.graph;
 
 import uoc.edu.jsanchezmend.tfg.ytct.data.enumeration.GraphNodeTypeEnum;
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.AbstractItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.ChannelItem;
+import uoc.edu.jsanchezmend.tfg.ytct.data.item.VideoItem;
 
 /**
  * A graph node data POJO
@@ -20,13 +22,15 @@ public class NodeDataItem extends AbstractItem {
 	
 	protected String typeCode;
 	
-	protected String name;
-	
 	protected String shape;
 	
 	protected String color;
 	
 	protected int size;
+	
+	protected VideoItem video;
+	
+	protected ChannelItem channel;
 	
 	
 	public NodeDataItem(GraphNodeTypeEnum type) {
@@ -47,13 +51,6 @@ public class NodeDataItem extends AbstractItem {
 	public void setResourceId(String resourceId) {
 		this.resourceId = resourceId;
 		this.id = this.typeCode + "-" + resourceId;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getTypeCode() {
@@ -78,4 +75,18 @@ public class NodeDataItem extends AbstractItem {
 		this.size = size;
 	}
 
+	public VideoItem getVideo() {
+		return video;
+	}
+	public void setVideo(VideoItem video) {
+		this.video = video;
+	}
+
+	public ChannelItem getChannel() {
+		return channel;
+	}
+	public void setChannel(ChannelItem channel) {
+		this.channel = channel;
+	}
+	
 }

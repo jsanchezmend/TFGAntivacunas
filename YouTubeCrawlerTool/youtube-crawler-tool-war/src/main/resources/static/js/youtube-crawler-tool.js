@@ -5,7 +5,14 @@
 *
 */
 
+var csvExportVideosFields = ["id", "title", "description", "publishedAt", "duration", "viewCount", "likeCount", "dislikeCount", "commentCount", "scopeRange", "embedHtml"];
+var csvExportVideosNumericFields = ["viewCount", "likeCount", "dislikeCount", "commentCount", "scopeRange"];
+
+var csvExportChannelsFields = ["id", "name", "description", "publishedAt", "thumbnailUrl", "subscribersCount", "videoCount", "viewCount", "commentCount"];
+var csvExportChannelsNumericFields = ["subscribersCount", "videoCount", "viewCount", "commentCount"];
+
 var csvExportEdgesFields = ["outgoing", "incoming", "outgoingType", "incomingType"];
+
 
 var doGet = function (requestUrl, callback) {
 	console.log("doGet for url: " + requestUrl);
@@ -56,15 +63,42 @@ var convertVideoNodesToCSV = function (objArray) {
     for (var i = 0; i < array.length; i++) {
     	var data = array[i].data;
     	if(data.typeCode == "v") {
+    		var video = data.video;
 	    	if(str == '') {
-	    		var header = Object.keys(data);
-	    		str += header.join(',') + '\r\n';
+	    		var header = '';
+	    		for(var property in video) {
+	    			if(arrayContains(property,csvExportVideosFields)) {
+	    				if(header != '') header += ',';
+	    				header += property;
+	    			}
+	    		}
+	    		if(header != '') header += ',';
+	    		header += 'channelId,categoryName';
+	    		str += header + '\r\n';
 	    	}
 	    	var line = '';
-	        for (var index in data) {
-	            if (line != '') line += ','
-	            line += data[index];
+	        for (var index in video) {
+	        	if(arrayContains(index,csvExportVideosFields)) {
+		            if (line != '') line += ',';
+		            if(arrayContains(index,csvExportVideosNumericFields)) {
+		            	line += video[index];
+		            } else {
+		            	var tempLine = video[index].replace(/"/g,'\'');
+		            	tempLine = tempLine.replace(/\r?\n|\r/g,'. ');	
+		            	line += "\"" + tempLine + "\"";
+		            }
+		        }
 	        }
+	        
+	        // Adding channel id and category name manually
+	        var channel = video.channel;
+	        var category = video.category;
+	        var categoryName = '';
+	        if(category) {
+	        	categoryName = category.name;
+	        }
+	        if (line != '') line += ',';
+	        line += channel.id + ',' + categoryName;
 	        str += line + '\r\n';
     	}
     }
@@ -77,14 +111,29 @@ var convertChannelNodesToCSV = function (objArray) {
     for (var i = 0; i < array.length; i++) {
     	var data = array[i].data;
     	if(data.typeCode == "c") {
+    		var channel = data.channel;
 	    	if(str == '') {
-	    		var header = Object.keys(data);
-	    		str += header.join(',') + '\r\n';
+	    		var header = '';
+	    		for(var property in channel) {
+	    			if(arrayContains(property,csvExportChannelsFields)) {
+	    				if(header != '') header += ',';
+	    				header += property;
+	    			}
+	    		}
+	    		str += header + '\r\n';
 	    	}
 	    	var line = '';
-	        for (var index in data) {
-	            if (line != '') line += ','
-	            line += data[index];
+	        for (var index in channel) {
+	        	if(arrayContains(index,csvExportChannelsFields)) {
+		            if (line != '') line += ',';
+		            if(arrayContains(index,csvExportChannelsNumericFields)) {
+		            	line += channel[index];
+		            } else {
+		            	var tempLine = channel[index].replace(/"/g,'\'');
+		            	tempLine = tempLine.replace(/\r?\n|\r/g,'. ');	
+		            	line += "\"" + tempLine + "\"";
+		            }  
+		        }
 	        }
 	        str += line + '\r\n';
     	}
@@ -100,7 +149,6 @@ var convertEdgesToCSV = function (objArray) {
     	if(str == '') {
     		var header = '';
     		for(var property in data) {
-    			console.log(property);
     			if(arrayContains(property,csvExportEdgesFields)) {
     				if(header != '') header += ',';
     				header += property;
