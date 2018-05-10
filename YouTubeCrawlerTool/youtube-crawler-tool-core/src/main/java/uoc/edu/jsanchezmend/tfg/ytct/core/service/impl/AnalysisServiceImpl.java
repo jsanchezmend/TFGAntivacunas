@@ -76,36 +76,36 @@ public class AnalysisServiceImpl implements AnalysisService {
 				videoNodeData.setColor(categoryItem.getColor());
 			}
 			videoNodeData.setSize(videoItem.getScopeRange().intValue());
+			// Make the json lighter
+			final ChannelItem channelItem = videoItem.getChannel();
+			videoItem.setChannel(null); 
 			videoNodeData.setVideo(videoItem);
 			final NodeItem videoNode = new NodeItem(videoNodeData);
 			elements.addNode(videoNode);
 
-			if(includeChannels) {
-				final ChannelItem channelItem = videoItem.getChannel();
-				if(channelItem != null) {
-					final NodeDataItem channelNodeData = new NodeDataItem(GraphNodeTypeEnum.CHANNEL);
-					channelNodeData.setResourceId(channelItem.getId());
-					
-					if(!channelIds.contains(channelNodeData.getResourceId())) {
-						// Add the channel id to the list to avoid include them again
-						channelIds.add(channelNodeData.getResourceId());
-						// Create channel node
-						channelNodeData.setChannel(channelItem);
-						final NodeItem channelNode = new NodeItem(channelNodeData);
-						elements.addNode(channelNode);
-					}
-					
-					// Create video-channel edge
-					final EdgeDataItem videoChannelEdgeData = new EdgeDataItem();
-					videoChannelEdgeData.setSource(videoNode.getData().getId());
-					videoChannelEdgeData.setTarget(channelNodeData.getId());
-					videoChannelEdgeData.setOutgoing(videoNode.getData().getResourceId());
-					videoChannelEdgeData.setIncoming(channelNodeData.getResourceId());
-					videoChannelEdgeData.setOutgoingType(videoNode.getData().getTypeCode());
-					videoChannelEdgeData.setIncomingType(channelNodeData.getTypeCode());
-					final EdgeItem videoChannelEdge = new EdgeItem(videoChannelEdgeData);
-					elements.addEdge(videoChannelEdge);
+			if(includeChannels && channelItem != null) {
+				final NodeDataItem channelNodeData = new NodeDataItem(GraphNodeTypeEnum.CHANNEL);
+				channelNodeData.setResourceId(channelItem.getId());
+				
+				if(!channelIds.contains(channelNodeData.getResourceId())) {
+					// Add the channel id to the list to avoid include them again
+					channelIds.add(channelNodeData.getResourceId());
+					// Create channel node
+					channelNodeData.setChannel(channelItem);
+					final NodeItem channelNode = new NodeItem(channelNodeData);
+					elements.addNode(channelNode);
 				}
+				
+				// Create video-channel edge
+				final EdgeDataItem videoChannelEdgeData = new EdgeDataItem();
+				videoChannelEdgeData.setSource(videoNode.getData().getId());
+				videoChannelEdgeData.setTarget(channelNodeData.getId());
+				videoChannelEdgeData.setOutgoing(videoNode.getData().getResourceId());
+				videoChannelEdgeData.setIncoming(channelNodeData.getResourceId());
+				videoChannelEdgeData.setOutgoingType(videoNode.getData().getTypeCode());
+				videoChannelEdgeData.setIncomingType(channelNodeData.getTypeCode());
+				final EdgeItem videoChannelEdge = new EdgeItem(videoChannelEdgeData);
+				elements.addEdge(videoChannelEdge);
 			}
 		}
 		
