@@ -469,8 +469,17 @@ public class CrawlerServiceImpl implements CrawlerService {
 						}
 					}
 					// Calculation of video scopeRange value
-					final long fakeScopeRange = r.nextInt(100-70) + 70;
-					newVideo.setScopeRange(BigInteger.valueOf(fakeScopeRange));
+					//final long fakeScopeRange = r.nextInt(50-20) + 20;
+					//newVideo.setScopeRange(BigInteger.valueOf(fakeScopeRange));
+					BigInteger scopeRange = BigInteger.TEN;
+					if(!newVideo.getLikeCount().equals(BigInteger.ZERO)) {
+						scopeRange = newVideo.getLikeCount().divide(newVideo.getDislikeCount());
+						if(scopeRange.compareTo(BigInteger.TEN) < 0) {
+							scopeRange = BigInteger.TEN;
+						}
+					}
+					newVideo.setScopeRange(scopeRange);
+					
 					this.videoRepository.save(newVideo);
 					crawler.addNewVideos(1);
 				}

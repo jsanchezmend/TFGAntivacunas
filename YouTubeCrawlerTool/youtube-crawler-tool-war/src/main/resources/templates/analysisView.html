@@ -104,11 +104,13 @@
 			  style: cytoscape.stylesheet()
 			    .selector('node')
 			      .css({
-			        'content': 'data(resourceId)',
+			        //'content': 'data(resourceId)',
 			        'text-valign': 'center',
 			        'color': 'white',
 			        'text-outline-width': 2,
 			        'text-outline-color': '#999',
+			        'border-width': 2,
+			        'border-color': '#999',
 			       	'shape': 'data(shape)',
 			        'background-color': 'data(color)',
 			        'width': 'data(size)',
@@ -120,7 +122,7 @@
 			        'target-arrow-shape': 'triangle',
 			        'target-arrow-color': '#999',
 			        'line-color': '#999',
-			        'width': 8
+			        'width': 2
 			      })
 			    .selector('.faded')
 			      .css({

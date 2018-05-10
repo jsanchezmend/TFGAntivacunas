@@ -78,7 +78,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 			videoNodeData.setSize(videoItem.getScopeRange().intValue());
 			// Make the json lighter
 			final ChannelItem channelItem = videoItem.getChannel();
-			videoItem.setChannel(null); 
+			final ChannelItem lightChannelItem = new ChannelItem();
+			lightChannelItem.setId(channelItem.getId());
+			videoItem.setChannel(lightChannelItem); 
 			videoNodeData.setVideo(videoItem);
 			final NodeItem videoNode = new NodeItem(videoNodeData);
 			elements.addNode(videoNode);

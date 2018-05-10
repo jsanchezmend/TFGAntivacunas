@@ -73,6 +73,8 @@ var generateVideoNodeContent = function(video) {
 	+ "  <div class='panel-body'>"
 	+ "  <h5 class='node-title'>"+ trimString(video.title, 50) +"<h5>"
 	+ "  <p><small><b>Published:</b> " + video.publishedAt.substring(0, 10) +"</small></p>"
+	+ "  <p><small><b>Like count:</b> " + video.likeCount +"</small></p>"
+	+ "  <p><small><b>Dislike count:</b> " + video.dislikeCount +"</small></p>"
 	+ "  <p><small><b>Scope range:</b> " + video.scopeRange +"</small></p>";
 	if(video.category) {
 		html+= "  <p><small><b>Category:</b> " + video.category.name +"</small></p>"
