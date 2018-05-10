@@ -48,6 +48,16 @@
 	                                    </div>
                                     </div>
                                     <div class="row">
+                                        <div class="form-group col-md-5">
+	                                    	<label>Categories:</label>
+	                                    	<select multiple class="form-control" name="categories" id="categories"></select>
+	                                    </div>
+                                    	<div class="form-group col-md-5">
+	                                    	<label>Crawlers:</label>
+	                                    	<select multiple class="form-control" name="crawlers" id="crawlers"></select>
+	                                    </div>
+                                    </div>
+                                    <div class="row">
 		                                <div class="form-group col-md-12">
 		                                	<button type="button" class="btn btn-danger" id="search">Search</button>
 		                                </div>
@@ -73,6 +83,28 @@
 	</div>	
 	
 	<script>
+		$(document).ready(function(){
+			// Fill categories selector
+			var selCategories = $("#categories");
+			selCategories.empty();
+			selCategories.append('<option value="*">Uncategorized</option>');
+			doGet("/api/categories",function (data) {
+			    for (var i=0; i<data.length; i++) {
+			    	selCategories.append('<option value="' + data[i].name + '">' + data[i].name + '</option>');
+			    }
+			});
+			
+			// Fill crawlers selector
+			var selCrawlers = $("#crawlers");
+			selCrawlers.empty();
+			doGet("/api/crawlers",function (data) {
+			    for (var i=0; i<data.length; i++) {
+			    	var text = data[i].search ? data[i].search : "Related: " + data[i].relatedVideoId;
+			    	selCrawlers.append('<option value="' + data[i].id + '">' + text + '</option>');
+			    }
+			});
+		});
+	
 		// The graph variables
 		var cy;
 		var currentSearch;

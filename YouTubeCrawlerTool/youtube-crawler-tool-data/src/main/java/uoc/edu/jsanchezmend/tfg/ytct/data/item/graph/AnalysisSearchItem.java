@@ -1,5 +1,7 @@
 package uoc.edu.jsanchezmend.tfg.ytct.data.item.graph;
 
+import java.util.List;
+
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.AbstractItem;
 
 /**
@@ -18,6 +20,12 @@ public class AnalysisSearchItem extends AbstractItem {
 	protected String toDate;
 	
 	protected Boolean includeChannels;
+	
+	protected Boolean includeUncategorized;
+	
+	protected List<String> categories;
+	
+	protected List<Long> crawlers;
 	
 	
 	public AnalysisSearchItem() {
@@ -44,6 +52,32 @@ public class AnalysisSearchItem extends AbstractItem {
 	}
 	public void setIncludeChannels(Boolean includeChannels) {
 		this.includeChannels = includeChannels;
+	}
+
+	public Boolean isIncludeUncategorized() {
+		return includeUncategorized;
+	}
+	
+	public List<String> getCategories() {
+		return categories;
+	}
+	public void setCategories(List<String> categories) {
+		if(categories!= null && !categories.isEmpty()) {
+			if(categories.contains("*")) {
+				categories.remove("*");
+				this.includeUncategorized = true;
+			} else {
+				this.includeUncategorized = false;
+			}
+		}
+		this.categories = categories;
+	}
+
+	public List<Long> getCrawlers() {
+		return crawlers;
+	}
+	public void setCrawlers(List<Long> crawlers) {
+		this.crawlers = crawlers;
 	}
 
 }

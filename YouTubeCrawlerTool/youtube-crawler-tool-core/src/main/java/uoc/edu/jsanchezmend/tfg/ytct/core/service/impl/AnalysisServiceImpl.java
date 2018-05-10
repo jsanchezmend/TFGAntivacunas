@@ -62,7 +62,38 @@ public class AnalysisServiceImpl implements AnalysisService {
 		}
 				
 		final List<Video> videos = this.videoRepository.analysisSearchNodes(fromDate, toDate);
-		final List<VideoItem> videoItems = this.videoConverterService.toListItem(videos);
+		final List<VideoItem> videoItemsCandidates = this.videoConverterService.toListItem(videos);
+		
+		// Programmatic filters 
+		// TODO: Do it with a repository query
+		final List<VideoItem> videoItems = new ArrayList<VideoItem>();
+		if(this.programmaticFiltersIsRequired(analysisSearch)) {
+			for(VideoItem videoItemsCandidate : videoItemsCandidates) {
+				// Categories filters
+				if(videoItemsCandidate.getCategory() != null) {
+					if(analysisSearch.getCategories() != null && !analysisSearch.getCategories().isEmpty()){
+						if(!analysisSearch.getCategories().contains(videoItemsCandidate.getCategory().getName())) {
+							continue;
+						}
+					} else if(analysisSearch.isIncludeUncategorized() != null && analysisSearch.isIncludeUncategorized()) {
+						continue;
+					}
+				} else if(analysisSearch.isIncludeUncategorized() != null && !analysisSearch.isIncludeUncategorized()) {
+					continue;
+				}
+				
+				// Crawler filters
+				if(analysisSearch.getCrawlers() != null && !analysisSearch.getCrawlers().isEmpty() 
+						&& !analysisSearch.getCrawlers().contains(videoItemsCandidate.getCrawler().getId())) {
+					continue;
+				}
+				
+				// If passed all filters, add the video
+				videoItems.add(videoItemsCandidate);
+			}
+		} else {
+			videoItems.addAll(videoItemsCandidates);
+		}
 		
 		// Generate nodes
 		final List<String> channelIds = new ArrayList<String>();
@@ -120,6 +151,16 @@ public class AnalysisServiceImpl implements AnalysisService {
 		
 		result.setElements(elements);
 		return result;
+	}
+	
+	private boolean programmaticFiltersIsRequired(AnalysisSearchItem analysisSearch) {
+		if(analysisSearch.isIncludeUncategorized() != null) {
+			return true;
+		}
+		if(analysisSearch.getCrawlers() != null && !analysisSearch.getCrawlers().isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 	
 }

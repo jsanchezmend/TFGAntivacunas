@@ -52,6 +52,9 @@ var getFormFields = function (formId) {
 	    	}
 	    }
 	});
+	$("#" + formId).find("select").each(function() {
+	    formFields[this.name] = $(this).val();
+	});
 	console.log("getFormFields for form with id: " + formId);
 	console.log(formFields);
 	return formFields
