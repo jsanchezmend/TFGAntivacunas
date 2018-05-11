@@ -87,8 +87,10 @@
 			// Fill categories selector
 			var selCategories = $("#categories");
 			selCategories.empty();
-			selCategories.append('<option value="*">Uncategorized</option>');
 			doGet("/api/categories",function (data) {
+				if(data.length > 0) {
+					selCategories.append('<option value="*">Uncategorized</option>');
+				}
 			    for (var i=0; i<data.length; i++) {
 			    	selCategories.append('<option value="' + data[i].name + '">' + data[i].name + '</option>');
 			    }

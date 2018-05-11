@@ -66,6 +66,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 		
 		// Programmatic filters 
 		// TODO: Do it with a repository query
+		final List<String> videoIds = new ArrayList<String>();
 		final List<VideoItem> videoItems = new ArrayList<VideoItem>();
 		if(this.programmaticFiltersIsRequired(analysisSearch)) {
 			for(VideoItem videoItemsCandidate : videoItemsCandidates) {
