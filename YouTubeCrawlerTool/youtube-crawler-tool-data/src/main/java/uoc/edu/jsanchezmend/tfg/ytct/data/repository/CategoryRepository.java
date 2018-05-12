@@ -11,5 +11,8 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.entity.Category;
  *
  */
 public interface CategoryRepository extends Neo4jRepository<Category, String> {
+	
+	// Videos without category (category equals null) are identified whit this value in the UI 
+	public static final String UNCATEGORIZED = "*";
 
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import uoc.edu.jsanchezmend.tfg.ytct.data.item.AbstractItem;
 
+import static uoc.edu.jsanchezmend.tfg.ytct.data.repository.CategoryRepository.UNCATEGORIZED;
+
 /**
  * A analysis search variables POJO
  * 
@@ -63,8 +65,8 @@ public class AnalysisSearchItem extends AbstractItem {
 	}
 	public void setCategories(List<String> categories) {
 		if(categories!= null && !categories.isEmpty()) {
-			if(categories.contains("*")) {
-				categories.remove("*");
+			if(categories.contains(UNCATEGORIZED)) {
+				categories.remove(UNCATEGORIZED);
 				this.includeUncategorized = true;
 			} else {
 				this.includeUncategorized = false;

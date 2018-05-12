@@ -66,7 +66,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 		
 		// Programmatic filters 
 		// TODO: Do it with a repository query
-		final List<String> videoIds = new ArrayList<String>();
+		List<String> videoIds = null;
 		final List<VideoItem> videoItems = new ArrayList<VideoItem>();
 		if(this.programmaticFiltersIsRequired(analysisSearch)) {
 			for(VideoItem videoItemsCandidate : videoItemsCandidates) {
@@ -91,9 +91,15 @@ public class AnalysisServiceImpl implements AnalysisService {
 				
 				// If passed all filters, add the video
 				videoItems.add(videoItemsCandidate);
+				if(videoIds == null) {
+					videoIds = new ArrayList<String>();
+				}
+				videoIds.add(videoItemsCandidate.getId());
 			}
 		} else {
 			videoItems.addAll(videoItemsCandidates);
+			// Initialize videoIds to know that all retrieved edges should be included
+			videoIds = new ArrayList<String>();
 		}
 		
 		// Generate nodes
@@ -144,10 +150,17 @@ public class AnalysisServiceImpl implements AnalysisService {
 		}
 		
 		// Generate video related edges
-		final List<EdgeDataItem> videoRelatedEdgesData = this.videoRepository.analysisSearchVideoEdges(fromDate, toDate);
-		for(EdgeDataItem edgeDataItem : videoRelatedEdgesData) {
-			final EdgeItem videoRelatedEdge = new EdgeItem(edgeDataItem);
-			elements.addEdge(videoRelatedEdge);
+		if(videoIds != null) {
+			final List<EdgeDataItem> videoRelatedEdgesData = this.videoRepository.analysisSearchVideoEdges(fromDate, toDate);
+			for(EdgeDataItem edgeDataItem : videoRelatedEdgesData) {
+				// Apply the programmatic filters 
+				// TODO: Do it with a repository query
+				if(videoIds.isEmpty() 
+						|| (videoIds.contains(edgeDataItem.getOutgoing()) && videoIds.contains(edgeDataItem.getIncoming()))) {
+					final EdgeItem videoRelatedEdge = new EdgeItem(edgeDataItem);
+					elements.addEdge(videoRelatedEdge);
+				}
+			}
 		}
 		
 		result.setElements(elements);
