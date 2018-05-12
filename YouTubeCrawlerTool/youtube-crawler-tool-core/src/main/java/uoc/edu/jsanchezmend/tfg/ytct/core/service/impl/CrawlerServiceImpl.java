@@ -230,7 +230,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param crawlerItem
 	 * @return
 	 */
-	private CrawlerItem initilizeCrawlerItem(CrawlerItem crawlerItem) {	
+	protected CrawlerItem initilizeCrawlerItem(CrawlerItem crawlerItem) {	
 		if(crawlerItem == null) {
 			return null;
 		}
@@ -274,7 +274,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param crawler
 	 * @return
 	 */
-	private CrawlerItem doCrawler(CrawlerItem crawlerItem) {
+	protected CrawlerItem doCrawler(CrawlerItem crawlerItem) {
 		Long startTime = new Date().getTime();
 		int searchedVideos = 0;
 		Integer totalVideosToCrawler = null;
@@ -351,7 +351,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param crawler
 	 * @return
 	 */
-	private CrawlerItem doRelatedCrawler(CrawlerItem crawlerItem) {
+	protected CrawlerItem doRelatedCrawler(CrawlerItem crawlerItem) {
 		if(!this.isRelatedSearchRequired(crawlerItem)) {
 			return crawlerItem;
 		}
@@ -435,7 +435,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	private CrawlerItem obtainVideos(CrawlerItem crawler, List<String> videoIds, Integer searchedVideos, Integer totalVideosToCrawler) throws IOException, Exception {			
+	protected CrawlerItem obtainVideos(CrawlerItem crawler, List<String> videoIds, Integer searchedVideos, Integer totalVideosToCrawler) throws IOException, Exception {			
 		//Random r = new Random();
 		Long startTime = new Date().getTime();
 		
@@ -471,7 +471,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 					//final long fakeScopeRange = r.nextInt(50-20) + 20;
 					//newVideo.setScopeRange(BigInteger.valueOf(fakeScopeRange));
 					BigInteger scopeRange = BigInteger.TEN;
-					if(!newVideo.getLikeCount().equals(BigInteger.ZERO)) {
+					if(newVideo.getLikeCount() != null && newVideo.getDislikeCount() != null
+							&& !newVideo.getDislikeCount().equals(BigInteger.ZERO)) {
 						scopeRange = newVideo.getLikeCount().divide(newVideo.getDislikeCount());
 						if(scopeRange.compareTo(BigInteger.TEN) < 0) {
 							scopeRange = BigInteger.TEN;
@@ -538,7 +539,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @return
 	 * @throws IOException
 	 */
-	private Channel getChannel(final String channelId) throws IOException {
+	protected Channel getChannel(final String channelId) throws IOException {
 		// Synchronized: This method will be executed synchronized as it is being called inside a synchronized block
 		Channel channel = this.channelRepository.findById(channelId).orElse(null);
 		if(channel != null) {
@@ -563,7 +564,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param fromVideoId
 	 * @param toVideoId
 	 */
-	private synchronized void createVideoRelationship(String fromVideoId, String toVideoId) {
+	protected synchronized void createVideoRelationship(String fromVideoId, String toVideoId) {
 		// Synchronized method: Ensure that the new relationship it's not being created by another thread
 		final Video fromVideo = this.videoRepository.findById(fromVideoId).orElse(null);
 		final Video toVideo = this.videoRepository.findById(toVideoId).orElse(null);
@@ -581,7 +582,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	private CrawlerItem searchRelatedVideos(CrawlerItem crawlerItem) throws IOException, Exception {
+	protected CrawlerItem searchRelatedVideos(CrawlerItem crawlerItem) throws IOException, Exception {
 		int searchedVideos = 0;
 		
 		do {
@@ -616,7 +617,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param crawlerItem
 	 * @return
 	 */
-	private boolean isSearchCrawler(CrawlerItem crawlerItem) {
+	protected boolean isSearchCrawler(CrawlerItem crawlerItem) {
 		return crawlerItem.getSearch() != null && !crawlerItem.getSearch().isEmpty() ? true : false;
 	}
 	
@@ -626,7 +627,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param crawlerItem
 	 * @return
 	 */
-	private boolean isRelatedCrawler(CrawlerItem crawlerItem) {
+	protected boolean isRelatedCrawler(CrawlerItem crawlerItem) {
 		return crawlerItem.getRelatedVideoId() != null && !crawlerItem.getRelatedVideoId().isEmpty() ? true : false;
 	}
 	
@@ -636,7 +637,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	 * @param crawlerItem
 	 * @return
 	 */
-	private boolean isRelatedSearchRequired(CrawlerItem crawlerItem) {
+	protected boolean isRelatedSearchRequired(CrawlerItem crawlerItem) {
 		if(crawlerItem.getRelatedLevels() == null || crawlerItem.getRelatedLevels().compareTo(0) == 0) {
 			return false;
 		} else if (crawlerItem.getMaxVideosPerLevel() == null || crawlerItem.getMaxVideosPerLevel().compareTo(0) == 0) {

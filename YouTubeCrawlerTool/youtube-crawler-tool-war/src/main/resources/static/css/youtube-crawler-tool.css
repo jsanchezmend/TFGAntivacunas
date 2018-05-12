@@ -6,6 +6,19 @@
 */
 
 /*
+* General
+*/
+.inlineForm {
+	float: left;
+	-webkit-box-sizing: unset !important;
+	-moz-box-sizing: unset !important;
+	box-sizing: unset !important;
+}
+.btn-danger {
+    background-color: #dd2c00;
+}
+
+/*
 * Login page
 */
 body.login {
@@ -54,7 +67,19 @@ body.login .panel-body {
 #cyOptions .btn {
 	float:left;
 }
-
+#cyLegend {
+	position: absolute;
+   	top: 10px;
+   	right: 10px;
+   	z-index: 1;
+}
+#cyLegend .panel-body {
+	height:auto;
+	padding: 10px 10px 0px 10px;
+}
+#cyLegend label {
+ 	margin-bottom: 0px;
+}
 /*
 * Graph node content
 */
@@ -72,4 +97,23 @@ img.center {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+
+
+/*
+* Loader
+*/
+.loader {
+	margin: auto;
+	margin-top:100px;
+    border: 16px solid #ddd; /* Light grey */
+    border-top: 16px solid #dd2c00; /* Red */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

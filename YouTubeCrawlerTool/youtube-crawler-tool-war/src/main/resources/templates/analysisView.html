@@ -22,7 +22,7 @@
 	                        <form role="form" id="searchForm">
 	                            <fieldset>
 	                            	<div class="row">
-		                            	<div class="form-group col-md-5">
+		                            	<div class="form-group col-md-6">
 			                            	<label>From:</label> 
 									        <div class="input-group input-append date datePicker">
 									        	<input type="text" class="form-control" name="fromDate" />
@@ -30,7 +30,7 @@
 									        </div>
 							                <p class="help-block">Default value: 14/02/2005</p>
 	                                    </div>
-	                                    <div class="form-group col-md-5">
+	                                    <div class="form-group col-md-6">
 	                                    	<label>To:</label>
 	                                    	<div class="input-group input-append date datePicker">
 									        	<input type="text" class="form-control" name="toDate" />
@@ -38,29 +38,29 @@
 									        </div>
 	                                       	<p class="help-block">Default value: today</p>
 	                                    </div>
-	                                    <div class="form-group col-md-2">
-	                                    	<label>Include channels:</label>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="includeChannels" id="includeChannels" value="">
-                                                </label>
-                                            </div>
-	                                    </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-md-5">
-	                                    	<label>Categories:</label>
-	                                    	<select multiple class="form-control" name="categories" id="categories"></select>
-	                                    </div>
-                                    	<div class="form-group col-md-5">
+                                        <div class="form-group col-md-6">
 	                                    	<label>Crawlers:</label>
 	                                    	<select multiple class="form-control" name="crawlers" id="crawlers"></select>
 	                                    </div>
+                                        <div class="form-group col-md-6">
+	                                    	<label>Categories:</label>
+	                                    	<select multiple class="form-control" name="categories" id="categories"></select>
+	                                    </div>
                                     </div>
                                     <div class="row">
-		                                <div class="form-group col-md-12">
+		                                <div class="form-group col-md-1">
 		                                	<button type="button" class="btn btn-danger" id="search">Search</button>
 		                                </div>
+		                                <div class="form-group col-md-2 inlineForm">
+		                                	<div class="inlineForm" style="margin-left: 5px; margin-top: 5px;">
+                                           		<label>Include channels:</label>
+                                           	</div>
+                                           	<div class="inlineForm" style="margin-left: 5px; margin-top: 5px;">
+                                           		<input type="checkbox" name="includeChannels" id="includeChannels" value="">
+                                           	</div>
+	                                    </div>
 	                                </div>
 	                            </fieldset>
 	                        </form> 
@@ -84,6 +84,16 @@
 	
 	<script>
 		$(document).ready(function(){
+			// Fill crawlers selector
+			var selCrawlers = $("#crawlers");
+			selCrawlers.empty();
+			doGet("/api/crawlers",function (data) {
+			    for (var i=0; i<data.length; i++) {
+			    	var text = data[i].search ? data[i].search : "Related: " + data[i].relatedVideoId;
+			    	selCrawlers.append('<option value="' + data[i].id + '">' + text + ' (' + data[i].status + ')</option>');
+			    }
+			});
+			
 			// Fill categories selector
 			var selCategories = $("#categories");
 			selCategories.empty();
@@ -93,16 +103,6 @@
 				}
 			    for (var i=0; i<data.length; i++) {
 			    	selCategories.append('<option value="' + data[i].name + '">' + data[i].name + '</option>');
-			    }
-			});
-			
-			// Fill crawlers selector
-			var selCrawlers = $("#crawlers");
-			selCrawlers.empty();
-			doGet("/api/crawlers",function (data) {
-			    for (var i=0; i<data.length; i++) {
-			    	var text = data[i].search ? data[i].search : "Related: " + data[i].relatedVideoId;
-			    	selCrawlers.append('<option value="' + data[i].id + '">' + text + '</option>');
 			    }
 			});
 		});
@@ -115,6 +115,7 @@
 		
 		// Perform analysis search and create a new graph
 	    $('#search').on('click', function() {
+	    	$('#cy').html("<div class='loader'></div>");	    	
 	    	areChannels =  $('#includeChannels').is(":checked");
 	    	var searchFields = getFormFields("searchForm");
 	    	doPost("/api/graphs", searchFields, function (data) {  
@@ -122,9 +123,9 @@
 		    	if (currentSearch.elements.nodes == null) {
 	    			$('#cy').html("<div class='alert alert-warning text-center'>No results found</div>");
 	    		} else {
-	    			$('#cy').html("");
 	    			searchDateStr = dateFormat(new Date(),"dd/mm/yy h:MM TT");
 	    			initCytoscape(currentSearch.elements);
+	    			$('.loader').remove();
 	    		}
 	    	});
 	    })
@@ -286,6 +287,16 @@
 				dowloadEdgesCsv.download = "YouTubeCrawlerTool-Edges-"+ searchDateStr + ".csv";
 				dowloadEdgesCsv.click();
 			});
+			// Graph legend
+			var legend = "<div id='cyLegend' class='panel panel-default'>"
+				+ "<div class='panel-body'>"
+				+ "<p><label>Videos:</label> " + cy.nodes().filter("[typeCode = 'v']").size() + "</p>";
+				if(areChannels == true) {
+					legend += "<p><label>Channels:</label> " + cy.nodes().filter("[typeCode = 'c']").size() + "</p>"
+				}
+				legend +=  "</div></div>";
+			$('#cy').append(legend);
+
             // Enable tooltips
             $('#cyOptions').tooltip({
                 selector: "[data-toggle=tooltip]",

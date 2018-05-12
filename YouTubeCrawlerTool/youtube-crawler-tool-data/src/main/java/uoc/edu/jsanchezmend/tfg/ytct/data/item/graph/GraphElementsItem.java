@@ -50,5 +50,11 @@ public class GraphElementsItem  extends AbstractItem {
 		}
 		this.edges.add(edge);
 	}
+	public void addEdges(List<EdgeItem> edges) {
+		if(this.edges == null) {
+			this.edges = new ArrayList<EdgeItem>();
+		}
+		this.edges.addAll(edges);
+	}
 
 }
