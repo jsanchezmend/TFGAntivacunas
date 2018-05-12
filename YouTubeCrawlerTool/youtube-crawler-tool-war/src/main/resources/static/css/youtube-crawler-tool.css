@@ -8,14 +8,14 @@
 /*
 * General
 */
+.btn-danger {
+    background-color: #dd2c00;
+}
 .inlineForm {
 	float: left;
 	-webkit-box-sizing: unset !important;
 	-moz-box-sizing: unset !important;
 	box-sizing: unset !important;
-}
-.btn-danger {
-    background-color: #dd2c00;
 }
 
 /*
@@ -98,8 +98,6 @@ img.center {
     margin-right: auto;
     width: 50%;
 }
-
-
 /*
 * Loader
 */
