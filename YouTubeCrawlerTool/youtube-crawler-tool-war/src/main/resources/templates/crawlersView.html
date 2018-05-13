@@ -7,15 +7,333 @@
 	<div id="wrapper">
 		<thymeleaf th:replace="sections/leftMenu :: leftMenu" />
         <div id="page-wrapper">
+        	
         	<div class="row">
         		<div class="col-lg-12">
-                	<!-- VIEW -->
-                	<h1>Crawlers view</h1>
-                	 <!-- END VIEW -->
+        			<h1 class="page-header">Crawlers</h1>
+        		</div>
+        	</div>
+        	
+        	<div class="row" sec:authorize="isAuthenticated()">
+        		<div class="col-lg-12" id="startNewCrawler">
+        			<div class="panel panel-default">
+        				<div class="panel-body">
+		        			<form role="form" id="chawlerForm">
+		        				<fieldset>
+		        					<div class="row">
+		        						<div class="form-group col-md-3">
+		        							<label>*Search:</label>
+		        							<input type="text" class="form-control" name="search" />
+		        						</div>
+		        						<div class="form-group col-md-3">
+		        							<label>From:</label> 
+										    <div class="input-group input-append date datePicker">
+										    	<input type="text" class="form-control" name="fromDate" />
+										        <span class="input-group-addon add-on"><span class="fa fa-calendar"></span></span>
+										    </div>
+								            <p class="help-block">Default value: 01/01/2010</p>
+		        						</div>
+		        						<div class="form-group col-md-3">
+		        							<label>To:</label>
+		                                   	<div class="input-group input-append date datePicker">
+		                                   		<input type="text" class="form-control" name="toDate" />
+										        <span class="input-group-addon add-on"><span class="fa fa-calendar"></span></span>
+										    </div>
+		                                    <p class="help-block">Default value: 31/03/2018</p>
+		        						</div>
+		        						<div class="form-group col-md-3">
+		        							<label>Order by:</label>
+		        							<select class="form-control" name="orderBy">
+		        								<option value="Date">Date</option>
+		        								<option value="Rating">Rating</option>
+		        								<option value="Relevance" selected="selected">Relevance</option>
+		        								<option value="Title">Title</option>
+		        								<option value="View count">View count</option>
+		        							</select>
+		        							<p class="help-block">Default value: Relevance</p>
+		        						</div>
+		        					</div>
+		        					<div class="row">
+		        						<div class="form-group col-md-3">
+		                                    <label>Default category:</label>
+		                                    <select class="form-control" name="categoryByDefault" id="categoryByDefault"></select>
+		        						</div>
+		        						<div class="form-group col-md-3">
+		        							<label>Videos:</label>
+		        							<input type="number" class="form-control" name="maxVideos" />
+		        							<p class="help-block">Default value: 250</p>
+		        						</div>
+		        						<div class="form-group col-md-3">
+		        						    <label>Related levels:</label>
+		        							<input type="number" class="form-control" name="relatedLevels" />
+		        							<p class="help-block">Default value: 2</p>
+		        						</div>
+		        						<div class="form-group col-md-3">
+		        						    <label>Videos per level:</label>
+		        							<input type="number" class="form-control" name="maxVideosPerLevel" />
+		        							<p class="help-block">Default value: 15</p>
+		        						</div>
+		        					</div>
+		        					<div class="row">
+		        						<div class="form-group col-md-3">
+				                        	<button type="button" class="btn btn-danger" id="startCrawler">Start new crawler</button>
+				                        </div>
+		        					</div>
+		        				</fieldset>        			
+		        			</form>
+        					<div id="formMessages"></div>
+        				</div>
+        			</div>
                 </div>
         	</div>
+        	
+        	<div class="row">
+        		<div class="col-lg-12">
+        			<div class="panel panel-default">
+        				<div class="panel-body">
+        					<table width="100%" class="table table-striped table-hover" id="crawlersTable"></table>
+        				</div>
+        			</div>
+                </div>
+        	</div>
+        	
         </div>	    
 	</div>	
+	
+	<script>
+		var crawlersTable;
+		
+		$(document).ready(function(){
+			// Fill categories selector
+			var selCategories = $("#categoryByDefault");
+			selCategories.empty();
+			doGet("/api/categories",function (data) {
+				selCategories.append('<option value="" selected="selected">None</option>');
+			    for (var i=0; i<data.length; i++) {
+			    	selCategories.append('<option value="' + data[i].name + '">' + data[i].name + '</option>');
+			    }
+			});
+			
+			var columDefinitions;
+			var columnsConfiguration;
+			if(document.getElementById("startNewCrawler")) {
+				columDefinitions = [{
+				    targets: 0,
+				    data: "search",
+				    orderable: true,
+				    render: function (data, type, row, meta) {
+				    	var html = row.relatedVideoId ? row.relatedVideoId : row.search;
+				    	return trimString(html, 15);
+				    }
+				  },
+			      {
+			        targets: 3,
+			        data: "completed",
+			        orderable: true,
+			        render: function (data, type, row, meta) {
+			        	var html = row.completed + "%";
+			        	return html;
+			        }
+			      },
+			      {
+			    	targets: 4,
+				    data: "createdDate",
+				    orderable: true,
+				    render: function (data, type, row, meta) {
+				    	var html = dateFormat(row.createdDate, "dd/mm/yy h:MM TT");
+				        return html;
+				    }
+				  },
+			      {
+				    	targets: 5,
+					    data: "executionTime",
+					    orderable: true,
+					    render: function (data, type, row, meta) {
+					    	var html = millisToMinutesAndSeconds(row.executionTime) + " mins";
+					        return html;
+					    }
+				  },
+			      {
+				    	targets: 6,
+					    data: "status",
+					    orderable: true,
+					    render: function (data, type, row, meta) {
+					    	var html;
+					    	if(row.status == "Running") {
+					    		html = "<i class='fa fa-play'> " + row.status + " </i>";
+					    	} else if(row.status == "Stopping") {
+					    		html = "<i class='fa fa-pause'> " + row.status + " </i>";
+					    	} else if(row.status == "Stopped") {
+					    		html = "<i class='fa fa-stop'> " + row.status + " </i>";
+					    	} else if(row.status == "Finished") {
+					    		html = "<i class='fa fa-check'> " + row.status + " </i>";
+					    	} else if(row.status == "Blocked") {
+					    		html = "<i class='fa fa-ban'> " + row.status + " </i>";
+					    	} else if(row.status == "Error") {
+					    		html = "<i class='fa fa-bug'> " + row.status + " </i>";
+					    	}
+					        return html;
+					    }
+				  },
+			      {
+				  	targets: 7,
+					data: "options",
+					orderable: false,
+					render: function (data, type, row, meta) {
+					   	var html = "<a class='btn btn-danger' href='/crawlers/"+row.id+"'>View</a>";
+					   	if(row.status == "Running") {
+					   		html += "<a class='btn btn-delete' href='javascript:changeCrawler(\""+row.id+"\", \"Stopping\")'>Stop</a>";
+					   	} else if(row.status == "Stopped" || row.status == "Blocked") {
+					   		html += "<a class='btn btn-success' href='javascript:changeCrawler(\""+row.id+"\", \"Running\")'>Play</a>";
+					   	}
+					    return html;
+					}
+				}];
+				columnsConfiguration = [
+				    			    	{ title: 'Search', data: 'search', width: '22%' },
+				    			    	{ title: 'Videos found', data: 'videosFound', width: '5%' },
+				    			    	{ title: 'New videos', data: 'newVideos', width: '5%' },
+				    			    	{ title: 'Completed', data: 'completed', width: '5%' },
+				    			    	{ title: 'Created', data: 'createdDate', width: '23%' },
+				    			    	{ title: 'Execution time', data: 'executionTime', width: '5%' },
+				    			    	{ title: 'Status', data: 'status', width: '10%' },
+				    			    	{ title: '', data: 'options', width: '25%' }
+				    			    ];
+			} else {
+				columDefinitions = [{
+				    targets: 0,
+				    data: "search",
+				    orderable: true,
+				    render: function (data, type, row, meta) {
+				    	var html = row.relatedVideoId ? row.relatedVideoId : row.search;
+				    	return trimString(html, 15);
+				    }
+				  },
+			      {
+			        targets: 3,
+			        data: "completed",
+			        orderable: true,
+			        render: function (data, type, row, meta) {
+			        	var html = row.completed + "%";
+			        	return html;
+			        }
+			      },
+			      {
+			    	targets: 4,
+				    data: "createdDate",
+				    orderable: true,
+				    render: function (data, type, row, meta) {
+				    	var html = dateFormat(row.createdDate, "dd/mm/yy h:MM TT");
+				        return html;
+				    }
+				  },
+			      {
+				    	targets: 5,
+					    data: "executionTime",
+					    orderable: true,
+					    render: function (data, type, row, meta) {
+					    	var html = millisToMinutesAndSeconds(row.executionTime) + " mins";
+					        return html;
+					    }
+				  },
+			      {
+				    	targets: 6,
+					    data: "status",
+					    orderable: true,
+					    render: function (data, type, row, meta) {
+					    	var html;
+					    	if(row.status == "Running") {
+					    		html = "<i class='fa fa-play'> " + row.status + " </i>";
+					    	} else if(row.status == "Stopping") {
+					    		html = "<i class='fa fa-pause'> " + row.status + " </i>";
+					    	} else if(row.status == "Stopped") {
+					    		html = "<i class='fa fa-stop'> " + row.status + " </i>";
+					    	} else if(row.status == "Finished") {
+					    		html = "<i class='fa fa-check'> " + row.status + " </i>";
+					    	} else if(row.status == "Blocked") {
+					    		html = "<i class='fa fa-ban'> " + row.status + " </i>";
+					    	} else if(row.status == "Error") {
+					    		html = "<i class='fa fa-bug'> " + row.status + " </i>";
+					    	}
+					        return html;
+					    }
+				  },
+			      {
+				  	targets: 7,
+					data: "options",
+					orderable: false,
+					render: function (data, type, row, meta) {
+					   	var html = "<a class='btn btn-danger' href='/crawlers/"+row.id+"'>View</a>";
+					    return html;
+					}
+				}];
+				columnsConfiguration = [
+				    			    	{ title: 'Search', data: 'search', width: '22%' },
+				    			    	{ title: 'Videos found', data: 'videosFound', width: '5%' },
+				    			    	{ title: 'New videos', data: 'newVideos', width: '5%' },
+				    			    	{ title: 'Completed', data: 'completed', width: '5%' },
+				    			    	{ title: 'Created', data: 'createdDate', width: '23%' },
+				    			    	{ title: 'Execution time', data: 'executionTime', width: '5%' },
+				    			    	{ title: 'Status', data: 'status', width: '10%' },
+				    			    	{ title: '', data: 'options', width: '25%' }
+				    			    ];
+			}
+			
+			crawlersTable = $('#crawlersTable').DataTable( {
+				deferRender: true,
+			    ajax: {
+			        url: '/api/crawlers',
+			        dataSrc: ''
+			    },
+			    columnDefs: columDefinitions,
+			    columns: columnsConfiguration,
+			    order: [ 4, 'desc' ]
+			});
+			
+			// Refresh the table each 10 seconds
+			setInterval(function() {
+				crawlersTable.ajax.reload();
+			}, 10000);
+		});
+		
+		// Start a new crawler
+    	$('#startCrawler').on('click', function() {
+    		var crawlerFields = getFormFields("chawlerForm");
+    		if(validateCrawlerFiled(crawlerFields) == true) {
+		    	doPost("/api/crawlers", crawlerFields, function (data) {  
+		    		crawlersTable.ajax.reload();
+		    	});
+    		}
+    	})
+    	
+    	function validateCrawlerFiled(crawlerFields) {
+			if(!crawlerFields.search) {
+				$('#formMessages').html("<div class='alert alert-danger'>Field 'Search' is required</div>");
+				return false;
+			} 
+			if(crawlerFields.fromDate && crawlerFields.toDate) {
+				var from = new Date(crawlerFields.fromDate);
+				var to = new Date(crawlerFields.toDate);
+				if(from >= to) {
+					$('#formMessages').html("<div class='alert alert-danger'>Field 'To' must be after field 'From'</div>");
+					return false;
+				}
+			} 
+			
+			$('#formMessages').html("");
+			return true;
+		}
+		
+		function changeCrawler(crawlerId, newStatus) {
+			console.log("Changing crawler with id: " + crawlerId + ", to new status:" + newStatus);
+			var formFields = {};
+			formFields["status"] = newStatus;
+	    	doPut("/api/crawlers/" + crawlerId, formFields, function (data) {  
+	    		crawlersTable.ajax.reload();
+	    	});
+		}
+	</script>
+	
 	<thymeleaf th:replace="sections/footer :: footer" />
 </body>
 </html>

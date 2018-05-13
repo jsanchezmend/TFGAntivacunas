@@ -252,6 +252,12 @@ var convertEdgesToCSV = function (objArray) {
     return str;
 }
 
+var millisToMinutesAndSeconds = function(millis) {
+	  var minutes = Math.floor(millis / 60000);
+	  var seconds = ((millis % 60000) / 1000).toFixed(0);
+	  return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
 var arrayContains = function(needle, arrhaystack) {
     return (arrhaystack.indexOf(needle) > -1);
 }

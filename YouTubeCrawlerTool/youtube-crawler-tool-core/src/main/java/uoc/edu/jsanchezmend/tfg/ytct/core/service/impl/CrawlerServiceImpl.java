@@ -237,10 +237,10 @@ public class CrawlerServiceImpl implements CrawlerService {
 		
 		// Set default search values if null
 		if(this.isSearchCrawler(crawlerItem)) {
-			if(crawlerItem.getFromDate() == null) {
+			if(crawlerItem.getFromDate() == null || crawlerItem.getFromDate().isEmpty()) {
 				crawlerItem.setFromDate(defaultFromDate);
 			}
-			if(crawlerItem.getToDate() == null) {
+			if(crawlerItem.getToDate() == null || crawlerItem.getToDate().isEmpty()) {
 				crawlerItem.setToDate(defaultToDate);
 			}	
 			if(crawlerItem.getOrderBy() == null) {
