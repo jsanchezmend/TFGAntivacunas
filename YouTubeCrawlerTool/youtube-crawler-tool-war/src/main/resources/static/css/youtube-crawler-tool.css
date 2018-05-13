@@ -8,8 +8,41 @@
 /*
 * General
 */
+.page-header-back {
+    padding-bottom: 9px;
+    margin: 20px 0 20px;
+    border-bottom: 1px solid #eee;
+}
+.table .btn {
+    padding: 0px 10px !important;
+    margin-left: 10px;
+    float: right;
+}
+.category-color {
+    width: 20px;
+    min-height: 20px;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+}
 .btn-danger {
     background-color: #dd2c00;
+    border-color: #dd2c00;
+}
+.btn-delete {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+.btn-delete:focus,
+.btn-delete.focus {
+  color: #fff;
+  background-color: #2c2b2c;
+  border-color: #000;
+}
+.btn-delete:hover {
+  color: #fff;
+  background-color: #2c2b2c;
+  border-color: #000;
 }
 .inlineForm {
 	float: left;

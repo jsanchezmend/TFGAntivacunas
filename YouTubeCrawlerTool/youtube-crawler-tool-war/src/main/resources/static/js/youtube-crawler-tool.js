@@ -13,6 +13,9 @@ var csvExportChannelsNumericFields = ["subscribersCount", "videoCount", "viewCou
 
 var csvExportEdgesFields = ["outgoing", "incoming", "outgoingType", "incomingType"];
 
+var doBack = function () {
+	window.history.back();
+}
 
 var doGet = function (requestUrl, callback) {
 	console.log("doGet for url: " + requestUrl);
@@ -32,6 +35,28 @@ var doPost = function (requestUrl, body, callback) {
         data: JSON.stringify(body),
         contentType: 'application/json',
         mimeType: 'application/json',
+        success: callback
+	});
+}
+
+var doPut = function (requestUrl, body, callback) {
+	console.log("doPut for url: " + requestUrl + ", with body:" + JSON.stringify(body));
+	$.ajax({ 
+        url: requestUrl, 
+        method: 'PUT', 
+        dataType: 'json', 
+        data: JSON.stringify(body),
+        contentType: 'application/json',
+        mimeType: 'application/json',
+        success: callback
+	});
+}
+
+var doDelete = function (requestUrl, callback) {
+	console.log("doDelete for url: " + requestUrl);
+	$.ajax({ 
+        url: requestUrl, 
+        method: 'DELETE', 
         success: callback
 	});
 }
@@ -98,6 +123,18 @@ var generateChannelNodeContent = function(channel) {
 		+ "  <p><small><a href='channels/"+ channel.id +"'>View more</a></small></p>"
 		+ "</div>";
 	return html;
+}
+
+var validateCategoryFiled = function(categoryFields) {
+	if(!categoryFields.name) {
+		$('#formMessages').html("<div class='alert alert-danger'>Field 'Name' is required</div>");
+		return false;
+	} else if(!categoryFields.color) {
+		$('#formMessages').html("<div class='alert alert-danger'>Field 'Color' is required</div>");
+		return false;
+	}
+	$('#formMessages').html("");
+	return true;
 }
 
 var trimString = function(string, length) {

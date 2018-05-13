@@ -34,17 +34,17 @@ public class YouTubeCrawlerToolSecurityConfiguration extends WebSecurityConfigur
             .authorizeRequests()
             	// Crawler component security
                 .antMatchers(HttpMethod.POST,	"/api/crawlers").authenticated()
-                .antMatchers(HttpMethod.PUT,	"/api/crawlers/").authenticated()
-                .antMatchers(HttpMethod.DELETE,	"/api/crawlers/").authenticated()
+                .antMatchers(HttpMethod.PUT,	"/api/crawlers").authenticated()
+                .antMatchers(HttpMethod.DELETE,	"/api/crawlers").authenticated()
                 // Video component security
-                .antMatchers(HttpMethod.PUT,	"/api/videos/").authenticated()
-                .antMatchers(HttpMethod.DELETE,	"/api/videos/").authenticated()
+                .antMatchers(HttpMethod.PUT,	"/api/videos").authenticated()
+                .antMatchers(HttpMethod.DELETE,	"/api/videos").authenticated()
                 // Channel component security
-                .antMatchers(HttpMethod.DELETE,	"/api/channels/").authenticated()
+                .antMatchers(HttpMethod.DELETE,	"/api/channels").authenticated()
                 // Category component security
                 .antMatchers(HttpMethod.POST,	"/api/categories").authenticated()
-                .antMatchers(HttpMethod.PUT,	"/api/categories/").authenticated()
-                .antMatchers(HttpMethod.DELETE,	"/api/categories/").authenticated()
+                .antMatchers(HttpMethod.PUT,	"/api/categories").authenticated()
+                .antMatchers(HttpMethod.DELETE,	"/api/categories").authenticated()
                 // Allow any other request
                 .anyRequest().permitAll()
                 .and()

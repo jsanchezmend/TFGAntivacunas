@@ -2,6 +2,7 @@ package uoc.edu.jsanchezmend.tfg.ytct.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -72,9 +73,10 @@ public class YouTubeCrawlerToolController {
         return ADD_CATEGORY_VIEW;
     }
     
-    @RequestMapping(value="categories/{id}")
-    public String getEditCategoryView(Model model) {
+    @RequestMapping(value="categories/{name}")
+    public String getEditCategoryView(Model model, @PathVariable(value = "name", required = true) String name) {
     	model.addAttribute("activeMenuOption", CATEGORIES_VIEW);
+    	model.addAttribute("categoryName", name);
         return EDIT_CATEGORY_VIEW;
     }
     
