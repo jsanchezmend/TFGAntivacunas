@@ -8,6 +8,11 @@
 /*
 * General
 */
+.row-finish-section {
+	border-bottom: 1px solid #ddd;
+	margin-right: 0px;
+    margin-left: 0px;
+}
 .page-header-back {
     padding-bottom: 9px;
     margin: 20px 0 20px;
@@ -15,7 +20,7 @@
 }
 .table .btn {
     padding: 0px 10px !important;
-    margin-left: 10px;
+    margin-left: 5px;
     float: right;
 }
 .category-color {

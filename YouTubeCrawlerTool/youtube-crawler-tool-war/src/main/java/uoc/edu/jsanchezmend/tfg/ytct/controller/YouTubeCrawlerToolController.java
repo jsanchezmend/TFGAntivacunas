@@ -38,14 +38,16 @@ public class YouTubeCrawlerToolController {
     }
     
     @RequestMapping(value="crawlers/{id}")
-    public String getCrawlerView(Model model) {
+    public String getCrawlerView(Model model, @PathVariable(value = "id", required = true) String id) {
     	model.addAttribute("activeMenuOption", CRAWLERS_VIEW);
+    	model.addAttribute("crawlerId", id);
         return CRAWLER_VIEW;
     }
     
     @RequestMapping(value="videos/{id}")
-    public String getVideoView(Model model) {
+    public String getVideoView(Model model, @PathVariable(value = "id", required = true) String id) {
     	model.addAttribute("activeMenuOption", VIDEO_VIEW);
+    	model.addAttribute("videoId", id);
         return VIDEO_VIEW;
     }
     
@@ -56,8 +58,9 @@ public class YouTubeCrawlerToolController {
     }
     
     @RequestMapping(value="channels/{id}")
-    public String getChannelView(Model model) {
+    public String getChannelView(Model model, @PathVariable(value = "id", required = true) String id) {
     	model.addAttribute("activeMenuOption", CHANNELS_VIEW);
+    	model.addAttribute("channelId", id);
         return CHANNEL_VIEW;
     }
     
