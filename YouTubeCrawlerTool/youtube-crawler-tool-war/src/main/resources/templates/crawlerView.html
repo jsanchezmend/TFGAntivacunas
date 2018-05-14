@@ -119,10 +119,12 @@
 	
 	<script>
 		var crawlerId;
+		var crawlerVideosTable;
 		
 	  	$(document).ready(function() {
-			// Read crawler
 			crawlerId = $("#crawlerId").html();
+			
+			// Read crawler and display their info
 			doGet("/api/crawlers/" + crawlerId, function (data) {
 				$("#crawlerIdentification").html(data.id);
 				var search = data.relatedVideoId ? data.relatedVideoId : data.search;
@@ -161,8 +163,19 @@
 				var executionTime = millisToMinutesAndSeconds(data.executionTime) + " mins";
 				$("#crawlerExecutionTime").html(executionTime);
 			});
+
+			// Crawler videos table
+			crawlerVideosTable = $('#crawlerVideosTable').DataTable( {
+				deferRender: true,
+			    ajax: {
+			        url: '/api/crawlers/'+ crawlerId +'/videos',
+			        dataSrc: ''
+			    },
+			    columnDefs: videosTableColumDefinitions,
+			    columns: videosTableColumnsConfiguration
+			});
 		});
-	  	
+
 		function deleteCrawler() {
 			console.log("Deleting crawler with id: " + crawlerId);
 			doDelete("/api/crawlers/"+crawlerId, function (data) {

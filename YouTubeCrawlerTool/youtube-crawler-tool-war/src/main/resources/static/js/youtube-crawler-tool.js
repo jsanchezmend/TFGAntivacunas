@@ -13,6 +13,51 @@ var csvExportChannelsNumericFields = ["subscribersCount", "videoCount", "viewCou
 
 var csvExportEdgesFields = ["outgoing", "incoming", "outgoingType", "incomingType"];
 
+var videosTableColumDefinitions = [
+  {
+    targets: 0,
+    data: "title",
+    orderable: true,
+    render: function (data, type, row, meta) {
+    	return trimString(row.title, 40);
+    }
+  },
+  {
+    targets: 1,
+    data: "channel",
+    orderable: true,
+    render: function (data, type, row, meta) {
+    	var html = "<a href='/channels/"+row.channel.id+"'>"+trimString(row.channel.name, 25)+"</a>";
+    	return html;
+    }
+  },
+  {
+    targets: 2,
+    data: "category",
+    orderable: true,
+    render: function (data, type, row, meta) {
+    	return row.category.name;
+    }
+  },
+  {
+    targets: 4,
+    data: "options",
+    orderable: false,
+    render: function (data, type, row, meta) {
+    	var html = "<a class='btn btn-danger' href='/videos/"+row.id+"'>View</a>";
+    	return html
+    }
+  }
+];
+
+var videosTableColumnsConfiguration = [
+	{ title: 'Video title', data: 'title', width: '40%' },
+	{ title: 'Channel', data: 'channel', width: '25%' },
+	{ title: 'Category', data: 'category', width: '15%' },
+	{ title: 'Scope range', data: 'scopeRange', width: '10%' },
+	{ title: '', data: 'options', width: '10%' }
+];
+
 var doBack = function () {
 	window.history.back();
 }
