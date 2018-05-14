@@ -65,10 +65,20 @@ public class VideoServiceImpl implements VideoService {
 	public VideoItem editVideoCategory(String id, String newCategoryName) {
 		VideoItem result = null;
 		
-		Video video = this.videoRepository.findById(id).orElse(null);
-		final Category category = this.categoryRepository.findById(newCategoryName).orElse(null);
-		if(video != null && category != null) {
-			video.setCategory(category);
+		Video video = this.videoRepository.findById(id).orElse(null);		
+		if(video != null) {
+			final Category category;
+			if(newCategoryName != null && !newCategoryName.isEmpty()) {
+				category = this.categoryRepository.findById(newCategoryName).orElse(null);
+			} else {
+				category = null;
+			}
+			
+			if(category != null) {
+				video.setCategory(category);
+			} else {
+				video.setCategory(null);
+			}
 			video = this.videoRepository.save(video);
 			result = this.videoConverterService.toItem(video);
 		}

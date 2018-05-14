@@ -17,6 +17,7 @@ public class YouTubeCrawlerToolController {
 	private static final String LOGIN_VIEW = "loginView";
 	private static final String CRAWLERS_VIEW = "crawlersView";
 	private static final String CRAWLER_VIEW = "crawlerView";
+	private static final String VIDEOS_VIEW = "videosView";
 	private static final String VIDEO_VIEW = "videoView";
 	private static final String CHANNELS_VIEW = "channelsView";
 	private static final String CHANNEL_VIEW = "channelView";
@@ -44,9 +45,15 @@ public class YouTubeCrawlerToolController {
         return CRAWLER_VIEW;
     }
     
+    @RequestMapping(value="videos")
+    public String getVideosView(Model model) {
+    	model.addAttribute("activeMenuOption", VIDEOS_VIEW);
+        return VIDEOS_VIEW;
+    }
+    
     @RequestMapping(value="videos/{id}")
     public String getVideoView(Model model, @PathVariable(value = "id", required = true) String id) {
-    	model.addAttribute("activeMenuOption", VIDEO_VIEW);
+    	model.addAttribute("activeMenuOption", VIDEOS_VIEW);
     	model.addAttribute("videoId", id);
         return VIDEO_VIEW;
     }
@@ -62,6 +69,12 @@ public class YouTubeCrawlerToolController {
     	model.addAttribute("activeMenuOption", CHANNELS_VIEW);
     	model.addAttribute("channelId", id);
         return CHANNEL_VIEW;
+    }
+    
+    @RequestMapping(value="analysis")
+    public String getAnalysisView(Model model) {
+    	model.addAttribute("activeMenuOption", ANALYSIS_VIEW);
+        return ANALYSIS_VIEW;
     }
     
     @RequestMapping(value="categories")
@@ -83,10 +96,4 @@ public class YouTubeCrawlerToolController {
         return EDIT_CATEGORY_VIEW;
     }
     
-    @RequestMapping(value="analysis")
-    public String getAnalysisView(Model model) {
-    	model.addAttribute("activeMenuOption", ANALYSIS_VIEW);
-        return ANALYSIS_VIEW;
-    }
-
 }

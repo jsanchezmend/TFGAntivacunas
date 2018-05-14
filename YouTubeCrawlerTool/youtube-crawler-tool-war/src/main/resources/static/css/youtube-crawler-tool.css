@@ -8,6 +8,14 @@
 /*
 * General
 */
+.category-selector {
+	width: auto !important;
+	display: inline-block;
+}
+.tableHeader {
+	margin-top: 0px;
+    margin-bottom: 20px;
+}
 .row-finish-section {
 	border-bottom: 1px solid #ddd;
 	margin-right: 0px;
@@ -127,8 +135,13 @@ body.login .panel-body {
 .panel-node {
 	margin: 0 !important;
 }
+.panel-node p {
+    margin: 5px 0 0px;
+    text-align: center;
+}
 .node-title {
 	text-align: center;
+	margin: 0px;
 }
 img.center {
 	display: block;

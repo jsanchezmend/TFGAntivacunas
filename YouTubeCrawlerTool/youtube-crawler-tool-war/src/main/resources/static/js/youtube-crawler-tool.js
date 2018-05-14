@@ -27,7 +27,10 @@ var videosTableColumDefinitions = [
     data: "channel",
     orderable: true,
     render: function (data, type, row, meta) {
-    	var html = "<a href='/channels/"+row.channel.id+"'>"+trimString(row.channel.name, 25)+"</a>";
+    	var html = "";
+    	if(row.channel) {
+    		html = "<a href='/channels/"+row.channel.id+"'>"+trimString(row.channel.name, 25)+"</a>";
+    	}
     	return html;
     }
   },
@@ -36,7 +39,11 @@ var videosTableColumDefinitions = [
     data: "category",
     orderable: true,
     render: function (data, type, row, meta) {
-    	return row.category.name;
+    	var html = "";
+    	if(row.category) {
+    		html = row.category.name;
+    	}
+    	return html;
     }
   },
   {
@@ -144,11 +151,13 @@ var generateVideoNodeContent = function(video) {
 	  "<div class='panel panel-default panel-node'>"
 	+ "<div class='panel-heading node-title'>"+ video.embedHtml.replace("width=\"480\" height=\"270\"", "width=\"200\" height=\"140\"") +"</div>"
 	+ "  <div class='panel-body'>"
-	+ "  <h5 class='node-title'>"+ trimString(video.title, 50) +"<h5>"
+	+ "  <h5 class='node-title'>"+ trimString(video.title, 50) +"</h5>"
 	+ "  <p><small><b>Published:</b> " + video.publishedAt.substring(0, 10) +"</small></p>"
-	+ "  <p><small><b>Like count:</b> " + video.likeCount +"</small></p>"
-	+ "  <p><small><b>Dislike count:</b> " + video.dislikeCount +"</small></p>"
-	+ "  <p><small><b>Scope range:</b> " + video.scopeRange +"</small></p>";
+	+ "  <p><small><b>Scope range:</b> " + video.scopeRange +" <i class='fa fa-star'></i></small></p>"
+	+ "  <p><small><b>View count:</b> " + video.viewCount +" <i class='fa fa-eye'></i></small></p>"
+	+ "  <p><small><b>Like count:</b> " + video.likeCount +" <i class='fa fa-thumbs-o-up'></i></small></p>"
+	+ "  <p><small><b>Dislike count:</b> " + video.dislikeCount +" <i class='fa fa-thumbs-o-down'></i></small></p>"
+	+ "  <p><small><b>Comment count:</b> " + video.commentCount +" <i class='fa fa-comment-o'></i></small></p>";
 	if(video.category) {
 		html+= "  <p><small><b>Category:</b> " + video.category.name +"</small></p>"
 	}
@@ -162,7 +171,7 @@ var generateChannelNodeContent = function(channel) {
 		  "<div class='panel panel-default panel-node'>"
 		+ "<div class='panel-heading'><image src='"+ channel.thumbnailUrl +"' class='center'></div>"
 		+ "  <div class='panel-body'>"
-		+ "  <h5 class='node-title'>"+ trimString(channel.name, 50) +"<h5>"
+		+ "  <h5 class='node-title'>"+ trimString(channel.name, 50) +"</h5>"
 		+ "  <p><small>" + trimString(channel.description, 100) +"</small></p>"
 		+ "  <p><small><b>Published:</b> " + channel.publishedAt.substring(0, 10) +"</small></p>"
 		+ "  <p><small><a href='channels/"+ channel.id +"'>View more</a></small></p>"

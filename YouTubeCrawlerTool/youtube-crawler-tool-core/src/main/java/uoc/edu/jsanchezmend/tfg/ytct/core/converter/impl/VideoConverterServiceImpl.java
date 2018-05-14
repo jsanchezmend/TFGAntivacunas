@@ -77,6 +77,8 @@ public class VideoConverterServiceImpl
 		if(crawler != null) {
 			final CrawlerItem crawlerItem = new CrawlerItem();
 			crawlerItem.setId(crawler.getId());
+			crawlerItem.setSearch(crawler.getSearch());
+			crawlerItem.setRelatedVideoId(crawler.getRelatedVideoId());
 			item.setCrawler(crawlerItem);
 		}
 	}
