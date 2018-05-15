@@ -154,10 +154,10 @@ var generateVideoNodeContent = function(video) {
 	+ "  <h5 class='node-title'>"+ trimString(video.title, 50) +"</h5>"
 	+ "  <p><small><b>Published:</b> " + video.publishedAt.substring(0, 10) +"</small></p>"
 	+ "  <p><small><b>Scope range:</b> " + video.scopeRange +" <i class='fa fa-star'></i></small></p>"
-	+ "  <p><small><b>View count:</b> " + video.viewCount +" <i class='fa fa-eye'></i></small></p>"
-	+ "  <p><small><b>Like count:</b> " + video.likeCount +" <i class='fa fa-thumbs-o-up'></i></small></p>"
-	+ "  <p><small><b>Dislike count:</b> " + video.dislikeCount +" <i class='fa fa-thumbs-o-down'></i></small></p>"
-	+ "  <p><small><b>Comment count:</b> " + video.commentCount +" <i class='fa fa-comment-o'></i></small></p>";
+	+ "  <p><small><b>Views:</b> " + video.viewCount +" <i class='fa fa-eye'></i></small></p>"
+	+ "  <p><small><b>Likes:</b> " + video.likeCount +" <i class='fa fa-thumbs-o-up'></i></small></p>"
+	+ "  <p><small><b>Dislikes:</b> " + video.dislikeCount +" <i class='fa fa-thumbs-o-down'></i></small></p>"
+	+ "  <p><small><b>Comments:</b> " + video.commentCount +" <i class='fa fa-comment-o'></i></small></p>";
 	if(video.category) {
 		html+= "  <p><small><b>Category:</b> " + video.category.name +"</small></p>"
 	}
@@ -174,6 +174,10 @@ var generateChannelNodeContent = function(channel) {
 		+ "  <h5 class='node-title'>"+ trimString(channel.name, 50) +"</h5>"
 		+ "  <p><small>" + trimString(channel.description, 100) +"</small></p>"
 		+ "  <p><small><b>Published:</b> " + channel.publishedAt.substring(0, 10) +"</small></p>"
+		+ "  <p><small><b>Subscribers:</b> " + channel.subscribersCount +" <i class='fa fa-heart'></i></small></p>"
+		+ "  <p><small><b>Videos:</b> " + channel.videoCount +" <i class='fa fa-video-camera'></i></small></p>"
+		+ "  <p><small><b>Views:</b> " + channel.viewCount +" <i class='fa fa-eye'></i></small></p>"
+		+ "  <p><small><b>Comments:</b> " + channel.commentCount +" <i class='fa fa-comment-o'></i></small></p>"
 		+ "  <p><small><a href='channels/"+ channel.id +"'>View more</a></small></p>"
 		+ "</div>";
 	return html;
