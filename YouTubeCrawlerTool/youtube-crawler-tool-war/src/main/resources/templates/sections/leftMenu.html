@@ -12,15 +12,15 @@
     	</div>
     	<!-- Top menu -->
     	<ul class="nav navbar-top-links navbar-right">
+    	    <li class="dropdown">
+    			<a class="dropdown-toggle" th:href="@{/categories}" id="categoriesView">
+    				Categories <i class="fa fa-edit fa-fw"></i>
+    			</a>
+            </li>
     		<li class="dropdown" sec:authorize="isAuthenticated()==false">
     			<a class="dropdown-toggle" th:href="@{/login}">
     				Login <i class="fa fa-sign-in fa-fw"></i>
     			</a>
-            </li>
-            <li class="dropdown" sec:authorize="isAuthenticated()">
-    			<span class="dropdown-toggle">
-    				Logged as: <span sec:authentication="name"></span> <i class="fa fa-user fa-fw"></i>
-    			</span>
             </li>
             <li class="dropdown" sec:authorize="isAuthenticated()">
     			<a class="dropdown-toggle" sec:authorize="isAuthenticated()" href="#" onclick="document.getElementById('form-logout').submit()">
@@ -31,6 +31,11 @@
 			            <input type="submit" value="Sign Out"/>
 			        </form>
 		        </div>
+            </li>     
+            <li class="dropdown" sec:authorize="isAuthenticated()">
+    			<span class="dropdown-toggle logged-as">
+    				Logged as: <span sec:authentication="name"></span> <i class="fa fa-user fa-fw"></i>
+    			</span>
             </li>
 		</ul>
 		<!-- Left menu -->
@@ -48,9 +53,6 @@
 					</li>
 					<li>
 						<a th:href="@{/analysis}" id="analysisView"><i class="fa fa-bar-chart-o fa-fw"></i> Analysis</a>
-					</li>
-					<li>
-						<a th:href="@{/categories}" id="categoriesView"><i class="fa fa-edit fa-fw"></i> Categories</a>
 					</li>
 				</ul>
 			</div>
