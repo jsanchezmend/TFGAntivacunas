@@ -21,9 +21,12 @@
 	margin-right: 0px;
     margin-left: 0px;
 }
+.page-header-back-panel {
+    margin-top: 10px;
+}
 .page-header-back {
     padding-bottom: 9px;
-    margin: 20px 0 20px;
+    margin: 10px 0 20px;
     border-bottom: 1px solid #eee;
 }
 .table .btn {
@@ -38,8 +41,8 @@
     border-radius: 4px;
 }
 .btn-danger {
-    background-color: #dd2c00;
-    border-color: #dd2c00;
+    background-color: #f00;
+    border-color: #f00;
 }
 .btn-delete {
     color: #fff;
@@ -65,32 +68,67 @@
 }
 
 /*
+* Menu
+*/
+.navbar-default {
+	background-color: #f00;
+	border-color: #dd2c00;
+}
+.navbar-top-links li a.active,
+.navbar-top-links li a:hover {
+    background-color: #f02105;
+}
+.logged-as {
+    color: #fff;
+}
+.navbar-default .navbar-brand {
+    color: #fff;
+    font-weight: bold;
+}
+.navbar-default .navbar-brand:hover {
+    color: #fff;
+}
+.nav > li > a {
+    color:rgba(255,255,255,.7);
+    color: #fff;
+}
+.sidebar {
+	background-color: #f8f8f8 !important;
+}
+.sidebar .nav > li > a {
+    color: #777;
+    padding: 15px 15px;
+}
+.sidebar ul li {
+    border-bottom: none !important;
+}
+
+/*
 * Login page
 */
 body.login {
-  background-color: #dd2c00;
+  background-color: #fff;
 }
 body.login a:hover {
 	text-decoration: none;
 }
 body.login .panel-default {
     border: none;
-    /* -webkit-box-shadow: none; */
-  	/* box-shadow: none; */
 }
 body.login .panel-default > .panel-heading {
-	background-color: #dd2c00;
+	background-color: #fff;
 	border: none;
 }
 body.login .panel-title {
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 24px;
-    color: #fff;
+    color: #f00;
+    font-weight: bold;
     text-align: center;
 }
 body.login .panel-body {
-    background-color: #dd2c00;
+    background-color: #fff;
 }
 
 /*
@@ -149,6 +187,7 @@ img.center {
     margin-right: auto;
     width: 50%;
 }
+
 /*
 * Loader
 */
@@ -156,7 +195,7 @@ img.center {
 	margin: auto;
 	margin-top:100px;
     border: 16px solid #ddd; /* Light grey */
-    border-top: 16px solid #dd2c00; /* Red */
+    border-top: 16px solid #f00; /* Red */
     border-radius: 50%;
     width: 100px;
     height: 100px;
