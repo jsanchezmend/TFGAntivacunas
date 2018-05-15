@@ -53,7 +53,7 @@
 				        data: "options",
 				        orderable: false,
 				        render: function (data, type, row, meta) {
-				        	var html = "<a class='btn btn-delete' href='javascript:deleteCategory(\""+row.name+"\")' onclick='return confirm(\"Are you sure?\");'>Delete</a>"
+				        	var html = "<a class='btn btn-delete' href='javascript:deleteCategory(\""+row.name+"\")' onclick='return confirm(\"Are you sure? (Also all categorized videos with this category will be deleted)\");'>Delete</a>"
 				        		+ "<a class='btn btn-danger' href='/categories/"+row.name+"'>Edit</a>";
 				        	return html
 				        }
