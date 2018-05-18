@@ -46,6 +46,13 @@ public class VideoServiceImpl implements VideoService {
 		final List<VideoItem> result = this.videoConverterService.toListItem(videoIterable);
 		return result;
 	}
+	
+	@Override
+	public List<VideoItem> listFavoritesVideos() {
+		final Iterable<Video> videoIterable = this.videoRepository.findAllFavorite();
+		final List<VideoItem> result = this.videoConverterService.toListItem(videoIterable);
+		return result;
+	}
 
 	@Override
 	public VideoStatsItem getVideosStats() {
@@ -81,6 +88,22 @@ public class VideoServiceImpl implements VideoService {
 			}
 			video = this.videoRepository.save(video);
 			result = this.videoConverterService.toItem(video);
+		}
+
+		return result;
+	}
+	
+	@Override
+	public VideoItem editVideoFavorite(String id, Boolean favorite) {
+		VideoItem result = null;
+		
+		if(favorite != null) {
+			Video video = this.videoRepository.findById(id).orElse(null);		
+			if(video != null && !favorite.equals(video.getFavorite())) {		
+				video.setFavorite(favorite);
+				video = this.videoRepository.save(video);
+				result = this.videoConverterService.toItem(video);
+			}
 		}
 
 		return result;

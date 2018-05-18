@@ -12,6 +12,11 @@
     	</div>
     	<!-- Top menu -->
     	<ul class="nav navbar-top-links navbar-right">
+    	    <li class="dropdown" sec:authorize="isAuthenticated()">
+    			<a class="dropdown-toggle" th:href="@{/videos/favorites}" id="favoriteVideosView">
+    				Favorites <i class="fa fa-star fa-fw"></i>
+    			</a>
+            </li>
     	    <li class="dropdown">
     			<a class="dropdown-toggle" th:href="@{/categories}" id="categoriesView">
     				Categories <i class="fa fa-edit fa-fw"></i>

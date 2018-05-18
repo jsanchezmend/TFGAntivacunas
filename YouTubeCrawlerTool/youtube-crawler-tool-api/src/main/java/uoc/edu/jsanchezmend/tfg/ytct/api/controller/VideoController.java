@@ -41,6 +41,18 @@ public class VideoController {
 	}
 	
 	/**
+	 * List all favorites videos
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/favorites", method = RequestMethod.GET)
+	public List<VideoItem> listFavoritesVideos() {
+		final List<VideoItem> results = this.videoService.listFavoritesVideos();
+		return results;	
+	}
+	
+	/**
 	 * Retrieve videos stats
 	 * 
 	 * @return
@@ -76,14 +88,25 @@ public class VideoController {
 	@ResponseBody
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public VideoItem editVideo(@PathVariable(value = "id", required = true) String id, @RequestBody VideoItem video) {
-		final String newCategoryName;
-		if(video != null && video.getCategory() != null) {
-			newCategoryName = video.getCategory().getName();
-		} else {
-			newCategoryName = null;
+		VideoItem result = null;
+		String newCategoryName = null;
+		Boolean favorite = null;
+		
+		if(video != null) {
+			if(video.getCategory() != null) {
+				newCategoryName = video.getCategory().getName();
+			}
+			favorite = video.getFavorite();
 		}
-		final VideoItem result = this.videoService.editVideoCategory(id, newCategoryName);
-		return result;	
+		
+		if(newCategoryName != null) {
+			result = this.videoService.editVideoCategory(id, newCategoryName);
+		}
+		if(favorite != null) {
+			result = this.videoService.editVideoFavorite(id, favorite);
+		}
+		
+		return result;
 	}
 	
 	/**

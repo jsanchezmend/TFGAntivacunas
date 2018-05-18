@@ -8,6 +8,10 @@
 /*
 * General
 */
+.favorite {
+	float: left;
+    margin-right: 5px;
+}
 .category-selector {
 	width: auto !important;
 	display: inline-block;

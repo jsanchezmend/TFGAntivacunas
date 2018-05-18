@@ -21,6 +21,13 @@ public interface VideoService {
 	List<VideoItem> listVideos();
 	
 	/**
+	 * Return all favorites videos
+	 * 
+	 * @return
+	 */
+	List<VideoItem> listFavoritesVideos();
+	
+	/**
 	 * Returns the stats of all videos
 	 * 
 	 * @return
@@ -44,6 +51,15 @@ public interface VideoService {
 	 * @return
 	 */
 	VideoItem editVideoCategory(String id, String newCategoryName);
+	
+	/**
+	 * Edit video favorite
+	 * 
+	 * @param id
+	 * @param favorite
+	 * @return
+	 */
+	VideoItem editVideoFavorite(String id, Boolean favorite);
 	
 	/**
 	 * Deletes a video by id

@@ -35,6 +35,8 @@ public class VideoItem extends AbstractItem {
 	protected BigInteger scopeRange;
 	
 	protected String embedHtml;
+	
+	protected Boolean favorite;
 
 	protected ChannelItem channel;
 
@@ -124,6 +126,13 @@ public class VideoItem extends AbstractItem {
 	public void setEmbedHtml(String embedHtml) {
 		this.embedHtml = embedHtml;
 	}
+	
+	public Boolean getFavorite() {
+		return favorite;
+	}
+	public void setFavorite(Boolean favorite) {
+		this.favorite = favorite;
+	}	
 
 	public ChannelItem getChannel() {
 		return channel;

@@ -41,6 +41,8 @@ public class Video {
 	
 	protected String embedHtml;
 	
+	protected Boolean favorite;
+	
 	@Relationship(type = "UPLOADED_BY", direction = Relationship.OUTGOING)
 	protected Channel channel;
 	
@@ -60,7 +62,7 @@ public class Video {
 
 	public Video(String id, String title, String description, Date publishedAt, String duration, BigInteger viewCount,
 			BigInteger likeCount, BigInteger dislikeCount, BigInteger commentCount, BigInteger scopeRange,
-			String embedHtml) {
+			String embedHtml, Boolean favorite) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -73,6 +75,7 @@ public class Video {
 		this.commentCount = commentCount;
 		this.scopeRange = scopeRange;
 		this.embedHtml = embedHtml;
+		this.favorite = favorite;
 	}
 
 	public String getId() {
@@ -152,6 +155,13 @@ public class Video {
 		this.embedHtml = embedHtml;
 	}
 	
+	public Boolean getFavorite() {
+		return favorite;
+	}
+	public void setFavorite(Boolean favorite) {
+		this.favorite = favorite;
+	}	
+
 	public Channel getChannel() {
 		return channel;
 	}

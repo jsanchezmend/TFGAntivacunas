@@ -23,6 +23,10 @@
         				<div class="panel-body">
         					<div class="row">
         						<div class="col-md-8">
+        							<div id="favorite" style="display:none;"></div>
+        							<a class="favorite" href="javascript:favoriteVideo()" sec:authorize="isAuthenticated()">
+        								<i id="favoriteIcon" class="fa fa-2x"></i>
+        							</a>
         							<h3 class="tableHeader" id="videoTitle"></h3>
         						</div>
 		        				<div class="col-md-4 text-right" id="categoryName" sec:authorize="isAuthenticated()==false">
@@ -163,12 +167,17 @@
 	<script>
 		var videoId;
 		var relatedVideosTable;
+		var favorite;
 		
 	  	$(document).ready(function() {
 	  		videoId = $("#videoId").html();
 	  		
 			// Read crawler and display their info
 			doGet("/api/videos/" + videoId, function (data) {
+				favorite = data.favorite ? data.favorite : false;
+				$("#favorite").html(favorite);
+				var favoriteIconClass = favorite == false ? "fa-star-o" : "fa-star";
+				$("#favoriteIcon").addClass(favoriteIconClass);
 				$("#videoTitle").html(data.title);
 				$("#videoDescription").html(data.description);
 				$("#videoEmbedHtml").html(data.embedHtml.replace("width=\"480\"", "width=\"100%\""));
@@ -236,7 +245,7 @@
 				putBody = { category: { name: newCat } }
 			}
 			doPut("/api/videos/"+videoId, putBody, function (data) { 
-				newCat = newCat ? newCat : "Uncategorized"
+				newCat = newCat ? newCat : "Uncategorized";
 				alert("Video category was updated to: " + newCat);
 			});
 		})
@@ -246,6 +255,30 @@
 			console.log("Deleting video with id: " + videoId);
 			doDelete("/api/videos/"+videoId, function (data) {
 				doBack();
+			});
+		}
+		
+		// Favorite a video
+		function favoriteVideo() {
+			if(favorite == false) {
+				favorite = true;
+			} else {
+				favorite = false;
+			}
+			
+			var putBody = { favorite: favorite };
+			doPut("/api/videos/"+videoId, putBody, function (data) { 
+				favorite = data.favorite;
+				console.log("New video favorite value: " + favorite)
+				if(favorite == true) {
+					$("#favoriteIcon").removeClass("fa-star-o");
+					$("#favoriteIcon").addClass("fa-star");
+					alert("Video was add as a favorite");
+				} else {
+					$("#favoriteIcon").removeClass("fa-star");
+					$("#favoriteIcon").addClass("fa-star-o");
+					alert("Video was removed as a favorite");
+				}
 			});
 		}
 		

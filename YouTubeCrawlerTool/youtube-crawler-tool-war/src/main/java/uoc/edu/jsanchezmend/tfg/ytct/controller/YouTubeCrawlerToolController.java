@@ -17,6 +17,7 @@ public class YouTubeCrawlerToolController {
 	private static final String LOGIN_VIEW = "loginView";
 	private static final String CRAWLERS_VIEW = "crawlersView";
 	private static final String CRAWLER_VIEW = "crawlerView";
+	private static final String FAVORITE_VIDEOS_VIEW = "favoriteVideosView";
 	private static final String VIDEOS_VIEW = "videosView";
 	private static final String VIDEO_VIEW = "videoView";
 	private static final String CHANNELS_VIEW = "channelsView";
@@ -43,6 +44,12 @@ public class YouTubeCrawlerToolController {
     	model.addAttribute("activeMenuOption", CRAWLERS_VIEW);
     	model.addAttribute("crawlerId", id);
         return CRAWLER_VIEW;
+    }
+    
+    @RequestMapping(value="videos/favorites")
+    public String getFavoriteVideosView(Model model) {
+    	model.addAttribute("activeMenuOption", FAVORITE_VIDEOS_VIEW);
+        return FAVORITE_VIDEOS_VIEW;
     }
     
     @RequestMapping(value="videos")

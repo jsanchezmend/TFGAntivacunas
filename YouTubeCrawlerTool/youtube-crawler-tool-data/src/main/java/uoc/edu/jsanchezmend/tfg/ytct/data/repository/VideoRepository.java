@@ -18,6 +18,11 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.item.graph.EdgeDataItem;
 public interface VideoRepository extends Neo4jRepository<Video, String> {
 	
 	@Depth(1)
+	@Query("MATCH (video:Video) WHERE video.favorite=true WITH video "
+			+ "MATCH v=(video)-[:UPLOADED_BY|DISCOVERED_BY|CATEGORIZED_AS]->() RETURN video, nodes(v), rels(v)")
+	List<Video> findAllFavorite();
+	
+	@Depth(1)
 	@Query("MATCH (video:Video) -[:DISCOVERED_BY]-> (c:Crawler) WHERE ID(c)={0} WITH video "
 			+ "MATCH v=(video)-[:UPLOADED_BY|DISCOVERED_BY|CATEGORIZED_AS]->() RETURN video, nodes(v), rels(v)")
 	List<Video> findByCrawlerId(Long crawlerId);
