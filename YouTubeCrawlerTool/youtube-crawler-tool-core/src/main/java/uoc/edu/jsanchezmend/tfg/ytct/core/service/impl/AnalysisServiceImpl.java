@@ -150,6 +150,11 @@ public class AnalysisServiceImpl implements AnalysisService {
 		final List<VideoItem> resultVideoItems = new ArrayList<VideoItem>();
 		if(this.programmaticFiltersIsRequired(analysisSearch)) {
 			for(VideoItem videoItem : videoItems) {
+				// Favorites filter
+				if(analysisSearch.isIncludeOnlyFavorites() != null && analysisSearch.isIncludeOnlyFavorites()
+						&& (videoItem.getFavorite() == null || videoItem.getFavorite() == false)) {
+					continue;
+				}
 				// Categories filters
 				if(videoItem.getCategory() != null) {
 					if(analysisSearch.getCategories() != null && !analysisSearch.getCategories().isEmpty()){
@@ -245,6 +250,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 	 * @return
 	 */
 	protected boolean programmaticFiltersIsRequired(AnalysisSearchItem analysisSearch) {
+		if(analysisSearch.isIncludeOnlyFavorites() != null && analysisSearch.isIncludeOnlyFavorites()) {
+			return true;
+		}
 		if(analysisSearch.isIncludeUncategorized() != null) {
 			return true;
 		}

@@ -25,6 +25,8 @@ public class AnalysisSearchItem extends AbstractItem {
 	
 	protected Boolean includeUncategorized;
 	
+	protected Boolean includeOnlyFavorites;
+	
 	protected List<String> categories;
 	
 	protected List<Long> crawlers;
@@ -73,6 +75,13 @@ public class AnalysisSearchItem extends AbstractItem {
 			}
 		}
 		this.categories = categories;
+	}
+	
+	public Boolean isIncludeOnlyFavorites() {
+		return includeOnlyFavorites;
+	}
+	public void setIncludeOnlyFavorites(Boolean includeOnlyFavorites) {
+		this.includeOnlyFavorites = includeOnlyFavorites;
 	}
 
 	public List<Long> getCrawlers() {
