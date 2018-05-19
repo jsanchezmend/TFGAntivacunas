@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,8 @@ import uoc.edu.jsanchezmend.tfg.ytct.data.repository.VideoRepository;
  */
 @Service("analysisService")
 public class AnalysisServiceImpl implements AnalysisService {
+	
+	private final static Logger log = LoggerFactory.getLogger(AnalysisServiceImpl.class);
 
 	private static final String DEFAULT_FROM_DATE = "2005-02-14"; //YouTube foundation
 
@@ -49,16 +53,22 @@ public class AnalysisServiceImpl implements AnalysisService {
 	
 	@Override
 	public GraphItem createGraph(AnalysisSearchItem analysisSearch) {
+		final Date start = new Date();
+		
 		final GraphItem result = new GraphItem();
 		final GraphElementsItem elements = new GraphElementsItem();
 						
 		// Search for videos
 		final List<VideoItem> videoItemsCandidates = this.analysisSearch(analysisSearch);
 		
+		log.info("After nodes serach: " + (new Date().getTime() - start.getTime())/1000  );
+		
 		// Programmatic filters 
 		final Pair<List<String>,List<VideoItem>> programmaticFiltersResults = this.applyProgrammaticFilters(analysisSearch, videoItemsCandidates);
 		final List<String> videoIds = programmaticFiltersResults.getLeft();
 		final List<VideoItem> videoItems = programmaticFiltersResults.getRight();
+		
+		log.info("After programatic serach: " + (new Date().getTime() - start.getTime())/1000  );
 		
 		// Generate graph nodes
 		final List<String> channelIds = new ArrayList<String>();
@@ -107,13 +117,19 @@ public class AnalysisServiceImpl implements AnalysisService {
 			}
 		}
 		
+		log.info("After generating nodes serach: " + (new Date().getTime() - start.getTime())/1000  );
+		
 		// Generate graph edges
 		final List<EdgeItem> edgeItems = this.analysisSearchEdges(analysisSearch, videoIds);
 		if(edgeItems != null && !edgeItems.isEmpty()) {
 			elements.addEdges(edgeItems);
 		}
 		
+		log.info("After generating edges serach: " + (new Date().getTime() - start.getTime())/1000  );
+		
 		result.setElements(elements);
+		
+		log.info("Total time to return: : " + (new Date().getTime() - start.getTime())/1000  );
 		return result;
 	}
 	
