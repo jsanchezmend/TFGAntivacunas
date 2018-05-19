@@ -126,75 +126,78 @@
 	    	areChannels =  $('#includeChannels').is(":checked");
 	    	var searchFields = getFormFields("searchForm");
 	    	doPost("/api/graphs", searchFields, function (data) {  
-	    		currentSearch = data;
-		    	if (currentSearch.elements.nodes == null) {
+		    	if (data.elements.nodes == null) {
 	    			$('#cy').html("<div class='alert alert-warning text-center'>No results found</div>");
 	    		} else {
-	    			searchDateStr = dateFormat(new Date(),"dd/mm/yy h:MM TT");
-	    			initCytoscape(currentSearch.elements);
+	    			console.log("Start rendering the graph at: " + dateFormat(new Date(),"h:MM:ss TT"));
+	    			initCytoscape(data.elements);
+	    			console.log("End rendering the graph at: " + dateFormat(new Date(),"h:MM:ss TT"));
 	    			$('.loader').remove();
+	    			searchDateStr = dateFormat(new Date(),"dd/mm/yy h:MM TT");
 	    		}
+		    	currentSearch = data;
 	    	});
 	    })
 
 		//Create a graph
 		function initCytoscape(elements) {
 			cy = cytoscape({
-			  container: document.querySelector('#cy'),
-			  boxSelectionEnabled: false,
-			  autounselectify: true,
+			  container: document.getElementById('cy'),
 			  style: cytoscape.stylesheet()
 			    .selector('node')
 			      .css({
-			        //'content': 'data(resourceId)',
-			        'text-valign': 'center',
-			        'color': 'white',
-			        'text-outline-width': 2,
-			        'text-outline-color': '#999',
-			        'border-width': 2,
-			        'border-color': '#999',
 			       	'shape': 'data(shape)',
 			        'background-color': 'data(color)',
-			        'width': 'data(size)',
-			        'height': 'data(size)'
+			        'width': 'mapData(size, 0, 100, 10, 60)',
+			        'height': 'mapData(size, 0, 100, 10, 60)'
 			      })
 			    .selector('edge')
 			      .css({
-			        'curve-style': 'bezier',
-			        'target-arrow-shape': 'triangle',
-			        'target-arrow-color': '#999',
-			        'line-color': '#999',
-			        'width': 2
-			      })
-			    .selector('.faded')
-			      .css({
-			        'opacity': 0.25,
-			        'text-opacity': 0
+			        'curve-style': 'haystack' // fast edges!
 			      }),
-			  elements: elements,
-			  layout: {
-			        name: 'cose',
-			        idealEdgeLength: 100,
-			        nodeOverlap: 20,
-			        refresh: 20,
-			        fit: true,
-			        padding: 30,
-			        randomize: false,
-			        componentSpacing: 100,
-			        nodeRepulsion: 400000,
-			        edgeElasticity: 100,
-			        nestingFactor: 5,
-			        gravity: 80,
-			        numIter: 1000,
-			        initialTemp: 200,
-			        coolingFactor: 0.95,
-			        minTemp: 1.0
-			      }
+			 /* layout: {
+		        name: 'cose',
+		        idealEdgeLength: 100,
+		        nodeOverlap: 20,
+		        refresh: 20,
+		        fit: true,
+		        padding: 30,
+		        randomize: false,
+		        componentSpacing: 100,
+		        nodeRepulsion: 400000,
+		        edgeElasticity: 100,
+		        nestingFactor: 5,
+		        gravity: 80,
+		        numIter: 1000,
+		        initialTemp: 200,
+		        coolingFactor: 0.95,
+		        minTemp: 1.0
+			  },*/
+		      layout: {
+		        name: 'cose',
+		        animate: false,
+		        idealEdgeLength: 100,
+		        nodeOverlap: 20,
+		        refresh: 20,
+		        fit: true,
+		        padding: 30,
+		        randomize: false,
+		        componentSpacing: 100,
+		        nodeRepulsion: 400000,
+		        edgeElasticity: 100,
+		        nestingFactor: 5,
+		        gravity: 80,
+		        numIter: 20,
+		        initialTemp: 200,
+		        coolingFactor: 0.95,
+		        minTemp: 1.0
+		        },
+			 elements: elements
 			});
 			
 			cy.nodes().forEach(function(node){
 			  nodeJson = node.json();
-			  cy.$('#'+node.id()).qtip({
+			  cy.getElementById(node.id()).qtip({
 				  content: generateNodeContent(nodeJson.data),
 				  position: {
 				    my: 'top center',
@@ -208,12 +211,6 @@
 				    }
 				  }
 				});
-			});
-			
-			cy.on('tap', function(e){
-			  if( e.cyTarget === cy ){
-			    cy.elements().removeClass('faded');
-			  }
 			});
 			
 			// Graph opntions
