@@ -123,6 +123,9 @@ Hoy en día las redes sociales han puesto al alcance de los analistas de datos u
 
 La obtención de grandes volúmenes de datos nos llevara también a la problemática que surge en su almacenamiento en bases de datos tradicionales y su posterior procesamiento. Para habilitar al usuario final el correcto acceso a la información obtenida se estudiaran las ventajas que aporta el uso de bases de datos \textit{NoSQL} \cite{7} para este cometido, al ser diseñadas especialmente para manejar enormes cantidades de datos.
 
+//TODO: Retorno de inversión??
+//TODO: Presentar a Johanna como clienta
+
 \subsection{Objetivos del Trabajo}
 El principal objetivo del proyecto es el de proporcionar una aplicación web que permita a una analista de datos obtener, de forma usable y transparente, la información que requiera de la red social \textit{YouTube} enfocado a realizar una investigación sobre el movimiento antivacunas.
 
@@ -136,6 +139,8 @@ Algunos de los objetivos concretos que se quieren lograr con este proyecto son l
 \item Ofrecer herramientas de visualización para el análisis y comprensión de los datos obtenidos.
 \item Proporcionar una interfaz de usuario usable que permita realizar las acciones requeridas por el usuario final.
 \end{itemize}
+
+//TODO:Objetivo principal (detectar comportamiento redes de pro y anto vacuna) y secundario (explorar otras redes sociales)
 
 \subsection{Enfoque y método seguido}
 Para la realización del proyecto se seguirá el marco ágil de desarrollo \textit{scrum} \cite{8}. Al adoptar esta metodología como marco de trabajo nos permitirá, a diferencia de otras metodologías lineales de desarrollo como pueden ser los modelos en cascada, poder desarrollar el proyecto de forma flexible permitiéndonos adaptar la planificación inicial del proyecto en caso de ser necesario para adecuarse a nuevos requerimientos.
@@ -188,17 +193,21 @@ Como se puede observar, en el diagrama facilitado en cada entrega se espera cons
 Los riesgos detectados en la planificación se concentran principalmente en la consecución del hito definido en la primera fase de desarrollo. Para permitir al cliente de la aplicación poder empezar a recopilar datos para su investigación lo antes posible, se ha decidido realizar la instalación de la aplicación desarrollada en entorno de explotación en dos fases distintas, una con la funcionalidad del \textit{crawler} y otra con la funcionalidad analítica implementada. La demora en la primera fase de desarrollo podría comprometer el éxito de la investigación del cliente. Para mitigar este riesgo se realizara el seguimiento del mismo durante las diferentes iteraciones en esta fase de desarrollo y de ser necesario se tomaran conjuntamente con el cliente las acciones correctoras requeridas. 
 
 
-\subsection{Breve sumario de productos obtenidos}
+//TODO: Gant tentativo vs gant final (tomar prestado de los informes de seguimiento)
+
+
+\subsection{Arquitectura tecnológica}
+//TODO: Resumen de la tecnología obtenida, muy descriptivo. Antigua sección "Breve sumario de productos obtenidos"
 No hay que entrar en detalle: la descripción detallada se hará en el resto de capítulos. 
 
 
-\subsection{Breve descripción de los otros capítulos de la memoria}
+\subsection{Resumen de capítulos}
 Explicación de los contenidos de cada capítulo y su relación con el trabajo en global.
 \newpage 
 
 
 
-\section{Diseño}
+\section{Análisis y diseño}
 En estos capítulos, hay que describir los aspectos más relevante del diseño y desarrollo del proyecto, así como de los productos obtenidos. La estructuración de los capítulos puede variar según el tipo de Trabajo.  
 
 En cada apartado es muy importante describir las alternativas posibles, los criterios utilizados para tomar decisiones y la decisión tomada.
@@ -206,23 +215,31 @@ En cada apartado es muy importante describir las alternativas posibles, los crit
 En caso de que corresponda, se incluirá un apartado de “Valoración económica del trabajo”. Este apartado indicará los gastos asociados al desarrollo y mantenimiento del trabajo, así como los beneficios económicos obtenidos. Hacer un análisis final sobre la viabilidad del producto. 
 
 \subsection{Metodología}
+//TODO: Describir la metodología elegida para el desarrollo del proyecto (Dirigida a usuario final??)
 
-\subsection{Definición de la solución}
-\subsubsection{Entrevistas}
+\subsection{Propuesta de la solución}
+\subsubsection{Reuniones y entrevistas}
+//TODO: Describir cada una de las reuniones y del proceso seguido
+\subsubsection{Análisis de requisitos}
 \subsubsection{Elección de YouTube como red social}
 \subsubsection{La API de YouTube}
 \subsubsection{Propuesta de interfaz de usuario}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Mockups/15:04}
 \subsubsection{Visualización de vídeos en grafo}
+\subsubsection{Casos de uso}
 
 \subsection{Arquitectura de la solución}
-\subsubsection{Capa de datos}
+\subsubsection{Arquitectura WEB}
+\subsubsection{Elección de Neo4j como SGBD}
+\subsubsection{Diseño capa de datos}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaDatos}
 
-\subsubsection{Capa de negocio}
+\subsubsection{Diseño capa de negocio}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaNegocio}
 
-\subsubsection{Capa de presentación}
+\subsubsection{Diseño API RESTful}
+
+\subsubsection{Diseño capa de presentación}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaPresentacion}
 \newpage 
 
@@ -230,6 +247,7 @@ En caso de que corresponda, se incluirá un apartado de “Valoración económic
 
 
 \section{Desarrollo}
+//TODO: Hablar de patrones usados (factory y etc) y framworks utilizados
 \subsection{Entorno de desarrollo}
 Aplicación web (con POCYouTubeCrawlerNeo4j instalado):
 \url{http://youtubecrawlertoolwebapp.azurewebsites.net} 
@@ -247,12 +265,29 @@ Consulta de ejemplo: MATCH (n) RETURN n
 \item \textbf{Visualización en grafo:}: \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}
 \item \textbf{Neo4j:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawlerNeo4j}
 \end{itemize}
+\subsubsection{POCTwitterCrawler}
+\subsubsection{POCYouTubeCrawler}
+\subsubsection{POCYouTubeCrawlerNeo4j}
 
-\subsection{Capa de datos}
+\subsection{Estructura de la aplicación}
 
-\subsection{Capa de negocio}
+\subsection{Acceso a datos}
+// Spring data, entities, repositorios y POJOS
+
+\subsection{Crawler de YouTube}
+// Explicar conexión con YouTube y como se ha implementado el crawler
+
+\subsection{Visualización de vídeos en grafo}
+// Busqueda de videos y su representación en grafo Cytripode.js
+
+\subsection{Otras funcionalidades}
+// Accose a videos, favoritos, canales, etc.. 
+
+\subsection{Capa de seguridad}
+//Spring security
 
 \subsection{Capa de presentación}
+//Plantillas JSP con Themleaf y requests Ajax con Jquery y jquery para modificar el dom
 
 \subsection{Definición y ejecución de pruebas}
 \newpage 
@@ -261,12 +296,17 @@ Consulta de ejemplo: MATCH (n) RETURN n
 
 
 
-\section{Producto obtenido}
-\subsection{Grado de implementación conseguido}
+\section{Implementación y puesta en funcionamiento}
+\subsection{Manual de instalación y requerimientos}
 
-\subsection{Expectativas del cliente}
+\subsection{Servidor de explotación}
 
-\subsection{Demostración}
+\subsection{Formación y sensibilización}
+
+\subsection{Funcionalidades no implementadas}
+// Stats
+\subsection{Propuesta de mejoras}
+//API error handling, mejores logs, mas filtros de analisis y por base de datos, performance del grafo, UI en general, accesibilidad y usabilidad.
 \newpage 
 
 
@@ -282,12 +322,16 @@ Este capítulo tiene que incluir:
 \end{itemize}
 
 \subsection{Conclusiones del trabajo}
+// mencionar conclusiones de Johanna
+// Puntos fuertes y debiles
+// Criticas dificultades
+// ha merecido la pena etc...
 
 \subsection{Grado de cumplimiento de los objetivos}
 
 \subsection{Seguimiento de la planificación y metodología}
 
-\subsection{Próximos pasos}
+\subsection{Opinión del proyecto}
 \newpage 
 
 
