@@ -127,27 +127,26 @@ Reconocimiento-NoComercial-SinObraDerivada\\
 \section{Introducción}
 En esta sección se detalla el proyecto, la motivación de la elección de la temática escogida y la planificación y estructuración del mismo.
 
+
 \subsection{Contexto y justificación del Trabajo}
 Desde la introducción de la vacunación como método preventivo de enfermedades han existido entidades y grupos de personas que se han opuesto a ella y han dudado de su efectividad o propósito \cite{1}. Hoy en día el activismo anti-vacunación (conocido también como movimiento antivacunas) ha vuelto a la actualidad y se encuentra en auge en algunas regiones tales como Europa o Estados Unidos, cobrándose en el peor de los escenarios victimas mortales a causa de enfermedades que se creían erradicadas y que han vuelto a surgir \cite{2}\cite{3}. 
 
-Para hacer posible el estudio y comprensión de las motivaciones del movimiento antivacuna se propone el desarrollo de una aplicación que permita la recolección de grandes cantidades de datos de la actividad realizada por parte de este colectivo en la red social \textit{YouTube} con el fin de habilitar su posterior tratamiento y estudio por parte de una analista de datos (\textit{data scientist} \cite{4}) en el desarrollo de su trabajo final de master. 
+Para hacer posible el estudio y comprensión de las motivaciones del movimiento antivacuna y luchar contra su desinformación, se propone el desarrollo de una aplicación que permita la recolección de grandes cantidades de datos de la actividad realizada por parte de este colectivo en las redes sociales con el fin de hacer posible su posterior tratamiento y estudio para obtener valor añadido. Para tal fin, en este proyecto contamos con la colaboración de Johanna Rodríguez estudiante de xxx que asume el rol de analista de datos (\textit{data scientist} \cite{4}) en el desarrollo de su trabajo final de master y que actúa a la vez como clienta de la aplicación desarrollada en el presente proyecto.
 \linebreak
 
-Proyecto que se enmarca dentro de la problemática de la obtención, almacenamiento y procesamiento de grandes volúmenes de datos (\textit{Big Data} \cite{5}).
-\linebreak
+Hoy en día las redes sociales han puesto al alcance de los analistas de datos una gran cantidad de datos disponibles para ser analizados, una de las problemáticas a las que se quiere hacer frente es la obtención de dichos datos de forma efectiva. Para ello se propone hacer uso de interfaces de programación de aplicaciones (abreviado como \textit{API} \cite{6} en ingles) ofrecidas públicamente por distintas redes sociales de tal forma que el proceso resulte transparente para el usuario final, permitiéndole la extracción a este problema. 
 
-Hoy en día las redes sociales han puesto al alcance de los analistas de datos una gran cantidad de datos disponibles para ser analizados, una de las problemáticas a las que se quiere hacer frente es la obtención de dichos datos de forma efectiva. Para ello se propone hacer uso de interfaces de programación de aplicaciones (abreviado como \textit{API} \cite{6} en ingles) ofrecidas públicamente por \textit{YouTube} de tal forma que el proceso resulte transparente para el usuario final, en nuestro caso una analista de datos, permitiéndole la extracción a este problema. 
+La obtención de grandes volúmenes de datos nos lleva también a la problemática que surge en su almacenamiento en bases de datos tradicionales y su posterior procesamiento. Para habilitar al usuario final el correcto acceso a la información obtenida se estudían las ventajas que aporta el uso de bases de datos \textit{NoSQL} \cite{7} para este cometido, al ser diseñadas especialmente para manejar enormes cantidades de datos. Proyecto que se enmarca dentro de la problemática de la obtención, almacenamiento y procesamiento de grandes volúmenes de datos (\textit{Big Data} \cite{5}) y su posterior acceso.
 
-La obtención de grandes volúmenes de datos nos llevara también a la problemática que surge en su almacenamiento en bases de datos tradicionales y su posterior procesamiento. Para habilitar al usuario final el correcto acceso a la información obtenida se estudiaran las ventajas que aporta el uso de bases de datos \textit{NoSQL} \cite{7} para este cometido, al ser diseñadas especialmente para manejar enormes cantidades de datos.
-
-//TODO: Retorno de inversión??
-//TODO: Presentar a Johanna como clienta
 
 \subsection{Objetivos del Trabajo}
-El principal objetivo del proyecto es el de proporcionar una aplicación web que permita a una analista de datos obtener, de forma usable y transparente, la información que requiera de la red social \textit{YouTube} enfocado a realizar una investigación sobre el movimiento antivacunas.
+El objetivo principal del proyecto es proporcionar una aplicación web que permita a la clienta obtener de forma usable y transparente la información que necesite de la red social \textit{YouTube} para poder llevar a cabo el estudio de patrones de comportamiento entre las diferentes redes de los movimientos anti y pro vacunación.
+\linebreak
 
-Algunos de los objetivos concretos que se quieren lograr con este proyecto son los siguientes: 
+Entre los objetivos secundarios del proyecto se encuentra la exploración de otras redes sociales y proporcionar una herramienta lo suficientemente genérica para que pueda ser utilizada en la investigación realizada por Johanna así como en otras investigaciones futuras de distinta temática.
+\linebreak
 
+Algunos objetivos concretos que se han querido lograr son los siguientes: 
 \begin{itemize}
 \item Investigar que funcionalidades aportan las \textit{API} públicas ofrecidas por \textit{YouTube} y analizar como se pueden utilizar para la obtención de la información requerida.
 \item Determinar como almacenar y acceder de forma eficiente a la gran cantidad de información que se obtendrá.
@@ -157,7 +156,6 @@ Algunos de los objetivos concretos que se quieren lograr con este proyecto son l
 \item Proporcionar una interfaz de usuario usable que permita realizar las acciones requeridas por el usuario final.
 \end{itemize}
 
-//TODO:Objetivo principal (detectar comportamiento redes de pro y anto vacuna) y secundario (explorar otras redes sociales)
 
 \subsection{Enfoque y método seguido}
 Para la realización del proyecto se seguirá el marco ágil de desarrollo \textit{scrum} \cite{8}. Al adoptar esta metodología como marco de trabajo nos permitirá, a diferencia de otras metodologías lineales de desarrollo como pueden ser los modelos en cascada, poder desarrollar el proyecto de forma flexible permitiéndonos adaptar la planificación inicial del proyecto en caso de ser necesario para adecuarse a nuevos requerimientos.
