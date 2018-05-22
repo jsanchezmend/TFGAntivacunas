@@ -8,6 +8,8 @@
 		<thymeleaf th:replace="sections/leftMenu :: leftMenu" />
         <div id="page-wrapper">
         
+        	<div id="loggedUser" style="display:none;" sec:authorize="isAuthenticated()">loggedUser</div>
+        
         	<div id="crawlerId" style="display:none;" th:text="${crawlerId}">crawlerId</div>
         
         	<div class="row">
@@ -128,7 +130,7 @@
         			<div class="panel panel-default">
         				<div class="panel-body">
         					<h3 class="tableHeader"><small>Crawled videos:</small></h3>
-        					<table width="100%" class="table table-striped table-hover" id="crawlerVideosTable"></table>
+        					<table width="100%" class="table table-striped table-hover" id="videosTable"></table>
         				</div>
         			</div>
                 </div>
@@ -139,7 +141,7 @@
 	
 	<script>
 		var crawlerId;
-		var crawlerVideosTable;
+		var videosTable;
 		
 	  	$(document).ready(function() {
 			crawlerId = $("#crawlerId").html();
@@ -192,14 +194,14 @@
 			});
 
 			// Crawler videos table
-			crawlerVideosTable = $('#crawlerVideosTable').DataTable( {
+			videosTable = $('#videosTable').DataTable( {
 				deferRender: true,
 			    ajax: {
 			        url: '/api/crawlers/'+ crawlerId +'/videos',
 			        dataSrc: ''
 			    },
-			    columnDefs: videosTableColumDefinitions,
-			    columns: videosTableColumnsConfiguration
+			    columnDefs: getVideosTableDefinitions(),
+			    columns: getVideosTableColumns()
 			});
 		});
 

@@ -13,58 +13,6 @@ var csvExportChannelsNumericFields = ["subscribersCount", "videoCount", "viewCou
 
 var csvExportEdgesFields = ["outgoing", "incoming", "outgoingType", "incomingType"];
 
-var videosTableColumDefinitions = [
-  {
-    targets: 0,
-    data: "title",
-    orderable: true,
-    render: function (data, type, row, meta) {
-    	return trimString(row.title, 40);
-    }
-  },
-  {
-    targets: 1,
-    data: "channel",
-    orderable: true,
-    render: function (data, type, row, meta) {
-    	var html = "";
-    	if(row.channel) {
-    		html = "<a href='/channels/"+row.channel.id+"'>"+trimString(row.channel.name, 25)+"</a>";
-    	}
-    	return html;
-    }
-  },
-  {
-    targets: 2,
-    data: "category",
-    orderable: true,
-    render: function (data, type, row, meta) {
-    	var html = "";
-    	if(row.category) {
-    		html = row.category.name;
-    	}
-    	return html;
-    }
-  },
-  {
-    targets: 4,
-    data: "options",
-    orderable: false,
-    render: function (data, type, row, meta) {
-    	var html = "<a class='btn btn-danger' href='/videos/"+row.id+"'>View</a>";
-    	return html
-    }
-  }
-];
-
-var videosTableColumnsConfiguration = [
-	{ title: 'Video title', data: 'title', width: '40%' },
-	{ title: 'Channel', data: 'channel', width: '25%' },
-	{ title: 'Category', data: 'category', width: '15%' },
-	{ title: 'Scope range', data: 'scopeRange', width: '10%' },
-	{ title: '', data: 'options', width: '10%' }
-];
-
 var doBack = function () {
 	window.history.back();
 }
@@ -324,6 +272,171 @@ var sleep = function (time) {
 	 var now = new Date().getTime();
 	 while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
+
+// Videos table
+var videosTableColumDefinitionsLogged = [
+        {
+			targets : 0,
+			data : "title",
+			orderable : true,
+			render : function(data, type, row, meta) {
+				return trimString(row.title, 40);
+			}
+		},
+		{
+			targets : 1,
+			data : "channel",
+			orderable : true,
+			render : function(data, type, row, meta) {
+				var html = "";
+				if (row.channel) {
+					html = "<a href='/channels/" + row.channel.id + "'>"
+							+ trimString(row.channel.name, 25) + "</a>";
+				}
+				return html;
+			}
+		},
+		{
+			targets : 2,
+			data : "category",
+			orderable : true,
+			render : function(data, type, row, meta) {
+				var html = "";
+				if (row.category) {
+					html = row.category.name;
+				}
+				return html;
+			}
+		},
+		{
+			targets : 4,
+			data : "options",
+			orderable : false,
+			render : function(data, type, row, meta) {
+				var html = "<a class='btn btn-danger' href='/videos/"
+						+ row.id
+						+ "'>View</a><a class='btn btn-delete' href='javascript:deleteVideoInTable(\""
+						+ row.id
+						+ "\")' onclick='return confirm(\"Are you sure?\");'>Delete</a>";
+				return html
+			}
+		} ];
+
+var videosTableColumDefinitions = [
+		{
+			targets : 0,
+			data : "title",
+			orderable : true,
+			render : function(data, type, row, meta) {
+				return trimString(row.title, 40);
+			}
+		},
+		{
+			targets : 1,
+			data : "channel",
+			orderable : true,
+			render : function(data, type, row, meta) {
+				var html = "";
+				if (row.channel) {
+					html = "<a href='/channels/" + row.channel.id + "'>"
+							+ trimString(row.channel.name, 25) + "</a>";
+				}
+				return html;
+			}
+		},
+		{
+			targets : 2,
+			data : "category",
+			orderable : true,
+			render : function(data, type, row, meta) {
+				var html = "";
+				if (row.category) {
+					html = row.category.name;
+				}
+				return html;
+			}
+		},
+		{
+			targets : 4,
+			data : "options",
+			orderable : false,
+			render : function(data, type, row, meta) {
+				var html = "<a class='btn btn-danger' href='/videos/" + row.id
+						+ "'>View</a>";
+				return html
+			}
+		} ];
+
+var videosTableColumnsConfigurationLogged = [ {
+	title : 'Video title',
+	data : 'title',
+	width : '40%'
+}, {
+	title : 'Channel',
+	data : 'channel',
+	width : '20%'
+}, {
+	title : 'Category',
+	data : 'category',
+	width : '15%'
+}, {
+	title : 'Scope range',
+	data : 'scopeRange',
+	width : '5%'
+}, {
+	title : '',
+	data : 'options',
+	width : '20%'
+} ];
+
+var videosTableColumnsConfiguration = [ {
+	title : 'Video title',
+	data : 'title',
+	width : '40%'
+}, {
+	title : 'Channel',
+	data : 'channel',
+	width : '25%'
+}, {
+	title : 'Category',
+	data : 'category',
+	width : '15%'
+}, {
+	title : 'Scope range',
+	data : 'scopeRange',
+	width : '10%'
+}, {
+	title : '',
+	data : 'options',
+	width : '10%'
+} ];
+
+var getVideosTableDefinitions = function() {
+	var loggeduser = $("#loggedUser").html();
+	if (loggeduser) {
+		return videosTableColumDefinitionsLogged;
+	} else {
+		return videosTableColumDefinitions;
+	}
+}
+
+var getVideosTableColumns = function() {
+	var loggeduser = $("#loggedUser").html();
+	if (loggeduser) {
+		return videosTableColumnsConfigurationLogged;
+	} else {
+		return videosTableColumnsConfiguration;
+	}
+}
+
+var deleteVideoInTable = function(videoId) {
+	console.log("Deleting video with id: " + videoId);
+	doDelete("/api/videos/" + videoId, function(data) {
+		videosTable.ajax.reload();
+	});
+}
+
+// End Videos table
 
 var dateFormat = function () {
     var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
