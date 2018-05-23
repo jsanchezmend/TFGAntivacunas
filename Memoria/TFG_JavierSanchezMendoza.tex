@@ -129,18 +129,20 @@ En esta sección se detalla el proyecto, la motivación de la elección de la te
 
 
 \subsection{Contexto y justificación del Trabajo}
-Desde la introducción de la vacunación como método preventivo de enfermedades han existido entidades y grupos de personas que se han opuesto a ella y han dudado de su efectividad o propósito \cite{1}. Hoy en día el activismo anti-vacunación (conocido también como movimiento antivacunas) ha vuelto a la actualidad y se encuentra en auge en algunas regiones tales como Europa o Estados Unidos, cobrándose en el peor de los escenarios victimas mortales a causa de enfermedades que se creían erradicadas y que han vuelto a surgir \cite{2}\cite{3}. 
-
-Para hacer posible el estudio y comprensión de las motivaciones del movimiento antivacuna y luchar contra su desinformación, se propone el desarrollo de una aplicación que permita la recolección de grandes cantidades de datos de la actividad realizada por parte de este colectivo en las redes sociales con el fin de hacer posible su posterior tratamiento y estudio para obtener valor añadido. Para tal fin, en este proyecto contamos con la colaboración de Johanna Rodríguez estudiante de xxx que asume el rol de analista de datos (\textit{data scientist} \cite{4}) en el desarrollo de su trabajo final de master y que actúa a la vez como clienta de la aplicación desarrollada en el presente proyecto.
+Desde la introducción de la vacunación como método preventivo de enfermedades han existido entidades y grupos de personas que se han opuesto a ella y han dudado de su efectividad o propósito \cite{1}. Hoy en día el activismo anti-vacunación (conocido también como movimiento antivacunas) ha vuelto a la actualidad y se encuentra en auge en algunas regiones tales como Europa o Estados Unidos, cobrándose en el peor de los escenarios victimas mortales a causa de enfermedades que se creían erradicadas y que han vuelto a surgir \cite{2}\cite{3}.
 \linebreak
 
-Hoy en día las redes sociales han puesto al alcance de los analistas de datos una gran cantidad de datos disponibles para ser analizados, una de las problemáticas a las que se quiere hacer frente es la obtención de dichos datos de forma efectiva. Para ello se propone hacer uso de interfaces de programación de aplicaciones (abreviado como \textit{API} \cite{6} en ingles) ofrecidas públicamente por distintas redes sociales de tal forma que el proceso resulte transparente para el usuario final, permitiéndole la extracción a este problema. 
+Para hacer posible el estudio y comprensión de las motivaciones del movimiento antivacuna y luchar contra su desinformación, se propone el desarrollo de una aplicación que permita la recolección de grandes cantidades de datos de la actividad realizada por parte de este colectivo en redes sociales con el fin de hacer posible su posterior tratamiento y estudio para obtener valor añadido. Para tal fin, en este proyecto contamos con la colaboración de Johanna Milena Rodríguez Vera estudiante de master en Telemedicina que asume el rol de analista de datos (\textit{data scientist} \cite{4}) en el desarrollo de su trabajo final de máster titulado \textit{Evaluación de la información sanitaria en vacunas disponible en las redes sociales - YouTube} y que actúa a la vez como clienta de la aplicación desarrollada en el presente proyecto.
+\linebreak
 
-La obtención de grandes volúmenes de datos nos lleva también a la problemática que surge en su almacenamiento en bases de datos tradicionales y su posterior procesamiento. Para habilitar al usuario final el correcto acceso a la información obtenida se estudían las ventajas que aporta el uso de bases de datos \textit{NoSQL} \cite{7} para este cometido, al ser diseñadas especialmente para manejar enormes cantidades de datos. Proyecto que se enmarca dentro de la problemática de la obtención, almacenamiento y procesamiento de grandes volúmenes de datos (\textit{Big Data} \cite{5}) y su posterior acceso.
+Hoy en día las redes sociales han puesto al alcance de los analistas de datos una gran cantidad de información disponible para ser analizada, una de las problemáticas a las que se quiere hacer frente es la obtención de dichos datos de forma efectiva. Para ello se propone hacer uso de interfaces de programación de aplicaciones (abreviado como \textit{API} \cite{5} en ingles) ofrecidas públicamente por distintas redes sociales de tal forma que el proceso resulte transparente para el usuario final, permitiéndole la extracción a este problema.
+\linebreak
 
+La obtención de grandes volúmenes de datos nos lleva también a la problemática que surge en su almacenamiento en bases de datos tradicionales y su posterior procesamiento. Para habilitar al usuario final el correcto acceso a la información obtenida se estudían las ventajas que aporta el uso de bases de datos \textit{NoSQL} \cite{6} para este cometido, al ser diseñadas especialmente para manejar enormes cantidades de datos. Proyecto que se enmarca dentro de la problemática de la obtención, almacenamiento y procesamiento de grandes volúmenes de datos (\textit{Big Data} \cite{7}) y su posterior acceso.
+\newpage
 
 \subsection{Objetivos del Trabajo}
-El objetivo principal del proyecto es proporcionar una aplicación web que permita a la clienta obtener de forma usable y transparente la información que necesite de la red social \textit{YouTube} para poder llevar a cabo el estudio de patrones de comportamiento entre las diferentes redes de los movimientos anti y pro vacunación.
+El objetivo principal del proyecto es proporcionar una aplicación web que permita a la clienta obtener de forma usable y transparente la información que necesite de la red social \textit{YouTube} para poder llevar a cabo el estudio de patrones de comportamiento entre las diferentes movimientos anti y pro vacuna.
 \linebreak
 
 Entre los objetivos secundarios del proyecto se encuentra la exploración de otras redes sociales y proporcionar una herramienta lo suficientemente genérica para que pueda ser utilizada en la investigación realizada por Johanna así como en otras investigaciones futuras de distinta temática.
@@ -158,11 +160,14 @@ Algunos objetivos concretos que se han querido lograr son los siguientes:
 
 
 \subsection{Enfoque y método seguido}
-Para la realización del proyecto se seguirá el marco ágil de desarrollo \textit{scrum} \cite{8}. Al adoptar esta metodología como marco de trabajo nos permitirá, a diferencia de otras metodologías lineales de desarrollo como pueden ser los modelos en cascada, poder desarrollar el proyecto de forma flexible permitiéndonos adaptar la planificación inicial del proyecto en caso de ser necesario para adecuarse a nuevos requerimientos.
+Para la realización del proyecto se ha seguido el marco ágil de desarrollo \textit{scrum} \cite{8}. Al adoptar esta metodología como marco de trabajo nos ha permitido, a diferencia de otras metodologías lineales de desarrollo como pueden ser los modelos en cascada, poder desarrollar el proyecto de forma flexible permitiéndonos adaptar la planificación inicial del proyecto en los casos necesarios para adecuarse a los nuevos requerimientos.
+\\
 
-La forma en la cual se aplicara la metodología \textit{scrum} en el proyecto esta condicionada por los integrantes del equipo de desarrollo, en el actual la figura del \textit{product owner}, \textit{scrum master} y desarrollador recaerán sobre la figura del alumno que presenta el actual proyecto descrito (Javier Sánchez Mendoza), mientras que la figura del cliente estará representada por una analista de datos en el desarrollo de su trabajo final de master (Johanna Rodríguez) y el consultor de los mismos (Carlos Luis Sánchez Bocanegra) como \textit{stakeholder}.
+La forma en la cual se aplico la metodología \textit{scrum} en el proyecto esta condicionada por los integrantes del equipo de desarrollo, en el cual la figura del \textit{product owner}, \textit{scrum master} y desarrollador recaen sobre la figura del alumno que presenta el actual proyecto descrito (Javier Sánchez Mendoza), mientras que la figura del cliente estará representada por una analista de datos (Johanna Milena Rodríguez Vera) y el consultor de los mismos (Carlos Luis Sánchez Bocanegra) como \textit{stakeholder}.
+\\
 
-Siguiendo la metodología \textit{scrum}, se realizaran iteraciones (comúnmente conocidos como \textit{sprints}) de una semana de duración donde, en la finalización de los mismos, se realizaran reuniones online para revisar y aprobar las tareas realizadas (\textit{sprint review}) y definir las tareas para la siguiente iteración (\textit{sprint planning}). Para gestionar las tareas a realizar (\textit{backlog}) se ha decidido utilizar la herramienta online \textit{Trello} \cite{9}:
+Siguiendo la metodología \textit{scrum}, se realizaron iteraciones (comúnmente conocidos como \textit{sprints}) de una semana de duración donde, en la finalización de los mismos, se realizaron reuniones online para revisar y aprobar las tareas realizadas (\textit{sprint review}) y definir las tareas para la siguiente iteración (\textit{sprint planning}). Para gestionar las tareas a realizar (\textit{backlog}) se decidio utilizar la herramienta online \textit{Trello} \cite{9}:
+\\
 
 \begin{figure}[hbtp]
 \centering
@@ -170,8 +175,9 @@ Siguiendo la metodología \textit{scrum}, se realizaran iteraciones (comúnmente
 \caption{Ejemplo del backlog del proyecto en Trello}
 \end{figure}
 
+
 \subsection{Planificación del Trabajo}
-En la realización del proyecto se seguirá la planificación detallada en el diagrama de \textit{Grantt} tentativo facilitado en las figuras dos, tres y cuatro. Cabe destacar que el diagrama proporcionado representa una estimación inicial de la planificación del proyecto y esta sujeto a modificaciones al inicio de cada iteración.
+En la realización del proyecto se propuso inicialmente seguir una planificación tentativa tal y como se detalla en el diagrama de \textit{Grantt} facilitado en las figuras dos y tres:
 
 \begin{figure}[H]
 \centering
@@ -184,16 +190,12 @@ En la realización del proyecto se seguirá la planificación detallada en el di
 \includegraphics[scale=0.4]{planificacion/listado-tareas.png}
 \caption{Listado de tareas}
 \end{figure}
+\newpage
 
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.3]{planificacion/diagrama-gantt.png}
-\caption{Diagrama de Gantt}
-\end{figure}
+De la planificación inicial cabe destacar que la redacción de la memoria se diseño como una tarea evolutiva que se desarrollaría durante todas las fases del proyecto pero mas intensamente durante la antepenúltima fase dedicada exclusivamente a su redacción. Además, durante las dos fases de desarrollo se  planificaron dos tareas recurrentes para la definición y realización de pruebas de calidad del producto a realizar durante todo el ciclo de desarrollo.
+\linebreak
 
-De la planificación facilitada cabe destacar que la redacción de la memoria se ha diseñado como una tarea evolutiva que se ira desarrollando durante todas las fases del proyecto pero mas intensamente durante la antepenúltima fase dedicada exclusivamente a su redacción. Además, durante las dos fases de desarrollo se han planificado dos tareas recurrentes para la definición y realización de pruebas de calidad del producto a realizar durante todo el ciclo de desarrollo.
-
-Como se puede observar, en el diagrama facilitado en cada entrega se espera conseguir unos hitos concretos. La relación de los mas destacables por entrega son los siguientes:
+Como se puede observar, en el diagrama facilitado en cada entrega se pretendían conseguir unos hitos concretos. La relación de los mas destacables por entrega son los siguientes:
 
 \begin{itemize}
 \item \textbf{Definición de los contenidos del trabajo:} Redacción propuesta TFG.
@@ -205,19 +207,42 @@ Como se puede observar, en el diagrama facilitado en cada entrega se espera cons
 \item \textbf{Defensa pública:} Defender públicamente el proyecto.
 \end{itemize}
 
-Los riesgos detectados en la planificación se concentran principalmente en la consecución del hito definido en la primera fase de desarrollo. Para permitir al cliente de la aplicación poder empezar a recopilar datos para su investigación lo antes posible, se ha decidido realizar la instalación de la aplicación desarrollada en entorno de explotación en dos fases distintas, una con la funcionalidad del \textit{crawler} y otra con la funcionalidad analítica implementada. La demora en la primera fase de desarrollo podría comprometer el éxito de la investigación del cliente. Para mitigar este riesgo se realizara el seguimiento del mismo durante las diferentes iteraciones en esta fase de desarrollo y de ser necesario se tomaran conjuntamente con el cliente las acciones correctoras requeridas. 
+Los riesgos detectados en la planificación inicial se concentraban principalmente en la consecución del hito definido en la primera fase de desarrollo. Para permitir a la clienta de la aplicación poder empezar a recopilar datos para su investigación lo antes posible, se decidió realizar la instalación de la aplicación desarrollada en un entorno de explotación en dos fases distintas, una con la funcionalidad del \textit{crawler} y otra con la funcionalidad analítica implementada. La demora en la primera fase de desarrollo podría comprometer el éxito de la investigación del cliente. Para mitigar este riesgo se realizo el seguimiento del mismo durante las diferentes iteraciones en esa fase de desarrollo. 
+\linebreak
 
-
-//TODO: Gant tentativo vs gant final (tomar prestado de los informes de seguimiento)
+Cabe destacar que el diagrama proporcionado en esta sección representa la estimación inicial de la planificación del proyecto de forma tentativa y fue sujeto a modificaciones al inicio de cada nueva fase de desarrollo para garantizar el éxito del proyecto. En la sección de conclusiones del presente documento en el apartado \ref{sec:seguiminetoPlanificacion} se realiza una comparación entre la planificación inicial y sus respectivas revisiones.
+\newpage
 
 
 \subsection{Arquitectura tecnológica}
-//TODO: Resumen de la tecnología obtenida, muy descriptivo. Antigua sección "Breve sumario de productos obtenidos"
-No hay que entrar en detalle: la descripción detallada se hará en el resto de capítulos. 
+Para la consecución de los objetivos definidos se ha desarrollado una aplicación web bautizada como \textit{YouTubeCrawlerTool} la cual ha sido diseñada por capas.
+\\
+
+La capa de negocio de dicha aplicación ha sido desarrollada con tecnología Java EE \cite{10} implementada mayormente utilizando proyectos del marco de desarrollo Spring Framework \cite{11} entre otros. En esta capa se hace uso intensivo de servicios externos en forma de API pública ofrecida por YouTube con el fin de consumir dicha API para recolectar los vídeos requeridos por el usuario para su estudio.
+\\
+
+En la capa de presentación se ha utilizado el lenguaje JavaScript \cite{12} con un gran uso de JQuery \cite{13} para modificar el DOM de las vistas y realizar llamadas asíncronas a la capa de negocio.
+\\
+
+Finalmente, en la capa de datos se utiliza una base de datos orientada a grafos \cite{14} la cual nos permite persistir los vídeos obtenidos en forma de grafo junto con sus relaciones ademas de otras informaciones derivadas y necesarias para el uso y funcionamiento la aplicación.
+\\
+
+En los siguientes apartados se profundiza en la arquitectura y el diseño de la aplicación introducidos en esta sección.
 
 
 \subsection{Resumen de capítulos}
-Explicación de los contenidos de cada capítulo y su relación con el trabajo en global.
+En los próximos capítulos se detalla el trabajo realizado juntamente con los productos obtenidos y sus conclusiones.
+\\
+
+La relación de capítulos es la siguiente:
+
+\begin{itemize}
+\item \textbf{Análisis y diseño:} Explicación de la metodología de diseño escogida así como los pasos que se llevaron a cabo para definir una propuesta a la clienta y su posterior análisis para acabar definiendo la arquitectura de la solución.
+\item \textbf{Desarrollo:} Descripción del desarrollo efectuado y de las decisiones realizadas durante el proceso.
+\item \textbf{Implementación y puesta en funcionamiento:} Detalle de los productos obtenidos con las instrucciones para su correcta puesta en funcionamiento ademas de las acciones de formación realizadas.
+\item \textbf{Conclusiones:} Sumario de resultados obtenidos y conclusiones sobre el trabajo realizado.
+\end{itemize}
+
 \newpage 
 
 
@@ -321,7 +346,7 @@ Consulta de ejemplo: MATCH (n) RETURN n
 \subsection{Funcionalidades no implementadas}
 // Stats
 \subsection{Propuesta de mejoras}
-//API error handling, mejores logs, mas filtros de analisis y por base de datos, performance del grafo, UI en general, accesibilidad y usabilidad.
+//API error handling, mejores logs, mas filtros de analisis y por base de datos, performance del grafo, UI en general, accesibilidad y usabilidad. inteligencia artificial para categorizar automaticamente los videos uilizando, por ejemplo, un modelo baso en reglas.
 \newpage 
 
 
@@ -344,7 +369,8 @@ Este capítulo tiene que incluir:
 
 \subsection{Grado de cumplimiento de los objetivos}
 
-\subsection{Seguimiento de la planificación y metodología}
+\subsection{Seguimiento de la planificación y metodología}\label{sec:seguiminetoPlanificacion}
+//TODO: Gant tentativo vs gant final (tomar prestado de los informes de seguimiento)
 
 \subsection{Opinión del proyecto}
 \newpage 
@@ -361,11 +387,16 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{2} \url{http://www.elmundo.es/cataluna/2015/06/27/558e5fb2e2704ea41e8b4576.html} (07/03/2018)
   \bibitem{3} \url{https://buenavibra.es/movida-sana/salud/italia-sarampion-movimientos-antivacunas} (16/03/2018)
   \bibitem{4} \url{https://es.wikipedia.org/wiki/Ciencia_de_datos} (07/03/2018)
-  \bibitem{5} \url{https://es.wikipedia.org/wiki/Macrodatos} (07/03/2018)
-  \bibitem{6} \url{https://es.wikipedia.org/wiki/Interfaz_de_programacion_de_aplicaciones} (07/03/2018)
-  \bibitem{7} \url{https://es.wikipedia.org/wiki/NoSQL} (07/03/2018)
+  \bibitem{5} \url{https://es.wikipedia.org/wiki/Interfaz_de_programacion_de_aplicaciones} (07/03/2018)
+  \bibitem{6} \url{https://es.wikipedia.org/wiki/NoSQL} (07/03/2018)
+  \bibitem{7} \url{https://es.wikipedia.org/wiki/Macrodatos} (07/03/2018)
   \bibitem{8} \url{https://es.wikipedia.org/wiki/Scrum_(desarrollo_de_software)} (16/03/2018)
   \bibitem{9} \url{https://trello.com} (16/03/2018)
+  \bibitem{10} \url{http://www.oracle.com/technetwork/java/index.html} (24/05/2018)
+  \bibitem{11} \url{https://spring.io/} (24/05/2018)
+  \bibitem{12} \url{https://es.wikipedia.org/wiki/JavaScript} (24/05/2018)
+  \bibitem{13} \url{https://jquery.com/} (24/05/2018)
+  \bibitem{14} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (24/05/2018)
 \end{thebibliography}
 \newpage 
 
