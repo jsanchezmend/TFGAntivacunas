@@ -125,28 +125,27 @@ Reconocimiento-NoComercial-SinObraDerivada\\
 
 
 \section{Introducción}
-En esta sección se detalla el proyecto, la motivación de la elección de la temática escogida y la planificación y estructuración del mismo.
-
+\bigskip 
 
 \subsection{Contexto y justificación del Trabajo}
 Desde la introducción de la vacunación como método preventivo de enfermedades han existido entidades y grupos de personas que se han opuesto a ella y han dudado de su efectividad o propósito \cite{1}. Hoy en día el activismo anti-vacunación (conocido también como movimiento antivacunas) ha vuelto a la actualidad y se encuentra en auge en algunas regiones tales como Europa o Estados Unidos, cobrándose en el peor de los escenarios victimas mortales a causa de enfermedades que se creían erradicadas y que han vuelto a surgir \cite{2}\cite{3}.
-\linebreak
+\\
 
 Para hacer posible el estudio y comprensión de las motivaciones del movimiento antivacuna y luchar contra su desinformación, se propone el desarrollo de una aplicación que permita la recolección de grandes cantidades de datos de la actividad realizada por parte de este colectivo en redes sociales con el fin de hacer posible su posterior tratamiento y estudio para obtener valor añadido. Para tal fin, en este proyecto contamos con la colaboración de Johanna Milena Rodríguez Vera estudiante de master en Telemedicina que asume el rol de analista de datos (\textit{data scientist} \cite{4}) en el desarrollo de su trabajo final de máster titulado \textit{Evaluación de la información sanitaria en vacunas disponible en las redes sociales - YouTube} y que actúa a la vez como clienta de la aplicación desarrollada en el presente proyecto.
-\linebreak
+\\
 
 Hoy en día las redes sociales han puesto al alcance de los analistas de datos una gran cantidad de información disponible para ser analizada, una de las problemáticas a las que se quiere hacer frente es la obtención de dichos datos de forma efectiva. Para ello se propone hacer uso de interfaces de programación de aplicaciones (abreviado como \textit{API} \cite{5} en ingles) ofrecidas públicamente por distintas redes sociales de tal forma que el proceso resulte transparente para el usuario final, permitiéndole la extracción a este problema.
-\linebreak
+\\
 
 La obtención de grandes volúmenes de datos nos lleva también a la problemática que surge en su almacenamiento en bases de datos tradicionales y su posterior procesamiento. Para habilitar al usuario final el correcto acceso a la información obtenida se estudían las ventajas que aporta el uso de bases de datos \textit{NoSQL} \cite{6} para este cometido, al ser diseñadas especialmente para manejar enormes cantidades de datos. Proyecto que se enmarca dentro de la problemática de la obtención, almacenamiento y procesamiento de grandes volúmenes de datos (\textit{Big Data} \cite{7}) y su posterior acceso.
 \newpage
 
 \subsection{Objetivos del Trabajo}
 El objetivo principal del proyecto es proporcionar una aplicación web que permita a la clienta obtener de forma usable y transparente la información que necesite de la red social \textit{YouTube} para poder llevar a cabo el estudio de patrones de comportamiento entre las diferentes movimientos anti y pro vacuna.
-\linebreak
+\\
 
 Entre los objetivos secundarios del proyecto se encuentra la exploración de otras redes sociales y proporcionar una herramienta lo suficientemente genérica para que pueda ser utilizada en la investigación realizada por Johanna así como en otras investigaciones futuras de distinta temática.
-\linebreak
+\\
 
 Algunos objetivos concretos que se han querido lograr son los siguientes: 
 \begin{itemize}
@@ -157,7 +156,7 @@ Algunos objetivos concretos que se han querido lograr son los siguientes:
 \item Ofrecer herramientas de visualización para el análisis y comprensión de los datos obtenidos.
 \item Proporcionar una interfaz de usuario usable que permita realizar las acciones requeridas por el usuario final.
 \end{itemize}
-
+\medskip 
 
 \subsection{Enfoque y método seguido}
 Para la realización del proyecto se ha seguido el marco ágil de desarrollo \textit{scrum} \cite{8}. Al adoptar esta metodología como marco de trabajo nos ha permitido, a diferencia de otras metodologías lineales de desarrollo como pueden ser los modelos en cascada, poder desarrollar el proyecto de forma flexible permitiéndonos adaptar la planificación inicial del proyecto en los casos necesarios para adecuarse a los nuevos requerimientos.
@@ -174,7 +173,7 @@ Siguiendo la metodología \textit{scrum}, se realizaron iteraciones (comúnmente
 \includegraphics[scale=0.3]{planificacion/trello-backlog.png}
 \caption{Ejemplo del backlog del proyecto en Trello}
 \end{figure}
-
+\medskip 
 
 \subsection{Planificación del Trabajo}
 En la realización del proyecto se propuso inicialmente seguir una planificación tentativa tal y como se detalla en el diagrama de \textit{Grantt} facilitado en las figuras dos y tres:
@@ -193,7 +192,7 @@ En la realización del proyecto se propuso inicialmente seguir una planificació
 \newpage
 
 De la planificación inicial cabe destacar que la redacción de la memoria se diseño como una tarea evolutiva que se desarrollaría durante todas las fases del proyecto pero mas intensamente durante la antepenúltima fase dedicada exclusivamente a su redacción. Además, durante las dos fases de desarrollo se  planificaron dos tareas recurrentes para la definición y realización de pruebas de calidad del producto a realizar durante todo el ciclo de desarrollo.
-\linebreak
+\\
 
 Como se puede observar, en el diagrama facilitado en cada entrega se pretendían conseguir unos hitos concretos. La relación de los mas destacables por entrega son los siguientes:
 
@@ -208,7 +207,7 @@ Como se puede observar, en el diagrama facilitado en cada entrega se pretendían
 \end{itemize}
 
 Los riesgos detectados en la planificación inicial se concentraban principalmente en la consecución del hito definido en la primera fase de desarrollo. Para permitir a la clienta de la aplicación poder empezar a recopilar datos para su investigación lo antes posible, se decidió realizar la instalación de la aplicación desarrollada en un entorno de explotación en dos fases distintas, una con la funcionalidad del \textit{crawler} y otra con la funcionalidad analítica implementada. La demora en la primera fase de desarrollo podría comprometer el éxito de la investigación del cliente. Para mitigar este riesgo se realizo el seguimiento del mismo durante las diferentes iteraciones en esa fase de desarrollo. 
-\linebreak
+\\
 
 Cabe destacar que el diagrama proporcionado en esta sección representa la estimación inicial de la planificación del proyecto de forma tentativa y fue sujeto a modificaciones al inicio de cada nueva fase de desarrollo para garantizar el éxito del proyecto. En la sección de conclusiones del presente documento en el apartado \ref{sec:seguiminetoPlanificacion} se realiza una comparación entre la planificación inicial y sus respectivas revisiones.
 \newpage
@@ -228,7 +227,7 @@ Finalmente, en la capa de datos se utiliza una base de datos orientada a grafos 
 \\
 
 En los siguientes apartados se profundiza en la arquitectura y el diseño de la aplicación introducidos en esta sección.
-
+\medskip 
 
 \subsection{Resumen de capítulos}
 En los próximos capítulos se detalla el trabajo realizado juntamente con los productos obtenidos y sus conclusiones.
@@ -248,36 +247,77 @@ La relación de capítulos es la siguiente:
 
 
 \section{Análisis y diseño}
-En estos capítulos, hay que describir los aspectos más relevante del diseño y desarrollo del proyecto, así como de los productos obtenidos. La estructuración de los capítulos puede variar según el tipo de Trabajo.  
-
-En cada apartado es muy importante describir las alternativas posibles, los criterios utilizados para tomar decisiones y la decisión tomada.
-
-En caso de que corresponda, se incluirá un apartado de “Valoración económica del trabajo”. Este apartado indicará los gastos asociados al desarrollo y mantenimiento del trabajo, así como los beneficios económicos obtenidos. Hacer un análisis final sobre la viabilidad del producto. 
+\bigskip 
 
 \subsection{Metodología}
-//TODO: Describir la metodología elegida para el desarrollo del proyecto (Dirigida a usuario final??)
+Para realizar el diseño de la aplicación se opto de entre diferentes posibilidades el enfoque definido por la filosofía del 'Diseño centrado en el usuario' \cite{15}.
+\\
+
+El diseño centrado en el usuario, como bien indica su nombre, se caracteriza por conocer a fondo a los futuros usuarios de una aplicación para diseñar un producto que resuelva sus necesidades y expectativas buscando en todo momento conseguir la mayor satisfacción del usuario posible. Se trata de un proceso iterativo y cíclico por fases en donde en cada una de ellas se utilizan distintas técnicas para conseguir los objetivos propuestos. 
+\\
+
+En nuestro proyecto se ha decidido seguir esta y no otra metodología de diseño tales como el 'Diseño centrado en la actividad' o el 'Diseño centrado en el uso' debido a que, como en nuestro caso la clienta de la aplicación va a ser también la usuaria final de la misma, se ha decidido realizar el análisis de la aplicación centrada en ella y sus necesidades por encima de la actividad que se llevara a cabo o el uso.
+\\
+
+La relación de fases y técnicas utilizadas ha sido la siguiente:
+
+\begin{itemize}
+\item \textbf{Definir contexto de uso:} El objetivo de esta fase es el de determinar que necesidades pretende la usuaria final que la aplicación resuelva y a que se va a destinar su uso. La técnica escogida para la realización de esta fase fueron las entrevistas con la usuaria final que se realizaron mediante videoconferencia sobretodo durante las diferentes \textit{sprint reviews} al termino de cada \textit{sprint}.
+\item \textbf{Especificar requisitos:} En la siguiente fase se definen los requisitos del sistema a partir de la información recogida en la fase previa. Para los requisitos funcionales se opto por recogerlos como 'casos de uso' \cite{16}.
+\item \textbf{Diseñar el producto:} En esta fase se diseñan y implementan los requisitos definidos en la fase anterior ya sea con el objetivo de proporcionar una solución final o una propuesta de solución a ser refinada en sucesivas iteraciones. Las técnicas utilizadas en esta fase fueron la creación de maquetas para evaluar la solución y el prototipado mediante pruebas de concepto realizadas con el objetivo de estudiar posibles soluciones antes de realizar su implementación en la aplicación.
+\item \textbf{Poner a prueba el producto:} Finalmente, en esta fase se pone a prueba el producto obtenido. Para hacerlo, se definieron y ejecutaron pruebas de integración diseñadas teniendo en cuenta los casos de uso definidos previamente y se realizaron test con usuarios para evaluar se grado de satisfacción.
+\end{itemize}
+
+Gracias al enfoque escogido fue posible encontrar respuestas a preguntas sobre las expectativas que la usuaria tenia depositadas sobre la aplicación y que fueron de gran ayuda a la hora de diseñar la solución final. Algunas de las principales preguntas fueron:\\
+\textit{¿Quiénes son los usuarios de la aplicación?}\\
+\textit{¿Cuáles son las tareas a realizar?}\\
+\textit{¿Qué funcionalidades se necesitan?}\\
+\textit{¿Qué información se necesita?}
+\\
+
+También cabe destacar que gracias a que tanto \textit{scrum} como el diseño centrado en el usuario son dos procesos iterativos, resulto fácil integrar esta metodología dentro del marco ágil de desarrollo.
+\medskip 
 
 \subsection{Propuesta de la solución}
+\medskip 
+
 \subsubsection{Reuniones y entrevistas}
 //TODO: Describir cada una de las reuniones y del proceso seguido
-\subsubsection{Análisis de requisitos}
+\medskip 
+
 \subsubsection{Elección de YouTube como red social}
-\subsubsection{La API de YouTube}
+\medskip 
+
+\subsubsection{Visualización de vídeos en grafo}
+\medskip 
+
+\subsubsection{Casos de uso}
+\medskip 
+
 \subsubsection{Propuesta de interfaz de usuario}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Mockups/15:04}
-\subsubsection{Visualización de vídeos en grafo}
-\subsubsection{Casos de uso}
+\medskip 
+
 
 \subsection{Arquitectura de la solución}
+\medskip 
+
 \subsubsection{Arquitectura WEB}
+\medskip 
+
 \subsubsection{Elección de Neo4j como SGBD}
+\medskip 
+
 \subsubsection{Diseño capa de datos}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaDatos}
+\medskip 
 
 \subsubsection{Diseño capa de negocio}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaNegocio}
+\medskip 
 
 \subsubsection{Diseño API RESTful}
+\medskip 
 
 \subsubsection{Diseño capa de presentación}
 \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaPresentacion}
@@ -287,6 +327,8 @@ En caso de que corresponda, se incluirá un apartado de “Valoración económic
 
 
 \section{Desarrollo}
+\bigskip
+
 //TODO: Hablar de patrones usados (factory y etc) y framworks utilizados
 \subsection{Entorno de desarrollo}
 Aplicación web (con POCYouTubeCrawlerNeo4j instalado):
@@ -297,6 +339,10 @@ Servidor base de datos Neo4j:
 Usuario: neo4j
 Password: Y01t1b3cr4wl3rt00l
 Consulta de ejemplo: MATCH (n) RETURN n
+\medskip 
+
+\subsection{Analista YouTube Data API}
+\medskip 
 
 \subsection{Pruebas de concepto}
 \begin{itemize}
@@ -305,29 +351,43 @@ Consulta de ejemplo: MATCH (n) RETURN n
 \item \textbf{Visualización en grafo:}: \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}
 \item \textbf{Neo4j:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawlerNeo4j}
 \end{itemize}
+\medskip 
+
 \subsubsection{POCTwitterCrawler}
+\medskip 
+
 \subsubsection{POCYouTubeCrawler}
+\medskip 
+
 \subsubsection{POCYouTubeCrawlerNeo4j}
+\medskip 
 
 \subsection{Estructura de la aplicación}
+\medskip 
 
 \subsection{Acceso a datos}
 // Spring data, entities, repositorios y POJOS
+\medskip 
 
 \subsection{Crawler de YouTube}
 // Explicar conexión con YouTube y como se ha implementado el crawler
+\medskip 
 
 \subsection{Visualización de vídeos en grafo}
 // Busqueda de videos y su representación en grafo Cytripode.js
+\medskip 
 
 \subsection{Otras funcionalidades}
 // Accose a videos, favoritos, canales, etc.. 
+\medskip 
 
 \subsection{Capa de seguridad}
 //Spring security
+\medskip 
 
 \subsection{Capa de presentación}
 //Plantillas JSP con Themleaf y requests Ajax con Jquery y jquery para modificar el dom
+\medskip 
 
 \subsection{Definición y ejecución de pruebas}
 \newpage 
@@ -337,14 +397,21 @@ Consulta de ejemplo: MATCH (n) RETURN n
 
 
 \section{Implementación y puesta en funcionamiento}
+\bigskip 
+
 \subsection{Manual de instalación y requerimientos}
+\medskip 
 
 \subsection{Servidor de explotación}
+\medskip 
 
 \subsection{Formación y sensibilización}
+\medskip 
 
 \subsection{Funcionalidades no implementadas}
 // Stats
+\medskip 
+
 \subsection{Propuesta de mejoras}
 //API error handling, mejores logs, mas filtros de analisis y por base de datos, performance del grafo, UI en general, accesibilidad y usabilidad. inteligencia artificial para categorizar automaticamente los videos uilizando, por ejemplo, un modelo baso en reglas.
 \newpage 
@@ -353,6 +420,8 @@ Consulta de ejemplo: MATCH (n) RETURN n
 
 
 \section{Conclusiones}
+\bigskip 
+
 Este capítulo tiene que incluir:
 \begin{itemize}
 \item Una descripción de las conclusiones del trabajo: Qué lecciones se han aprendido del trabajo?.
@@ -366,22 +435,29 @@ Este capítulo tiene que incluir:
 // Puntos fuertes y debiles
 // Criticas dificultades
 // ha merecido la pena etc...
+\medskip 
 
 \subsection{Grado de cumplimiento de los objetivos}
+\medskip 
 
 \subsection{Seguimiento de la planificación y metodología}\label{sec:seguiminetoPlanificacion}
 //TODO: Gant tentativo vs gant final (tomar prestado de los informes de seguimiento)
+\medskip 
 
 \subsection{Opinión del proyecto}
 \newpage 
 
 
 \section{Glosario}
+\bigskip
+
 Definición de los términos y acrónimos más relevantes utilizados dentro de la Memoria. 
 \newpage 
 
 
 \section{Bibliografía}
+\bigskip
+
 \begin{thebibliography}{0}
   \bibitem{1} \url{https://es.wikipedia.org/wiki/Controversia_de_las_vacunas} (07/03/2018)
   \bibitem{2} \url{http://www.elmundo.es/cataluna/2015/06/27/558e5fb2e2704ea41e8b4576.html} (07/03/2018)
@@ -392,16 +468,20 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{7} \url{https://es.wikipedia.org/wiki/Macrodatos} (07/03/2018)
   \bibitem{8} \url{https://es.wikipedia.org/wiki/Scrum_(desarrollo_de_software)} (16/03/2018)
   \bibitem{9} \url{https://trello.com} (16/03/2018)
-  \bibitem{10} \url{http://www.oracle.com/technetwork/java/index.html} (24/05/2018)
-  \bibitem{11} \url{https://spring.io/} (24/05/2018)
-  \bibitem{12} \url{https://es.wikipedia.org/wiki/JavaScript} (24/05/2018)
-  \bibitem{13} \url{https://jquery.com/} (24/05/2018)
-  \bibitem{14} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (24/05/2018)
+  \bibitem{10} \url{http://www.oracle.com/technetwork/java/index.html} (23/05/2018)
+  \bibitem{11} \url{https://spring.io/} (23/05/2018)
+  \bibitem{12} \url{https://es.wikipedia.org/wiki/JavaScript} (23/05/2018)
+  \bibitem{13} \url{https://jquery.com/} (23/05/2018)
+  \bibitem{14} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (23/05/2018)
+  \bibitem{15} \url{https://es.wikipedia.org/wiki/Dise%C3%B1o_centrado_en_el_usuario} (24/05/2018)
+  \bibitem{16} \url{https://es.wikipedia.org/wiki/Caso_de_uso} (24/05/2018) 
 \end{thebibliography}
 \newpage 
 
 
 \section{Anexos}
+\bigskip
+
 Listado de apartados que son demasiado extensos para incluir dentro de la memoria y tienen un carácter autocontienido (por ejemplo, manuales de usuario, manuales de instalación, etc.) 
 
 Dependiente del tipo de trabajo, es posible que no haya que añadir ningún anexo.
