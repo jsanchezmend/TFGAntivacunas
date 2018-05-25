@@ -293,7 +293,7 @@
 			
 			// Refresh the table each 10 seconds
 			setInterval(function() {
-				crawlersTable.ajax.reload();
+				crawlersTable.ajax.reload(null, false);
 			}, 10000);
 		});
 		
@@ -330,7 +330,7 @@
 			var formFields = {};
 			formFields["status"] = newStatus;
 	    	doPut("/api/crawlers/" + crawlerId, formFields, function (data) {  
-	    		crawlersTable.ajax.reload();
+	    		crawlersTable.ajax.reload(null, false);
 	    	});
 		}
 	</script>

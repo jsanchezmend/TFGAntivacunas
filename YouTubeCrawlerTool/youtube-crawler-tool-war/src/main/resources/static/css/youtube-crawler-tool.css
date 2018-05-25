@@ -8,9 +8,27 @@
 /*
 * General
 */
+.table hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+.videoCategorySelector {
+	padding: 5px;
+	margin-right: 5px;
+	color: #fff;
+	border-radius: 4px;
+	cursor: pointer;
+	white-space: nowrap;
+	float: left;
+	margin-bottom: 5px;
+}
 .videoCategory {
 	padding: 5px;
+	margin-right: 5px;
 	color: #fff;
+	white-space: nowrap;
 }
 .videoDescription {
 	overflow-y: scroll;

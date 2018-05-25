@@ -274,60 +274,6 @@ var sleep = function (time) {
 }
 
 // Videos table
-var videosTableColumDefinitionsLogged = [
-         {
-        		targets : 0,
-        		data : "video",
-        		orderable : false,
-        		render : function(data, type, row, meta) {
-        			return row.embedHtml.replace("width=\"480\"", "width=\"125\"")
-        				.replace("height=\"270\"", "height=\"100\"")
-        				.replace("height=\"360\"", "height=\"100\"")
-        		}
-        },
-        {
-     		targets : 1,
-     		data : "title",
-     		orderable : true,
-     		render : function(data, type, row, meta) {
-     			return "<div class='videoDescription'>" + row.title + "</div>";
-     		}
-     	},
-     	{
-     		targets : 2,
-     		data : "description",
-     		orderable : true,
-     		render : function(data, type, row, meta) {
-     			return "<div class='videoDescription'>" + row.description + "</div>";
-     		}
-     	},
-     	{
-     		targets : 3,
-     		data : "category",
-     		orderable : true,
-     		render : function(data, type, row, meta) {
-     			var category = "Uncategorized";
-     			var color = "#999999";
-     			if (row.category) {
-     				category = row.category.name;
-     				color = row.category.color;
-     			}
-     			return "<span class='videoCategory' style='background-color:" + color + ";'>" + category  + "</span>";
-     		}
-     	},
-		{
-			targets : 4,
-			data : "options",
-			orderable : false,
-			render : function(data, type, row, meta) {
-				var html = "<a class='btn btn-danger' href='/videos/"
-						+ row.id
-						+ "'>View</a><a class='btn btn-delete' href='javascript:deleteVideoInTable(\""
-						+ row.id
-						+ "\")' onclick='return confirm(\"Are you sure?\");'>Delete</a>";
-				return html
-			}
-		} ];
 
 var videosTableColumnsConfigurationLogged = [
 	{
@@ -426,13 +372,83 @@ var videosTableColumnsConfiguration = [
 	width : '10%'
 } ];
 
-var getVideosTableDefinitions = function() {
+var getVideosTableDefinitions = function(categories) {
 	var loggeduser = $("#loggedUser").html();
 	if (loggeduser) {
-		return videosTableColumDefinitionsLogged;
+		return [
+		         {
+		        		targets : 0,
+		        		data : "video",
+		        		orderable : false,
+		        		render : function(data, type, row, meta) {
+		        			return row.embedHtml.replace("width=\"480\"", "width=\"125\"")
+		        				.replace("height=\"270\"", "height=\"100\"")
+		        				.replace("height=\"360\"", "height=\"100\"")
+		        		}
+		        },
+		        {
+		     		targets : 1,
+		     		data : "title",
+		     		orderable : true,
+		     		render : function(data, type, row, meta) {
+		     			return "<div class='videoDescription'>" + row.title + "</div>";
+		     		}
+		     	},
+		     	{
+		     		targets : 2,
+		     		data : "description",
+		     		orderable : true,
+		     		render : function(data, type, row, meta) {
+		     			return "<div class='videoDescription'>" + row.description + "</div>";
+		     		}
+		     	},
+		     	{
+		     		targets : 3,
+		     		data : "category",
+		     		orderable : true,
+		     		render : function(data, type, row, meta) {
+		     			var category = "Uncategorized";
+		     			var color = "#999999";
+		     			if (row.category) {
+		     				category = row.category.name;
+		     				color = row.category.color;
+		     			}
+		     			html =  "<span class='videoCategory' style='background-color:" + color + ";'>" + category  + "</span> Change to:<hr>";
+		     			if(category != "Uncategorized") {
+		     				html +=  "<div onclick='javascript:changeVideoCategory(\"" + row.id + "\", \"\")' class='videoCategorySelector' style='background-color:#999999;'>Uncategorized</div>";
+		     			}
+		     			for(var i in categories) {
+		     				if(categories[i].name != category) {
+		     					html +=  "<div onclick='javascript:changeVideoCategory(\"" + row.id + "\", \"" + categories[i].name + "\")' class='videoCategorySelector' style='background-color:" + categories[i].color + ";'>" + categories[i].name  + "</div>";
+		     				}
+		     			}
+		     			return html;
+		     		}
+		     	},
+				{
+					targets : 4,
+					data : "options",
+					orderable : false,
+					render : function(data, type, row, meta) {
+						var html = "<a class='btn btn-danger' href='/videos/"
+								+ row.id
+								+ "'>View</a><a class='btn btn-delete' href='javascript:deleteVideoInTable(\""
+								+ row.id
+								+ "\")' onclick='return confirm(\"Are you sure?\");'>Delete</a>";
+						return html
+					}
+				} ];
 	} else {
 		return videosTableColumDefinitions;
 	}
+}
+
+var changeVideoCategory = function(videoId, newCat) {
+	console.log("Change video category with id: " + videoId + " to new category: " + newCat);
+	var putBody = { category: { name: newCat } }
+	doPut("/api/videos/"+videoId, putBody, function (data) { 
+		videosTable.ajax.reload(null, false);
+	});
 }
 
 var getVideosTableColumns = function() {
@@ -447,7 +463,7 @@ var getVideosTableColumns = function() {
 var deleteVideoInTable = function(videoId) {
 	console.log("Deleting video with id: " + videoId);
 	doDelete("/api/videos/" + videoId, function(data) {
-		videosTable.ajax.reload();
+		videosTable.ajax.reload(null, false);
 	});
 }
 

@@ -33,15 +33,17 @@
 		
 	  	$(document).ready(function() {		
 			// Crawler videos table
-			videosTable = $('#videosTable').DataTable( {
-				deferRender: true,
-			    ajax: {
-			        url: '/api/videos',
-			        dataSrc: ''
-			    },
-			    order: [ 1, "asc" ],
-			    columnDefs: getVideosTableDefinitions(),
-			    columns: getVideosTableColumns()
+			doGet("/api/categories", function (categories) {
+				videosTable = $('#videosTable').DataTable( {
+					deferRender: true,
+				    ajax: {
+				        url: '/api/videos',
+				        dataSrc: ''
+				    },
+				    order: [ 1, "asc" ],
+				    columnDefs: getVideosTableDefinitions(categories),
+				    columns: getVideosTableColumns()
+				});
 			});
 		});
 
