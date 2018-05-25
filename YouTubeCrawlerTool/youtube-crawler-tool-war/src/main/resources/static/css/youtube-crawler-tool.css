@@ -8,6 +8,15 @@
 /*
 * General
 */
+.videoCategory {
+	padding: 5px;
+	color: #fff;
+}
+.videoDescription {
+	overflow-y: scroll;
+	height:100px;
+	width: 250px;
+}
 .favorite {
 	float: left;
     margin-right: 5px;

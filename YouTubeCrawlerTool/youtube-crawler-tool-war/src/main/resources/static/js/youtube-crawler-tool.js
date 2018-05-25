@@ -275,39 +275,46 @@ var sleep = function (time) {
 
 // Videos table
 var videosTableColumDefinitionsLogged = [
+         {
+        		targets : 0,
+        		data : "video",
+        		orderable : false,
+        		render : function(data, type, row, meta) {
+        			return row.embedHtml.replace("width=\"480\"", "width=\"125\"")
+        				.replace("height=\"270\"", "height=\"100\"")
+        				.replace("height=\"360\"", "height=\"100\"")
+        		}
+        },
         {
-			targets : 0,
-			data : "title",
-			orderable : true,
-			render : function(data, type, row, meta) {
-				return trimString(row.title, 40);
-			}
-		},
-		{
-			targets : 1,
-			data : "channel",
-			orderable : true,
-			render : function(data, type, row, meta) {
-				var html = "";
-				if (row.channel) {
-					html = "<a href='/channels/" + row.channel.id + "'>"
-							+ trimString(row.channel.name, 25) + "</a>";
-				}
-				return html;
-			}
-		},
-		{
-			targets : 2,
-			data : "category",
-			orderable : true,
-			render : function(data, type, row, meta) {
-				var html = "";
-				if (row.category) {
-					html = row.category.name;
-				}
-				return html;
-			}
-		},
+     		targets : 1,
+     		data : "title",
+     		orderable : true,
+     		render : function(data, type, row, meta) {
+     			return "<div class='videoDescription'>" + row.title + "</div>";
+     		}
+     	},
+     	{
+     		targets : 2,
+     		data : "description",
+     		orderable : true,
+     		render : function(data, type, row, meta) {
+     			return "<div class='videoDescription'>" + row.description + "</div>";
+     		}
+     	},
+     	{
+     		targets : 3,
+     		data : "category",
+     		orderable : true,
+     		render : function(data, type, row, meta) {
+     			var category = "Uncategorized";
+     			var color = "#999999";
+     			if (row.category) {
+     				category = row.category.name;
+     				color = row.category.color;
+     			}
+     			return "<span class='videoCategory' style='background-color:" + color + ";'>" + category  + "</span>";
+     		}
+     	},
 		{
 			targets : 4,
 			data : "options",
@@ -322,89 +329,97 @@ var videosTableColumDefinitionsLogged = [
 			}
 		} ];
 
+var videosTableColumnsConfigurationLogged = [
+	{
+		title : 'Video',
+		data : 'video',
+		width : '125px'
+	}, {
+		title : 'Title',
+		data : 'title',
+		width : '250px'
+	}, {
+		title : 'Description',
+		data : 'description',
+		width : '250px'
+	}, {
+		title : 'Category',
+		data : 'category',
+		width : '20%'
+	}, {
+		title : '',
+		data : 'options',
+		width : '15%'
+	} ];
+
 var videosTableColumDefinitions = [
-		{
-			targets : 0,
-			data : "title",
-			orderable : true,
-			render : function(data, type, row, meta) {
-				return trimString(row.title, 40);
+    {
+   		targets : 0,
+   		data : "video",
+   		orderable : false,
+   		render : function(data, type, row, meta) {
+   			return row.embedHtml.replace("width=\"480\"", "width=\"125\"")
+   				.replace("height=\"270\"", "height=\"100\"")
+   				.replace("height=\"360\"", "height=\"100\"")
+   		}
+   	},
+    {
+		targets : 1,
+		data : "title",
+		orderable : true,
+		render : function(data, type, row, meta) {
+			return "<div class='videoDescription'>" + row.title + "</div>";
+		}
+	},
+	{
+		targets : 2,
+		data : "description",
+		orderable : true,
+		render : function(data, type, row, meta) {
+			return "<div class='videoDescription'>" + row.description + "</div>";
+		}
+	},
+	{
+		targets : 3,
+		data : "category",
+		orderable : true,
+		render : function(data, type, row, meta) {
+			var category = "Uncategorized";
+			var color = "#999999";
+			if (row.category) {
+				category = row.category.name;
+				color = row.category.color;
 			}
-		},
-		{
-			targets : 1,
-			data : "channel",
-			orderable : true,
-			render : function(data, type, row, meta) {
-				var html = "";
-				if (row.channel) {
-					html = "<a href='/channels/" + row.channel.id + "'>"
-							+ trimString(row.channel.name, 25) + "</a>";
-				}
-				return html;
-			}
-		},
-		{
-			targets : 2,
-			data : "category",
-			orderable : true,
-			render : function(data, type, row, meta) {
-				var html = "";
-				if (row.category) {
-					html = row.category.name;
-				}
-				return html;
-			}
-		},
-		{
-			targets : 4,
-			data : "options",
-			orderable : false,
-			render : function(data, type, row, meta) {
-				var html = "<a class='btn btn-danger' href='/videos/" + row.id
-						+ "'>View</a>";
-				return html
-			}
-		} ];
+			return "<span class='videoCategory' style='background-color:" + color + ";'>" + category  + "</span>";
+		}
+	},
+	{
+		targets : 4,
+		data : "options",
+		orderable : false,
+		render : function(data, type, row, meta) {
+			var html = "<a class='btn btn-danger' href='/videos/" + row.id + "'>View</a>";
+			return html
+		}
+	} ];
 
-var videosTableColumnsConfigurationLogged = [ {
-	title : 'Video title',
-	data : 'title',
-	width : '40%'
+var videosTableColumnsConfiguration = [ 
+{
+	title : 'Video',
+	data : 'video',
+	width : '125px'
 }, {
-	title : 'Channel',
-	data : 'channel',
-	width : '20%'
+	title : 'Title',
+	data : 'title',
+	width : '250px'
+}, {
+	title : 'Description',
+	data : 'description',
+	width : '250px'
 }, {
 	title : 'Category',
 	data : 'category',
-	width : '15%'
-}, {
-	title : 'Scope range',
-	data : 'scopeRange',
-	width : '5%'
-}, {
-	title : '',
-	data : 'options',
 	width : '20%'
-} ];
-
-var videosTableColumnsConfiguration = [ {
-	title : 'Video title',
-	data : 'title',
-	width : '40%'
-}, {
-	title : 'Channel',
-	data : 'channel',
-	width : '25%'
-}, {
-	title : 'Category',
-	data : 'category',
-	width : '15%'
-}, {
-	title : 'Scope range',
-	data : 'scopeRange',
-	width : '10%'
 }, {
 	title : '',
 	data : 'options',
