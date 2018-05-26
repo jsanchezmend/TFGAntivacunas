@@ -220,20 +220,17 @@ Para la consecución de los objetivos definidos se ha desarrollado una aplicaci�
 La capa de negocio de dicha aplicación ha sido desarrollada con tecnología Java EE \cite{10} implementada mayormente utilizando proyectos del marco de desarrollo Spring Framework \cite{11} entre otros. En esta capa se hace uso intensivo de servicios externos en forma de API pública ofrecida por YouTube con el fin de consumir dicha API para recolectar los vídeos requeridos por el usuario para su estudio.
 \\
 
-En la capa de presentación se ha utilizado el lenguaje JavaScript \cite{12} con un gran uso de JQuery \cite{13} para modificar el DOM de las vistas y realizar llamadas asíncronas a la capa de negocio.
+En la capa de presentación se ha utilizado el lenguaje JavaScript \cite{12} con un gran uso de JQuery \cite{13} para modificar el DOM de las vistas y realizar llamadas asíncronas a la API Rest habilitada en la capa de negocio para tales efectos.
 \\
 
-Finalmente, en la capa de datos se utiliza una base de datos orientada a grafos \cite{14} la cual nos permite persistir los vídeos obtenidos en forma de grafo junto con sus relaciones ademas de otras informaciones derivadas y necesarias para el uso y funcionamiento la aplicación.
+Finalmente, en la capa de datos se utiliza una base de datos orientada a grafos \cite{14} la cual nos permite persistir los vídeos obtenidos en forma de grafo junto con sus relaciones ademas de otras informaciones derivadas y necesarias para el uso y funcionamiento de la aplicación.
 \\
 
 En los siguientes apartados se profundiza en la arquitectura y el diseño de la aplicación introducidos en esta sección.
 \medskip 
 
 \subsection{Resumen de capítulos}
-En los próximos capítulos se detalla el trabajo realizado juntamente con los productos obtenidos y sus conclusiones.
-\\
-
-La relación de capítulos es la siguiente:
+En los próximos capítulos se detalla el trabajo realizado juntamente con los productos obtenidos y sus conclusiones. La relación de capítulos es la siguiente:
 
 \begin{itemize}
 \item \textbf{Análisis y diseño:} Explicación de la metodología de diseño escogida así como los pasos que se llevaron a cabo para definir una propuesta a la clienta y su posterior análisis para acabar definiendo la arquitectura de la solución.
@@ -249,7 +246,7 @@ La relación de capítulos es la siguiente:
 \section{Análisis y diseño}
 \bigskip 
 
-\subsection{Metodología}
+\subsection{Metodología}\label{metodologia} 
 Para realizar el diseño de la aplicación se opto de entre diferentes posibilidades el enfoque definido por la filosofía del 'Diseño centrado en el usuario' \cite{15}.
 \\
 
@@ -265,7 +262,7 @@ La relación de fases y técnicas utilizadas ha sido la siguiente:
 \item \textbf{Definir contexto de uso:} El objetivo de esta fase es el de determinar que necesidades pretende la usuaria final que la aplicación resuelva y a que se va a destinar su uso. La técnica escogida para la realización de esta fase fueron las entrevistas con la usuaria final que se realizaron mediante videoconferencia sobretodo durante las diferentes \textit{sprint reviews} al termino de cada \textit{sprint}.
 \item \textbf{Especificar requisitos:} En la siguiente fase se definen los requisitos del sistema a partir de la información recogida en la fase previa. Para los requisitos funcionales se opto por recogerlos como 'casos de uso' \cite{16}.
 \item \textbf{Diseñar el producto:} En esta fase se diseñan y implementan los requisitos definidos en la fase anterior ya sea con el objetivo de proporcionar una solución final o una propuesta de solución a ser refinada en sucesivas iteraciones. Las técnicas utilizadas en esta fase fueron la creación de maquetas para evaluar la solución y el prototipado mediante pruebas de concepto realizadas con el objetivo de estudiar posibles soluciones antes de realizar su implementación en la aplicación.
-\item \textbf{Poner a prueba el producto:} Finalmente, en esta fase se pone a prueba el producto obtenido. Para hacerlo, se definieron y ejecutaron pruebas de integración diseñadas teniendo en cuenta los casos de uso definidos previamente y se realizaron test con usuarios para evaluar se grado de satisfacción.
+\item \textbf{Poner a prueba el producto:} Finalmente, en esta fase se pone a prueba el producto obtenido. Para hacerlo, se definieron y ejecutaron pruebas de integración diseñadas teniendo en cuenta los casos de uso definidos previamente y se realizaron test con usuarios para evaluar su grado de satisfacción.
 \end{itemize}
 
 Gracias al enfoque escogido fue posible encontrar respuestas a preguntas sobre las expectativas que la usuaria tenia depositadas sobre la aplicación y que fueron de gran ayuda a la hora de diseñar la solución final. Algunas de las principales preguntas fueron:\\
@@ -282,7 +279,290 @@ También cabe destacar que gracias a que tanto \textit{scrum} como el diseño ce
 \medskip 
 
 \subsubsection{Reuniones y entrevistas}
-//TODO: Describir cada una de las reuniones y del proceso seguido
+Tal y como se ha introducido en la sección \ref{metodologia} sobre la metodología de diseño utilizada, para definir el contexto de uso y conocer las necesidades a ser cubiertas por la aplicación, se realizaron varias entrevistas con la clienta y los \textit{stakeholders} donde la gran mayoría de ellas fueron dentro del contexto de \textit{scrum} como reuniones de \textit{sprint review} y \textit{sprint planning}.
+\\
+
+A continuación se resumen las entrevistas y reuniones realizadas junto con los principales temas tratados y decisiones tomadas:
+\\
+
+\noindent\textbf{Fecha:} 05/03/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:00
+\\
+\noindent\textbf{Hora final:} 21:45
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Que conocimiento sobre el movimiento antivacunas se quiere obtener. 
+\item Que se pretende hacer con la información recolectada.
+\item Definición de los objetivos de la aplicación.
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item La clienta definirá los criterios de búsqueda y el conocimiento que debe ser obtenido por la aplicación.
+\item El análisis de los datos los realizara la clienta con herramientas especializadas.
+\item El objetivo principal de la aplicación es la obtención de datos mediante búsquedas en redes sociales.
+\item La aplicación debe ofrecer funcionalidad para exportar los datos recolectados a otras herramientas.
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 12/03/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:00
+\\
+\noindent\textbf{Hora final:} 21:30
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Alcance del estudio a realizar.
+\item Sobre que redes sociales debe centrarse el estudio.
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item Se decide adoptar el marco de trabajo \textit{scrum} para la realización del proyecto.
+\item El \textit{product owner} realizara una propuesta inicial de la interfaz de usuario.
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 19/03/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:00
+\\
+\noindent\textbf{Hora final:} 21:30
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Comentarios sobre la propuesta inicial de la interfaz de usuario realizada por el \textit{product owner}.
+\item Pros y contras sobre la elección de \textit{Twitter} como red social para el estudio.
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item Elección de \textit{Twitter} como red social a utilizar en el estudio.
+\item La aplicación incluirá una visualización en forma de grafo para poder estudiar la relación existente entre la información recolectada.
+\item Seguir refinando la propuesta de interfaz de usuario.
+\item El \textit{product owner} debe estudiar la viabilidad de utilizar \textit{Twitter} para la consecución de los objetivos. 
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 26/03/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:00
+\\
+\noindent\textbf{Hora final:} 21:45
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Debido a las limitaciones de uso detectadas en la API de \textit{Twitter}, se propone utilizar la red social \textit{YouTube} como alternativa.
+\item Comentarios sobre la propuesta inicial de la interfaz de usuario realizada por el \textit{product owner}.
+\item Definición del grafo a utilizar y que elementos actuaran como nodo y aristas.  
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item Elección de \textit{YouTube} como red social a utilizar en el estudio.
+\item Seguir refinando la propuesta de interfaz de usuario.
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 05/04/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:00
+\\
+\noindent\textbf{Hora final:} 21:30
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Analizar criterios de búsqueda y información devuelta por la API de \textit{YouTube}
+\item Comentarios sobre la propuesta inicial de la interfaz de usuario realizada por el \textit{product owner}.
+\item Detección de vídeos duplicados.
+\item Avances en la definición de los componentes del grafo.
+\item Detectar usuarios \textit{influencers} a partir de la información obtenida.
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item Incorporar funcionalidad para ver resumen de las búsquedas realizadas junto con la información recolectada con pre visualización de vídeos.
+\item Criterios de búsqueda de \textit{YouTube} a utilizar para recolectar los vídeos.
+\item Campos que se van a recuperar de cada vídeo.
+\item Utilizar una variable pre calculada (bautizada como "\textit{scopeRange}") para determinar el tamaño de los nodos al ser visualizados en el grafo.
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 12/04/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:30
+\\
+\noindent\textbf{Hora final:} 22:15
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Comentarios sobre la visualización en grafo.
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item Queda definida la visualización en grafo.
+\item Realización de una ultima propuesta de interfaz de usuario que recoja los últimos cambios propuestos junto con la visualización en grafo.
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 19/04/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:30
+\\
+\noindent\textbf{Hora final:} 22:00
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Comentarios sobre la propuesta de interfaz de usuario. 
+\item Priorización de funcionalidades.
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item La clienta da por aprobada la propuesta de interfaz de usuario.
+\item Definición de valores por defecto al realizar las búsquedas.
+\item Las funcionalidades estadísticas y de visualización de canales quedan asignadas con una prioridad secundaria en relación a otras funcionalidades.
+\item Se va a buscar la colaboración de un estadista para definir la formula de la variable "\textit{scopeRange}".
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 26/04/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:00
+\\
+\noindent\textbf{Hora final:} 21:30
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Seguimiento de la implementación de la aplicación
+\item Seguimiento de la definición de la fórmula para calcular el alcance de los vídeos ("\textit{scopeRange}").
+\end{itemize}
+\noindent\textbf{Decisiones:}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 03/05/2018
+\\
+\noindent\textbf{Hora de inicio:} 21:00
+\\
+\noindent\textbf{Hora final:} 21:30
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Seguimiento de la implementación de la aplicación.
+\item Seguimiento de la definición de la fórmula para calcular el alcance de los vídeos ("\textit{scopeRange}").
+\end{itemize}
+\noindent\textbf{Decisiones:}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 10/05/2018
+\\
+\noindent\textbf{Hora de inicio:} 20:30
+\\
+\noindent\textbf{Hora final:} 21:00
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Seguimiento de la implementación de la aplicación.
+\item Seguimiento de la definición de la fórmula para calcular el alcance de los vídeos ("\textit{scopeRange}").
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item Instalación de la aplicación en entorno de explotación durante la próxima semana.
+\item Mientras no se disponga de la formula para la variable "\textit{scopeRange}", utilizar formula alternativa definida por la clienta.
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Fecha:} 17/05/2018
+\\
+\noindent\textbf{Hora de inicio:} 20:30
+\\
+\noindent\textbf{Hora final:} 21:30
+\\
+\noindent\textbf{Asistentes:} 
+\begin{itemize}
+\item Carlos Luis Sánchez Bocanegra: \textit{stakeholder}
+\item Johanna Milena Rodríguez Vera: clienta
+\item Javier Sánchez Mendoza: \textit{product owner}, \textit{scrum master} y desarrollador
+\end{itemize}
+\noindent\textbf{Temas tratados:}
+\begin{itemize}
+\item Presentación de la aplicación desarrollada y formación a la clienta.
+\end{itemize}
+\noindent\textbf{Decisiones:}
+\begin{itemize}
+\item Se decide utilizar la formula alternativa propuesta por la clienta para la variable "\textit{scopeRange}".
+\item Añadir nueva funcionalidad de favoritos.
+\item Realización de cambios en la visualización de los listados de los vídeos.
+\end{itemize}
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+En los siguientes apartados se detallan algunas de las decisiones tomadas en estas reuniones las cuales tuvieron mas repercusión en el resultado final de la aplicación.
 \medskip 
 
 \subsubsection{Elección de YouTube como red social}
