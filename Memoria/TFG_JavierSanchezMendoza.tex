@@ -566,6 +566,32 @@ En los siguientes apartados se detallan algunas de las decisiones tomadas en est
 \medskip 
 
 \subsubsection{Elección de YouTube como red social}
+A la hora de escoger una red social para realizar el estudio del movimiento antivacuna nos encontramos con una gran variedad de opciones, tales como \textit{Facebook}, \textit{Twitter} o \textit{YouTube} para nombrar solo algunas.
+\\
+
+Johanna, clienta de la aplicación y la encargada de realizar el estudio, mostró su predilección inicial por \textit{Twitter}. En su criterio, \textit{Twitter} presentaba una estructuración de la información que favorecía su posterior análisis y estudio al basarse, principalmente, un mensaje (\textit{tweet}) de los campos titulo y descripción, hecho que facilitaba la categorización de los contenidos obtenidos. Por otro lado, el uso extensivo de etiquetas en esta red social (\textit{hashtags}) simplificaría el proceso de búsqueda de contenidos. Por lo referente al alcance de la red social, Johanna consideraba que a nivel de usuarios y actividad relacionada con la vacunación, \textit{Twitter} superaba a otras redes sociales tales como \textit{YouTube}.
+\\
+
+Debido a estas consideraciones, \textit{Twitter} fue escogida inicialmente como la red social a utilizar en el proyecto. Por este motivo, inicialmente la aplicación desarrollada se llamaba \textit{TwitterCrawlerTool} y las primeras versiones de la propuesta de interfaz de usuario se habían realizado teniendo en consideración a \textit{Twitter} como red social escogida. Incluso, una prueva de concepto llego a desarrollarse: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCTwitterCrawler}{POCTwitterCrawler}.
+\\
+
+Con la elección realizada y teniendo desarrollada una prueba de concepto, se procedió al estudio en profundidad de la API de \textit{Twitter} y fue entonces cuando se descubrieron limitaciones sobre su uso. Concretamente, \textit{Twitter} define tres niveles de uso: \textit{Standard}, \textit{Premium} y \textit{Enterprise}; de todas ellas solo la opción \textit{Standard} es completamente gratuita pero, en este caso, con unas severas restricciones de uso a la hora de buscar mensajes \cite{17}. Algunas de las restricciones son:
+\begin{itemize}
+\item Máximo de 100 \textit{"tweets"} por búsqueda.
+\item Información disponible solo de los últimos 7 días.
+\item Solo permite búsqueda textual, no se permite búsqueda temporal.
+\end{itemize}
+
+A causa de estas restricciones, resultaba imposible poder recabar información con una antigüedad inferior a siete días o realizar comparaciones en el tiempo sobre la evolución de los movimientos pro y anti vacunas, hecho que es requerido en el estudio. Ante los descubrimientos realizados se decidió explorar otras alternativas al uso de \textit{Twitter}.
+\\
+
+Fue entonces que la opción de utilizar \textit{YouTube} como red social de estudio en el proyecto se considero en profundidad. Y es que aunque se llegara anteriormente a la conclusión de que \textit{Twitter} tenia un alcance mayor en numero de usuarios y potencial de contenidos a obtener, no se debe desestimar tampoco el alcance de \textit{YouTube} que, si bien inicialmente no era considerada como una red social al uso, a día de hoy el numero de usuarios que no solo visualizan sus vídeos sino que también comparten contenidos y comentarios crece día a día, convirtiendo a \textit{YouTube} como una buena opción para encontrar la información requerida. Y en lo referente a la estructuración de la información, debido a que juntamente con los vídeos se provee un titulo y una descripción no era necesario cambiar el enfoque dado inicialmente en este sentido.
+\\
+
+Por lo referente a la API ofrecida por \textit{YouTube} para la obtención de contenidos, los criterios de búsqueda disponibles son mucho mas amplios que los ofrecidos por \textit{Twitter}, permitiéndonos entre otras posibilidades, filtrar los contenidos a obtener por rangos de fechas. No existe limitación a la hora de obtener contenidos independientemente de su fecha de publicación (en todo caso posterior a 14/02/2005, fecha de fundación de \textit{YouTube}). Y en relación a limitaciones en el volumen de información a obtener, \textit{YouTube} no impone limitaciones por búsqueda, lo que posibilita obtener toda la información requerida sobre un termino en concreto. En su defecto, \textit{YouTube} utiliza un sistema de cuotas que se aplica a periodos de tiempo en concreto \cite{18}, por ejemplo, en su versión gratuita permite realizar hasta 1.000.000 de operaciones de lectura por día que, tal y como se ha demostrado, han sido suficientes para el uso dado a la aplicación desarrollada.
+\\
+
+En el apartado \ref{youTubeDataAPI} se detalla en profundidad los servicios de la API de \textit{YouTube} utilizados y el modo en que la aplicación los consume para obtener contenidos. 
 \medskip 
 
 \subsubsection{Visualización de vídeos en grafo}
@@ -621,7 +647,7 @@ Password: Y01t1b3cr4wl3rt00l
 Consulta de ejemplo: MATCH (n) RETURN n
 \medskip 
 
-\subsection{Analista YouTube Data API}
+\subsection{Análisis YouTube Data API}\label{youTubeDataAPI} 
 \medskip 
 
 \subsection{Pruebas de concepto}
@@ -755,6 +781,8 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{14} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (23/05/2018)
   \bibitem{15} \url{https://es.wikipedia.org/wiki/Dise%C3%B1o_centrado_en_el_usuario} (24/05/2018)
   \bibitem{16} \url{https://es.wikipedia.org/wiki/Caso_de_uso} (24/05/2018) 
+  \bibitem{17} \url{https://developer.twitter.com/en/docs/tweets/search/overview} (26/05/2018) 
+  \bibitem{18} \url{https://developers.google.com/youtube/v3/getting-started?hl=es-419#quota} (26/05/2018) 
 \end{thebibliography}
 \newpage 
 
