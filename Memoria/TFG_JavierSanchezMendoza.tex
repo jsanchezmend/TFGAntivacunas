@@ -18,6 +18,8 @@
     citecolor=blue,
 }
 \usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{longtable}
 \graphicspath{ {images/} }
 
 
@@ -668,10 +670,268 @@ A modo ilustrativo, a continuación se adjunta una imagen de la implementación 
 \medskip 
 
 \subsubsection{Casos de uso}
+Hacer uso de un marco ágil de desarrollo no debe ser escusa para no disponer de una documentación adecuada de los requisitos de una aplicación y, aunque estos sufran modificaciones durante las diferentes iteraciones de desarrollo, estos deben de estar actualizados. Por esta razón se ha decidido realizar la toma de requerimientos de la aplicación en forma de casos de uso, en donde para facilitar la gestión de cambios se ha decidido hacer constar solo el titulo, actores y descripción en cada uno de ellos.
+\\
+
+Así entonces y con lo expuesto en apartados anteriores, a continuación se expone una imagen representativa de los casos de uso identificados agrupados por componentes según la funcionalidad realizada y a continuación el listado completo de cada uno de ellos:
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{requisitos/UseCases.png}
+\caption{Casos de uso}
+\end{figure}
+\medskip 
 \medskip 
 
+\noindent\textbf{Componente \textit{User session}:}
+\\
+
+\noindent\textbf{UC\_1: Login}\\
+\textbf{Actores:} Usuario anónimo\\
+\textbf{Descripción:} Como usuario anónimo, quiero identificarme en la aplicación mediante nombre de usuario y contraseña.
+\\
+
+\noindent\textbf{UC\_1-1: logout}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero cerrar la sesión actual en la aplicación.
+\\
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Componente \textit{Crawler}:}
+\\
+
+\noindent\textbf{UC\_2: View all crawlers statistics}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver el total de vídeos recolectados, el porcentaje de categorizados y la distribución de las categorías.
+\\
+
+\noindent\textbf{UC\_3: List all crawlers}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver todos los procesos de recolección que se han iniciado en el sistema.
+\\
+
+\noindent\textbf{UC\_4: Start new crawler process}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero iniciar un nuevo proceso de recolección de vídeos según criterio de búsqueda introducido.
+\\
+
+\noindent\textbf{UC\_5: Stop crawler process}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero parar un proceso de recolección de vídeos que este en ejecución.
+\\
+
+\noindent\textbf{UC\_6: Play crawler process}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero poner en marcha un proceso de recolección previamente detenido.
+\\
+
+\noindent\textbf{UC\_7: View crawler process details}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver el detalle de un proceso de recolección.
+\\
+
+\noindent\textbf{UC\_8: View crawler process statistics}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, dado un proceso de recolección en concreto quiero ver su total de vídeos recolectados, su porcentaje de categorizados y su distribución de las categorías.
+\\
+
+\noindent\textbf{UC\_9: Delete crawler process}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero borrar un proceso de recolección en concreto y todos sus vídeos relacionados.
+\\
+
+\noindent\textbf{UC\_10: List all crawler process videos}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver el listado completo de vídeos recolectados por un proceso de recolección en concreto.
+\\
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Componente \textit{Video}:}
+\\
+
+\noindent\textbf{UC\_11-1: List all videos}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver listados todos los vídeos del sistema.
+\\
+
+\noindent\textbf{UC\_11: View video detail}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver el detalle de un vídeo en concreto.
+\\
+
+\noindent\textbf{UC\_12: Categorize a video}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero cambiar la categoría asociada a un vídeo en concreto.
+\\
+
+\noindent\textbf{UC\_13: Delete a video}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero borrar un vídeo en concreto.
+\\
+
+\noindent\textbf{UC\_14: List all related videos}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver listados todos los vídeos relacionados con un  en concreto.
+\\
+
+\noindent\textbf{UC\_15: Find more related videos}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero iniciar un nuevo proceso de recolección de vídeos para que encuentre vídeos relacionados a un vídeo en concreto.
+\\
+
+\noindent\textbf{UC\_15-1: Add a video as a favorite}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero añadir un vídeo en concreto al listado de favoritos.
+\\
+
+\noindent\textbf{UC\_15-2: Delete a video as a favorite}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero eliminar un vídeo en concreto del listado de favoritos.
+\\
+
+\noindent\textbf{UC\_15-3: List all favorite videos}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero ver el listado de vídeos favoritos.
+\\
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Componente \textit{Channel}:}
+\\
+
+\noindent\textbf{UC\_16: View all channels statistics}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver el total de canales importados en el sistema.
+\\
+
+\noindent\textbf{UC\_17: List all channels}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver listados todos los canales importado en el sistema.
+\\
+
+\noindent\textbf{UC\_18: View channel details}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver el detalle de un canal en concreto.
+\\
+
+\noindent\textbf{UC\_19: View channel statistics}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, dado un canal en concreto quiero ver su total de vídeos recolectados, su porcentaje de categorizados y su distribución de las categorías.
+\\
+
+\noindent\textbf{UC\_20: Delete a channel}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero eliminar un canal en concreto y todos sus vídeos relacionados.
+\\
+
+\noindent\textbf{UC\_21: List all channel videos}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, dado un canal en concreto quiero ver listados todos sus vídeos relacionados.
+\\
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Componente \textit{Category}:}
+\\
+
+\noindent\textbf{UC\_22: List all categories}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero ver todas las categorías dadas de alta en el sistema.
+\\
+
+\noindent\textbf{UC\_23: Add new category}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero dar de alta una nueva categoría en el sistema definiendo su nombre y color.
+\\
+
+\noindent\textbf{UC\_24: Edit a category}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero editar el color de una categoría en concreto.
+\\
+
+\noindent\textbf{UC\_25: Delete a category}\\
+\textbf{Actores:} Usuario registrado\\
+\textbf{Descripción:} Como usuario identificado, quiero eliminar una categoría en concreto del sistema y eliminar todos sus vídeos relacionados.
+\\
+
+\begin{center}\rule{10cm}{0.4pt}\end{center}
+
+\noindent\textbf{Componente \textit{Analysis}:}
+\\
+
+\noindent\textbf{UC\_26: Search and show results on a graph}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero realizar una búsqueda de vídeos en el sistema y visualizarlos en un grafo donde los nodos representen los vídeos encontrados y las aristas sus vídeos relacionados.
+\\
+
+\noindent\textbf{UC\_27: Export search results}\\
+\textbf{Actores:} Usuario anónimo, Usuario registrado\\
+\textbf{Descripción:} Como usuario, quiero realizar una búsqueda de vídeos en el sistema y exportarlos a fichero con formato \textit{csv}.
+\\
+
+
 \subsubsection{Propuesta de interfaz de usuario}
-\url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Mockups/15:04}
+Finalmente, en la ultima etapa en lo que ha diseño del producto se refiere, se presentaron a la clienta diferentes propuestas de interfaz de usuario que se fueron refinando a medida que se modificaban o definían nuevas funcionalidades. En concreto se presentaron tres propuestas:
+\\
+
+\noindent\textbf{Propuesta inicial presentada el 15/03/2018:}
+
+\begin{figure}[H]
+\centering
+\subfigure[\textit{Twitter} búsqueda]{\includegraphics[width=60mm]{interfaz/03-15/1.png}}
+\subfigure[\textit{Twitter} análisis]{\includegraphics[width=60mm]{interfaz/03-15/2.png}}
+\caption{Propuesta inicial interfaz de usuario}
+\end{figure}
+\pagebreak 
+
+\noindent\textbf{Segunda propuesta presentada el 05/04/2018:}
+
+\begin{figure}[H]
+\centering
+\subfigure[\textit{YouTube} búsqueda textual]{\includegraphics[width=60mm]{interfaz/04-05/1.png}}
+\subfigure[\textit{YouTube} análisis textual]{\includegraphics[width=60mm]{interfaz/04-05/2.png}}
+\subfigure[\textit{YouTube} búsqueda vídeo relacionado]{\includegraphics[width=60mm]{interfaz/04-05/3.png}}
+\subfigure[\textit{YouTube} análisis vídeo relacionado]{\includegraphics[width=60mm]{interfaz/04-05/4.png}}
+\caption{Segunda propuesta interfaz de usuario}
+\end{figure}
+
+\noindent\textbf{Tercera y ultima propuesta presentada el 15/04/2018:}
+
+\begin{figure}[H]
+\centering
+\subfigure[Mapa web]{\includegraphics[width=60mm]{interfaz/04-15/0.png}}
+\subfigure[Login]{\includegraphics[width=60mm]{interfaz/04-15/1.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Procesos de recolección]{\includegraphics[width=60mm]{interfaz/04-15/2.png}}
+\subfigure[Proceso de recolección]{\includegraphics[width=60mm]{interfaz/04-15/3.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Vista vídeo en detalle]{\includegraphics[width=60mm]{interfaz/04-15/4.png}}
+\subfigure[Listado de canales]{\includegraphics[width=60mm]{interfaz/04-15/5.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Vista canal en detalle]{\includegraphics[width=60mm]{interfaz/04-15/6.png}}
+\subfigure[Listado de categorías]{\includegraphics[width=60mm]{interfaz/04-15/7.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Añadir nueva categoría]{\includegraphics[width=60mm]{interfaz/04-15/8.png}}
+\subfigure[Editar categoría]{\includegraphics[width=60mm]{interfaz/04-15/9.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Vista de análisis]{\includegraphics[width=60mm]{interfaz/04-15/10.png}}
+\caption{Tercera y ultima propuesta de interfaz de usuario}
+\end{figure}
+
+Cabe destacar que, debido a iteraciones de desarrollo realizadas posteriormente a la presentación y aprobación de la ultima propuesta de interfaz de usuario presentada, esta no refleja el estado final de la aplicación.
+
 \medskip 
 
 
@@ -681,18 +941,132 @@ A modo ilustrativo, a continuación se adjunta una imagen de la implementación 
 \subsubsection{Arquitectura WEB}
 \medskip 
 
-\subsubsection{Elección de Neo4j como SGBD}
+\subsubsection{Diseño API RESTful}
+
+\noindent\textbf{Componente \textit{crawler}:}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Metodo} & \textbf{Url}            & \textbf{Descripción}                                               \\ \hline
+GET             & api/crawlers               & Lista todos los procesos de recolección.                           \\ \hline
+POST            & api/crawlers               & Inicia un nuevo proceso de recolección. Requiere autentificación.  \\ \hline
+GET             & api/crawlers/\{id\}        & Devuelve un proceso de recolección.                                \\ \hline
+PUT             & api/crawlers/\{id\}        & Editar un proceso de recolección. Requiere identificación.        \\ \hline
+DELETE          & api/crawlers/\{id\}        & Borra un proceso de recolección. Requiere identificación.         \\ \hline
+GET             & api/crawlers/\{id\}/stats  & Devuelve las estadísticas de un proceso de recolección.            \\ \hline
+GET             & api/crawlers/\{id\}/videos & Lista todos los vídeos descubiertos por un proceso de recolección. \\ \hline
+\end{tabular}%
+}
+\caption{Componente \textit{crawler} API}
+\end{table}
+
+\noindent\textbf{Componente \textit{video}:}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Metodo} & \textbf{Url}             & \textbf{Descripción}                              \\ \hline
+GET             & api/videos               & Lista todos los vídeos.                           \\ \hline
+GET             & api/videos/stats         & Devuelve las estadísticas de todos los vídeos.    \\ \hline
+GET             & api/videos/favorites     & Devuelve los vídeos favoritos.                    \\ \hline
+GET             & api/videos/\{id\}        & Devuelve un vídeo.                                \\ \hline
+PUT             & api/videos/\{id\}        & Editar un vídeo. Requiere identificación.         \\ \hline
+DELETE          & api/videos/\{id\}        & Borra un vídeo. Requiere identificación.          \\ \hline
+GET             & api/videos/\{id\}/videos & Lista todos los vídeos relacionados con un vídeo. \\ \hline
+\end{tabular}%
+}
+\caption{Componente \textit{video} API}
+\end{table}
+
+\noindent\textbf{Componente \textit{channel}:}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Metodo} & \textbf{Url}               & \textbf{Descripción}                              \\ \hline
+GET             & api/channels               & Lista todos los canales                           \\ \hline
+GET             & api/channels/\{id\}        & Devuelve un canal.                                \\ \hline
+DELETE          & api/channels/\{id\}        & Borra un canal. Require identificación            \\ \hline
+GET             & api/channels/\{id\}/stats  & Devuelve la estadisticas de un canal              \\ \hline
+GET             & api/channels/\{id\}/videos & Lista todos los videos relacionados con un canal. \\ \hline
+\end{tabular}%
+}
+\caption{Componente \textit{channel} API}
+\end{table}
+
+\noindent\textbf{Componente \textit{category}:}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Metodo} & \textbf{Url}                   & \textbf{Descripción}                                    \\ \hline
+GET             & api/categories                 & Lista todas las categorías                              \\ \hline
+POST            & api/categories                 & Crea una nueva categoría. Requiere identificación.      \\ \hline
+GET             & api/categories/\{name\}        & Devuelve una categoría.                                 \\ \hline
+PUT             & api/categories/\{name\}        & Editar una categoría. Requiere identificación.          \\ \hline
+DELETE          & api/categories/\{name\}        & Borra una categoría.                                    \\ \hline
+GET             & api/categories/\{name\}/stats  & Devuelve las estadísticas de una categoría.             \\ \hline
+GET             & api/categories/\{name\}/videos & Lista todos los vídeos categorizados por una categoría. \\ \hline
+\end{tabular}%
+}
+\caption{Componente \textit{category} API}
+\end{table}
+
+\noindent\textbf{Componente \textit{analysis}:}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Metodo} & \textbf{Url} & \textbf{Descripción}                                           \\ \hline
+POST            & api/graphs   & Crea un nuevo grafo (no se persiste, se muestra por pantalla). \\ \hline
+\end{tabular}%
+}
+\caption{Componente \textit{analysis} API}
+\end{table}
+
 \medskip 
 
 \subsubsection{Diseño capa de datos}
-\url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaDatos}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.6]{diseno/DatabaseUML.png}
+\caption{Diagrama UML}
+\end{figure}
+
 \medskip 
 
 \subsubsection{Diseño capa de negocio}
-\url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaNegocio}
-\medskip 
 
-\subsubsection{Diseño API RESTful}
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.35]{diseno/ComponentsDiagram.png}
+\caption{Diagrama UML 1}
+\end{figure}
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{diseno/ComponentDiagram2.png}
+\caption{Diagrama UML 2}
+\end{figure}
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.25]{diseno/ComponentDiagram3.png}
+\caption{Diagrama UML 3}
+\end{figure}
+
+
+
 \medskip 
 
 \subsubsection{Diseño capa de presentación}
@@ -717,9 +1091,6 @@ Password: Y01t1b3cr4wl3rt00l
 Consulta de ejemplo: MATCH (n) RETURN n
 \medskip 
 
-\subsection{Análisis YouTube Data API}\label{youTubeDataAPI} 
-\medskip 
-
 \subsection{Pruebas de concepto}
 \begin{itemize}
 \item \textbf{Twitter crawler:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCTwitterCrawler}
@@ -736,6 +1107,12 @@ Consulta de ejemplo: MATCH (n) RETURN n
 \medskip 
 
 \subsubsection{POCYouTubeCrawlerNeo4j}
+\medskip 
+
+\subsection{Análisis YouTube Data API}\label{youTubeDataAPI} 
+\medskip 
+
+\subsection{Elección de Neo4j como SGBD}
 \medskip 
 
 \subsection{Estructura de la aplicación}
