@@ -333,6 +333,9 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 \noindent\textbf{Decisiones:}
 \begin{itemize}
 \item Se decide adoptar el marco de trabajo \textit{scrum} para la realización del proyecto.
+\item El estudio se centrara inicialmente en una sola red social a determinar.
+\item En la aplicación sera posible ejecutar varios procesos de recolección de datos al mismo tiempo.
+\item Se incorporara una sección para analizar los datos obtenidos de forma visual (por definir).
 \item El \textit{product owner} realizara una propuesta inicial de la interfaz de usuario.
 \end{itemize}
 
@@ -357,8 +360,7 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 \noindent\textbf{Decisiones:}
 \begin{itemize}
 \item Elección de \textit{Twitter} como red social a utilizar en el estudio.
-\item La aplicación incluirá una visualización en forma de grafo para poder estudiar la relación existente entre la información recolectada.
-\item Seguir refinando la propuesta de interfaz de usuario.
+\item La aplicación incluirá una visualización en forma de grafo para poder analizar visualmente las relaciones existente en la información recolectada y descubrir patrones.
 \item El \textit{product owner} debe estudiar la viabilidad de utilizar \textit{Twitter} para la consecución de los objetivos. 
 \end{itemize}
 
@@ -378,13 +380,13 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 \noindent\textbf{Temas tratados:}
 \begin{itemize}
 \item Debido a las limitaciones de uso detectadas en la API de \textit{Twitter}, se propone utilizar la red social \textit{YouTube} como alternativa.
-\item Comentarios sobre la propuesta inicial de la interfaz de usuario realizada por el \textit{product owner}.
 \item Definición del grafo a utilizar y que elementos actuaran como nodo y aristas.  
 \end{itemize}
 \noindent\textbf{Decisiones:}
 \begin{itemize}
 \item Elección de \textit{YouTube} como red social a utilizar en el estudio.
-\item Seguir refinando la propuesta de interfaz de usuario.
+\item El \textit{product owner} debe estudiar la viabilidad de utilizar \textit{YouTube} para la consecución de los objetivos. 
+\item Actualizar la propuesta de interfaz de usuario para reflejar el cambio de red social.
 \end{itemize}
 
 \begin{center}\rule{10cm}{0.4pt}\end{center}
@@ -393,7 +395,7 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 \\
 \noindent\textbf{Hora de inicio:} 21:00
 \\
-\noindent\textbf{Hora final:} 21:30
+\noindent\textbf{Hora final:} 21:45
 \\
 \noindent\textbf{Asistentes:} 
 \begin{itemize}
@@ -403,17 +405,17 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 \end{itemize}
 \noindent\textbf{Temas tratados:}
 \begin{itemize}
-\item Analizar criterios de búsqueda y información devuelta por la API de \textit{YouTube}
 \item Comentarios sobre la propuesta inicial de la interfaz de usuario realizada por el \textit{product owner}.
+\item Analizar criterios de búsqueda y información devuelta por la API de \textit{YouTube}
 \item Detección de vídeos duplicados.
-\item Avances en la definición de los componentes del grafo.
 \item Detectar usuarios \textit{influencers} a partir de la información obtenida.
+\item Avances en la definición de los componentes del grafo.
 \end{itemize}
 \noindent\textbf{Decisiones:}
 \begin{itemize}
-\item Incorporar funcionalidad para ver resumen de las búsquedas realizadas junto con la información recolectada con pre visualización de vídeos.
 \item Criterios de búsqueda de \textit{YouTube} a utilizar para recolectar los vídeos.
-\item Campos que se van a recuperar de cada vídeo.
+\item Campos a almacenar de cada vídeo.
+\item Incorporar funcionalidad para ver resumen de las búsquedas realizadas junto con la información recolectada con pre visualización de vídeos.
 \item Utilizar una variable pre calculada (bautizada como "\textit{scopeRange}") para determinar el tamaño de los nodos al ser visualizados en el grafo.
 \end{itemize}
 
@@ -434,10 +436,15 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 \noindent\textbf{Temas tratados:}
 \begin{itemize}
 \item Comentarios sobre la visualización en grafo.
+\item Identificación de vídeos pro y anti vacunación.
 \end{itemize}
 \noindent\textbf{Decisiones:}
 \begin{itemize}
 \item Queda definida la visualización en grafo.
+\item Los contenidos a visualizar en el grafo podrán ser filtrados.
+\item Se define funcionalidad para etiquetar los vídeos recolectados utilizando categorías previamente definidas por el usuario en la aplicación.
+\item En la aplicación habrá dos tipos de usuarios, usuarios anónimos que no podrán realizar acciones de escritura ni borrado y usuarios registrados que podrán realizar todas la acciones.
+\item Incorporar visualizaciones estadísticas sobre el uso de las categorías.
 \item Realización de una ultima propuesta de interfaz de usuario que recoja los últimos cambios propuestos junto con la visualización en grafo.
 \end{itemize}
 
@@ -463,7 +470,7 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 \noindent\textbf{Decisiones:}
 \begin{itemize}
 \item La clienta da por aprobada la propuesta de interfaz de usuario.
-\item Definición de valores por defecto al realizar las búsquedas.
+\item Definición de valores por defecto al realizar las búsquedas de contenidos.
 \item Las funcionalidades estadísticas y de visualización de canales quedan asignadas con una prioridad secundaria en relación a otras funcionalidades.
 \item Se va a buscar la colaboración de un estadista para definir la formula de la variable "\textit{scopeRange}".
 \end{itemize}
@@ -588,13 +595,76 @@ A causa de estas restricciones, resultaba imposible poder recabar información c
 Fue entonces que la opción de utilizar \textit{YouTube} como red social de estudio en el proyecto se considero en profundidad. Y es que aunque se llegara anteriormente a la conclusión de que \textit{Twitter} tenia un alcance mayor en numero de usuarios y potencial de contenidos a obtener, no se debe desestimar tampoco el alcance de \textit{YouTube} que, si bien inicialmente no era considerada como una red social al uso, a día de hoy el numero de usuarios que no solo visualizan sus vídeos sino que también comparten contenidos y comentarios crece día a día, convirtiendo a \textit{YouTube} como una buena opción para encontrar la información requerida. Y en lo referente a la estructuración de la información, debido a que juntamente con los vídeos se provee un titulo y una descripción no era necesario cambiar el enfoque dado inicialmente en este sentido.
 \\
 
-Por lo referente a la API ofrecida por \textit{YouTube} para la obtención de contenidos, los criterios de búsqueda disponibles son mucho mas amplios que los ofrecidos por \textit{Twitter}, permitiéndonos entre otras posibilidades, filtrar los contenidos a obtener por rangos de fechas. No existe limitación a la hora de obtener contenidos independientemente de su fecha de publicación (en todo caso posterior a 14/02/2005, fecha de fundación de \textit{YouTube}). Y en relación a limitaciones en el volumen de información a obtener, \textit{YouTube} no impone limitaciones por búsqueda, lo que posibilita obtener toda la información requerida sobre un termino en concreto. En su defecto, \textit{YouTube} utiliza un sistema de cuotas que se aplica a periodos de tiempo en concreto \cite{18}, por ejemplo, en su versión gratuita permite realizar hasta 1.000.000 de operaciones de lectura por día que, tal y como se ha demostrado, han sido suficientes para el uso dado a la aplicación desarrollada.
+Por lo referente a la API ofrecida por \textit{YouTube} para la obtención de contenidos, los criterios de búsqueda disponibles son mucho mas amplios que los ofrecidos por \textit{Twitter}, permitiéndonos entre otras posibilidades, filtrar los contenidos a obtener por rangos de fechas. No existe limitación a la hora de obtener contenidos independientemente de su fecha de publicación (en todo caso posterior a 14/02/2005, fecha de fundación de \textit{YouTube}). Y en relación a limitaciones en el volumen de información a obtener, \textit{YouTube} no impone limitaciones por búsqueda, lo que posibilita obtener toda la información requerida sobre un termino en concreto. En su defecto, \textit{YouTube} utiliza un sistema de cuotas que se aplica a periodos de tiempo en concreto \cite{18}, por ejemplo, en su versión gratuita permite realizar hasta 1.000.000 de operaciones de lectura por día que, tal y como se ha demostrado, han sido suficientes para el uso dado a la aplicación desarrollada. Para estudiar su viabilidad en el proyecto, se realizo una prueba de concepto con resultados satisfactorios: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}{POCYouTubeCrawler}.
 \\
 
 En el apartado \ref{youTubeDataAPI} se detalla en profundidad los servicios de la API de \textit{YouTube} utilizados y el modo en que la aplicación los consume para obtener contenidos. 
 \medskip 
 
 \subsubsection{Visualización de vídeos en grafo}
+Otra de las decisiones de diseño mas debatidas fue la definición de una vista en la aplicación que permitiera de forma visual analizar como se relacionan los movimientos anti y pro vacuna en la red social de \textit{YouTube}. 
+\\
+
+La motivación principal de la misma es la de proporcionar una funcionalidad con la cual fuera posible estudiar las vías de acceso a los contenidos y observar que movimiento tiene mas alcance de audiencia en \textit{YouTube}. Para tales efectos, se llego a la conclusión que una visualización en formato de grafo donde fuera posible distinguir los dos movimientos a estudio seria la forma mas efectiva de representar dicha información.
+\\
+
+Para difinir el grafo, necesitábamos analizar que componentes actuarían como nodo y que representarían las aristas entre ellos, ademas de tomar otras decisiones como si se incorporarían pesos al grafo y si este seria dirigido o no. Para ayudar en la definición del grafo, se realizaron propuestas que se apoyaron con pruebas realizadas manualmente por parte de la clienta con contenidos reales:
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.40]{grafo/propuesta1.png}
+\caption{Propuesta grafo dirigido}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.40]{grafo/pruebaManual.png}
+\caption{Maqueta de grafo dirigido}
+\end{figure}
+\bigskip 
+
+Como conclusiones del análisis realizado se definió el grafo a representar con las siguientes características:
+\begin{itemize}
+\item \textbf{Tipo:} Grafo dirigido sin pesos.
+\item \textbf{Nodos:} Vídeos y canales (canales de forma opcional).
+\item \textbf{Aristas:} Entre dos vídeos representa que desde el vídeo origen es posible acceder al vídeo destino (mediante la recomendación realizada por \textit{YouTube} como vídeos relacionados). Y entre un vídeo y un canal representa que el vídeo (nodo origen) ha sido publicado por el canal relacionado (nodo destino).
+\item \textbf{Visualización:} En nodos tipo vídeo, su tamaño sera determinado por su alcance de audiencia y el color de representación sera determinado por su categoría (anti o pro vacuna). En el caso de nodos tipo canal su tamaño y representación no sera determinado por ninguna de sus características, por lo que todos los canales se visualizaran con el mismo formato pero diferenciados de los nodos tipo vídeo. Sera posible ver una pre visualización del contenido al hacer clic en el.
+\end{itemize}
+
+Para estudiar su viabilidad, se realizo una prueba de concepto con resultado favorable: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}{POCYouTubeCrawler}.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.30]{grafo/pocGrafo.png}
+\caption{Prueba de concepto de grafo dirigido}
+\end{figure}
+
+En la propuesta de grafo detallada, se detectaron dos requerimientos encubiertos necesarios para su realización: la necesidad de categorizar vídeos y la definición de una variable que nos permitiera determinar el alcance de audiencia de un vídeo para definir su tamaño en el grafo.
+\\
+
+Para la categorización de los vídeos, se diseño una funcionalidad genérica que permitiera al usuario definir las categorías necesarias con las cuales posteriormente poder etiquetar los vídeos. El inconveniente de esta solución es que para poder visualizar correctamente el grafo y identificar los grupos de nodos, se requiere realizar previamente una tarea de categorización manual de los vídeos. Después de analizar la problemática, debido a que el volumen de datos requeridos para realizar el estudio se determino en una cifra menor a mil, se acepto la solución como viable pero, en este caso, se debía tener presente esta circunstancia en la planificación del proyecto.
+\\
+
+Por otro lado, para definir el tamaño de visualización del nodo se estudio la creación de una variable apodada como \textit{scopeRange}. Dicha variable, debía representar dentro de un rango de valores valido, el alcance o popularidad obtenido por un vídeo en concreto. Para ello se estudio poder identificar a los usuarios mas influyentes de \textit{YouTube} (conocidos como \textit{influencers}), pero finalmente se decidió utilizar la información estadística ofrecida por \textit{YouTube} para cada vídeo, la cual se compone de los campos:
+\begin{itemize}
+\item \textbf{\textit{viewCount}:} Numero de visualizaciones del vídeo.
+\item \textbf{\textit{likeCount}:} Numero de personas a las cuales le ha gustado el vídeo.
+\item \textbf{\textit{dislikeCount}:} Numero de personas a las cuales no le ha gustado el vídeo.
+\item \textbf{\textit{commentCount}:} Numero de comentario que ha recibido el vídeo.
+\end{itemize}
+
+Para la definición de la formula se pidió la colaboración de un estadista. Pero debido a que la fecha final de desarrollo del proyecto se aproximaba y aun no se disponía de la colaboración, se opto por aplicar una formula definida por la clienta que en las pruebas realizadas demostró efectividad:
+\begin{center}
+$$scopeRange = \frac{likeCount}{dislikeCount}$$
+\end{center}
+Con un valor mínimo definido de 10 para asegurar la visualización del vídeo en el grafo.
+\\
+
+A modo ilustrativo, a continuación se adjunta una imagen de la implementación del grafo en la aplicación:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.40]{grafo/final.png}
+\caption{Implementación del grafo en la aplicación}
+\end{figure}
 \medskip 
 
 \subsubsection{Casos de uso}
