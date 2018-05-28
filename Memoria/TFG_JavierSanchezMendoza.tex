@@ -927,21 +927,42 @@ Finalmente, en la ultima etapa en lo que ha diseño del producto se refiere, se 
 \end{figure}
 
 Cabe destacar que, debido a iteraciones de desarrollo realizadas posteriormente a la presentación y aprobación de la ultima propuesta de interfaz de usuario presentada, esta no refleja el estado final de la aplicación.
-
-\medskip 
+\bigskip 
 
 \subsection{Arquitectura WEB}
+La decisión de realizar una aplicación Web viene motivada por las ventajas que aporta este medio en comparación con las aplicaciones de escritorio como por ejemplo, facilidades el trabajo colaborativo o centralizar la información y los procesos entre otros. Y de entre las diferentes arquitecturas Web, para el desarrollo del proyecto se escogió implementar una arquitectura REST por capas.
+\\
 
-//Arquitectura REST por capas
+REST (proveniente del acrónimo en ingles \textit{REpresentation State Transfer}) es un estilo arquitectónico en el desarrollo de aplicaciones Web que esta definido por una serie de principios. Algunos de los mas destacados son:
+\begin{itemize}
+\item Las solicitudes son sin estado.
+\item Se sirven recursos, no funcionalidades (tales como objectos de base de datos).
+\item Se accede a los recursos mediante URI que debe ser única por recurso.
+\item Las operaciones a realizar sobre los recursos se realizan mediante HTTP especificando métodos estándar (tales como  \textit{GET}, \textit{PUT}, \textit{POST} y \textit{DELETE}).
+\item Como formato para el intercambio de recursos se suele utilizar JSON o XML. 
+\end{itemize}
 
-//Pequeña introducción
+La elección de esta arquitectura es a razón de los beneficios inherentes que aporta, tales como simplicidad en la arquitectura, escalable, extensible o la separación entre la capa de aplicación y capa de presentación. Gracias a esta arquitectura y de ser requerido en el futuro, ademas de disponer de un cliente Web como el diseñado en el proyecto actual, también seria factible, por ejemplo, proveer una aplicación móvil nativa sin tener que cambiar los servicios ofrecidos por el sistema.
+\\
 
-//POrque se ha escoguido
+Como alternativa al uso de REST se considero utilizar una arquitectura basada en RPC. La gran diferencia entre ambas (entre otras) reside en el hecho que REST se centra en recursos mientras que RPC en funcionalidades. Por facilidad de uso y simplicidad se escogió implementar una arquitectura REST en detrimento de RPC.
+\\
 
-//Comparacion RCP
+La aplicación de los principios REST conllevo a realizar otra decisión arquitectónica, dividir la aplicación por capas. En este caso, se escogió aplicar una arquitectura cliente-servidor de tres capas divididas en: 
+\begin{itemize}
+\item \textbf{Capa de datos}: Donde se persistirá la información de la aplicación utilizando un SGBD.
+\item \textbf{Capa de aplicación}: En donde se llevara a cabo el acceso a datos, la lógica de negocio y de presentación que, a la vez, estará dividida entre el controlador de solicitudes de navegador (vistas HTML) y el controlador de solicitudes de recursos (API REST).
+\item \textbf{Capa cliente}: Consistente en una interfaz de usuario web.
+\end{itemize}
 
-//Modelo por capas
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{diseno/ArquitecturaRESTPorCapas.png}
+\caption{Arquitectura REST por capas}
+\end{figure}
 
+
+Gracias a esta distribución, se espera poder atorgar a la aplicación de una gran capacidad de reutilización y extensibilidad. En lo que ha distribución física se refiere, la capa cliente se ejecutara en los clientes Web de los usuarios y la capa de aplicación y de datos en un servidor. 
 \medskip 
 
 \subsection{Diseño capa de datos}
