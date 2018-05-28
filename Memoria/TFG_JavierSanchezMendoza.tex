@@ -938,7 +938,7 @@ REST (proveniente del acrónimo en ingles \textit{REpresentation State Transfer}
 \item Las solicitudes son sin estado.
 \item Se sirven recursos, no funcionalidades (tales como objectos de base de datos).
 \item Se accede a los recursos mediante URI que debe ser única por recurso.
-\item Las operaciones a realizar sobre los recursos se realizan mediante HTTP especificando métodos estándar (tales como  \textit{GET}, \textit{PUT}, \textit{POST} y \textit{DELETE}).
+\item Las operaciones sobre los recursos se realizan mediante HTTP especificando métodos estándar (tales como  \textit{GET}, \textit{PUT}, \textit{POST} y \textit{DELETE}).
 \item Como formato para el intercambio de recursos se suele utilizar JSON o XML. 
 \end{itemize}
 
@@ -957,12 +957,11 @@ La aplicación de los principios REST conllevo a realizar otra decisión arquite
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.45]{diseno/ArquitecturaRESTPorCapas.png}
+\includegraphics[scale=0.40]{diseno/ArquitecturaRESTPorCapas.png}
 \caption{Arquitectura REST por capas}
 \end{figure}
 
-
-Gracias a esta distribución, se espera poder atorgar a la aplicación de una gran capacidad de reutilización y extensibilidad. En lo que ha distribución física se refiere, la capa cliente se ejecutara en los clientes Web de los usuarios y la capa de aplicación y de datos en un servidor. 
+Gracias a esta distribución, se espera poder atorgar a la aplicación de una gran capacidad de reutilización y extensibilidad. En lo que ha distribución física se refiere, la capa cliente se ejecutara en los clientes Web de los usuarios y la capa de aplicación y de datos en un servidor. En los siguientes capítulos se detalla el diseño realizado para cada una de las capas.
 \medskip 
 
 \subsection{Diseño capa de datos}
