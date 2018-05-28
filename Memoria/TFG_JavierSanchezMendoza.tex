@@ -901,31 +901,27 @@ Finalmente, en la ultima etapa en lo que ha diseño del producto se refiere, se 
 
 \begin{figure}[H]
 \centering
-\subfigure[Mapa web]{\includegraphics[width=60mm]{interfaz/04-15/0.png}}
 \subfigure[Login]{\includegraphics[width=60mm]{interfaz/04-15/1.png}}
-\end{figure}
-\begin{figure}[H]
-\centering
 \subfigure[Procesos de recolección]{\includegraphics[width=60mm]{interfaz/04-15/2.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
 \subfigure[Proceso de recolección]{\includegraphics[width=60mm]{interfaz/04-15/3.png}}
-\end{figure}
-\begin{figure}[H]
-\centering
 \subfigure[Vista vídeo en detalle]{\includegraphics[width=60mm]{interfaz/04-15/4.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
 \subfigure[Listado de canales]{\includegraphics[width=60mm]{interfaz/04-15/5.png}}
-\end{figure}
-\begin{figure}[H]
-\centering
 \subfigure[Vista canal en detalle]{\includegraphics[width=60mm]{interfaz/04-15/6.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
 \subfigure[Listado de categorías]{\includegraphics[width=60mm]{interfaz/04-15/7.png}}
-\end{figure}
-\begin{figure}[H]
-\centering
 \subfigure[Añadir nueva categoría]{\includegraphics[width=60mm]{interfaz/04-15/8.png}}
-\subfigure[Editar categoría]{\includegraphics[width=60mm]{interfaz/04-15/9.png}}
 \end{figure}
 \begin{figure}[H]
 \centering
+\subfigure[Editar categoría]{\includegraphics[width=60mm]{interfaz/04-15/9.png}}
 \subfigure[Vista de análisis]{\includegraphics[width=60mm]{interfaz/04-15/10.png}}
 \caption{Tercera y ultima propuesta de interfaz de usuario}
 \end{figure}
@@ -934,14 +930,103 @@ Cabe destacar que, debido a iteraciones de desarrollo realizadas posteriormente 
 
 \medskip 
 
+\subsection{Arquitectura WEB}
 
-\subsection{Arquitectura de la solución}
+//Arquitectura REST por capas
+
+//Pequeña introducción
+
+//POrque se ha escoguido
+
+//Comparacion RCP
+
+//Modelo por capas
+
 \medskip 
 
-\subsubsection{Arquitectura WEB}
+\subsection{Diseño capa de datos}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{diseno/DatabaseUML.png}
+\caption{Diagrama de classes UML capa de datos}
+\end{figure}
+
 \medskip 
 
-\subsubsection{Diseño API RESTful}
+\subsection{Diseño capa de aplicación}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{diseno/ComponentDiagram3.png}
+\caption{Diagrama de componentes}
+\end{figure}
+
+\medskip 
+
+\subsubsection{Capa de acceso a datos}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{diseno/accesoDatos/ComponentsDiagram.png}
+\caption{Diagrama de componentes capa acceso a datos - v1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{diseno/accesoDatos/ComponentDiagram2.png}
+\caption{Diagrama de componentes capa acceso a datos - v2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{diseno/accesoDatos/ComponentDiagram3.png}
+\caption{Diagrama de componentes capa acceso a datos - v3}
+\end{figure}
+
+\medskip 
+
+\subsubsection{Capa de lógica de negocio}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{diseno/negocio/ComponentsDiagram.png}
+\caption{Diagrama de componentes capa de lógica de negocio - v1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{diseno/negocio/ComponentDiagram2.png}
+\caption{Diagrama de componentes capa de lógica de negocio - v2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{diseno/negocio/ComponentDiagram3.png}
+\caption{Diagrama de componentes capa de lógica de negocio - v3}
+\end{figure}
+
+\medskip 
+
+\subsubsection{Capa de presentación}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{diseno/presentacion/ComponentsDiagram.png}
+\caption{Diagrama de componentes capa de presentación - v1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{diseno/presentacion/ComponentDiagram2.png}
+\caption{Diagrama de componentes capa de presentación - v2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{diseno/presentacion/ComponentDiagram3.png}
+\caption{Diagrama de componentes capa de presentación - v3}
+\end{figure}
 
 \noindent\textbf{Componente \textit{crawler}:}
 
@@ -950,7 +1035,7 @@ Cabe destacar que, debido a iteraciones de desarrollo realizadas posteriormente 
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Metodo} & \textbf{Url}            & \textbf{Descripción}                                               \\ \hline
+\textbf{Metodo} & \textbf{Uri}            & \textbf{Descripción}                                               \\ \hline
 GET             & api/crawlers               & Lista todos los procesos de recolección.                           \\ \hline
 POST            & api/crawlers               & Inicia un nuevo proceso de recolección. Requiere autentificación.  \\ \hline
 GET             & api/crawlers/\{id\}        & Devuelve un proceso de recolección.                                \\ \hline
@@ -969,7 +1054,7 @@ GET             & api/crawlers/\{id\}/videos & Lista todos los vídeos descubier
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Metodo} & \textbf{Url}             & \textbf{Descripción}                              \\ \hline
+\textbf{Metodo} & \textbf{Uri}             & \textbf{Descripción}                              \\ \hline
 GET             & api/videos               & Lista todos los vídeos.                           \\ \hline
 GET             & api/videos/stats         & Devuelve las estadísticas de todos los vídeos.    \\ \hline
 GET             & api/videos/favorites     & Devuelve los vídeos favoritos.                    \\ \hline
@@ -988,7 +1073,7 @@ GET             & api/videos/\{id\}/videos & Lista todos los vídeos relacionado
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Metodo} & \textbf{Url}               & \textbf{Descripción}                              \\ \hline
+\textbf{Metodo} & \textbf{Uri}               & \textbf{Descripción}                              \\ \hline
 GET             & api/channels               & Lista todos los canales                           \\ \hline
 GET             & api/channels/\{id\}        & Devuelve un canal.                                \\ \hline
 DELETE          & api/channels/\{id\}        & Borra un canal. Require identificación            \\ \hline
@@ -1005,7 +1090,7 @@ GET             & api/channels/\{id\}/videos & Lista todos los videos relacionad
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Metodo} & \textbf{Url}                   & \textbf{Descripción}                                    \\ \hline
+\textbf{Metodo} & \textbf{Uri}                   & \textbf{Descripción}                                    \\ \hline
 GET             & api/categories                 & Lista todas las categorías                              \\ \hline
 POST            & api/categories                 & Crea una nueva categoría. Requiere identificación.      \\ \hline
 GET             & api/categories/\{name\}        & Devuelve una categoría.                                 \\ \hline
@@ -1024,7 +1109,7 @@ GET             & api/categories/\{name\}/videos & Lista todos los vídeos categ
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Metodo} & \textbf{Url} & \textbf{Descripción}                                           \\ \hline
+\textbf{Metodo} & \textbf{Uri} & \textbf{Descripción}                                           \\ \hline
 POST            & api/graphs   & Crea un nuevo grafo (no se persiste, se muestra por pantalla). \\ \hline
 \end{tabular}%
 }
@@ -1033,44 +1118,15 @@ POST            & api/graphs   & Crea un nuevo grafo (no se persiste, se muestra
 
 \medskip 
 
-\subsubsection{Diseño capa de datos}
+\subsection{Diseño capa cliente}
+// Explicar combinación jsp mas llamadas Ajax desde javascript
 
-\begin{figure}[hbtp]
+\begin{figure}[H]
 \centering
-\includegraphics[scale=0.6]{diseno/DatabaseUML.png}
-\caption{Diagrama UML}
+\includegraphics[scale=0.25]{diseno/capaCliente.png}
+\caption{Diseño vistas capa cliente}
 \end{figure}
 
-\medskip 
-
-\subsubsection{Diseño capa de negocio}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.35]{diseno/ComponentsDiagram.png}
-\caption{Diagrama UML 1}
-\end{figure}
-
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.3]{diseno/ComponentDiagram2.png}
-\caption{Diagrama UML 2}
-\end{figure}
-
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.25]{diseno/ComponentDiagram3.png}
-\caption{Diagrama UML 3}
-\end{figure}
-
-
-
-\medskip 
-
-\subsubsection{Diseño capa de presentación}
-\url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/Dise%C3%B1o/CapaPresentacion}
 \newpage 
 
 
