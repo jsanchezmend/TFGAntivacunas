@@ -23,6 +23,50 @@
 \graphicspath{ {images/} }
 
 
+
+\usepackage{color}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+\usepackage{listings}
+\lstset{ frame=Ltb,
+framerule=0pt,
+aboveskip=0.5cm,
+framextopmargin=3pt,
+framexbottommargin=3pt,
+framexleftmargin=0.4cm,
+framesep=0pt,
+rulesep=.4pt,
+backgroundcolor=\color{gray97},
+rulesepcolor=\color{black},
+%
+stringstyle=\ttfamily,
+showstringspaces = false,
+basicstyle=\small\ttfamily,
+commentstyle=\color{gray45},
+keywordstyle=\bfseries,
+%
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+numberfirstline = false,
+breaklines=true,
+}
+
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{consola}
+{basicstyle=\scriptsize\bf\ttfamily,
+backgroundcolor=\color{gray75},
+}
+
+\lstdefinestyle{C}
+{language=C,}
+
+
 \begin{document}
 
 
@@ -172,7 +216,7 @@ Siguiendo la metodología \textit{scrum}, se realizaron iteraciones (comúnmente
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.3]{planificacion/trello-backlog.png}
+\includegraphics[scale=0.28]{planificacion/trello-backlog.png}
 \caption{Ejemplo del backlog del proyecto en Trello}
 \end{figure}
 \medskip 
@@ -219,13 +263,13 @@ Cabe destacar que el diagrama proporcionado en esta sección representa la estim
 Para la consecución de los objetivos definidos se ha desarrollado una aplicación web bautizada como \textit{YouTubeCrawlerTool} la cual ha sido diseñada por capas.
 \\
 
-La capa de negocio de dicha aplicación ha sido desarrollada con tecnología Java EE \cite{10} implementada mayormente utilizando proyectos del marco de desarrollo Spring Framework \cite{11} entre otros. En esta capa se hace uso intensivo de servicios externos en forma de API pública ofrecida por YouTube con el fin de consumir dicha API para recolectar los vídeos requeridos por el usuario para su estudio.
+En la capa de datos se utiliza una base de datos orientada a grafos \cite{10} la cual nos permite persistir los vídeos obtenidos en forma de grafo junto con sus relaciones ademas de otras informaciones derivadas y necesarias para el uso y funcionamiento de la aplicación.
 \\
 
-En la capa de presentación se ha utilizado el lenguaje JavaScript \cite{12} con un gran uso de JQuery \cite{13} para modificar el DOM de las vistas y realizar llamadas asíncronas a la API Rest habilitada en la capa de negocio para tales efectos.
+La capa de aplicación ha sido desarrollada con tecnología Java EE \cite{11} implementada mayormente utilizando proyectos del marco de desarrollo Spring Framework \cite{12} entre otros. En esta capa se hace uso intensivo de servicios externos en forma de API pública ofrecida por YouTube con el fin de consumir dicha API para recolectar los vídeos requeridos por el usuario para su estudio.
 \\
 
-Finalmente, en la capa de datos se utiliza una base de datos orientada a grafos \cite{14} la cual nos permite persistir los vídeos obtenidos en forma de grafo junto con sus relaciones ademas de otras informaciones derivadas y necesarias para el uso y funcionamiento de la aplicación.
+Finalmente, en la capa de cliente las vistas desarrolladas utilizan lenguaje JavaScript \cite{13} con un gran uso de JQuery \cite{14} para modificar el DOM y realizar llamadas asíncronas a la API Rest habilitada en la capa de aplicación para tales efectos.
 \\
 
 En los siguientes apartados se profundiza en la arquitectura y el diseño de la aplicación introducidos en esta sección.
@@ -986,7 +1030,7 @@ A continuación se detallan las entidades diseñadas:
 
 \medskip 
 
-\subsection{Diseño capa de aplicación}
+\subsection{Diseño capa de aplicación}\label{capaAplicacion} 
 Para el diseño de la capa de aplicación se decidió definir un componente por cada grupo de funcionalidad identificada en los casos de uso definidos en el apartado \ref{casosDeUso}. En concreto, los componentes diseñados fueron los siguientes:
 
 \begin{itemize}
@@ -1225,27 +1269,221 @@ La figura a continuación ejemplifica el mapa web de la aplicación con los fluj
 
 
 \section{Desarrollo}
-//TODO: Hablar de patrones usados (factory y etc) y framworks utilizados
 \bigskip
 
 \subsection{Entorno de desarrollo}
-Aplicación web (con POCYouTubeCrawlerNeo4j instalado):
-\url{http://youtubecrawlertoolwebapp.azurewebsites.net} 
+A continuación se detalla la configuración del entorno de desarrollo utilizada en el desarrollo del proyecto. Algunas de las cuales no representan obligatoriedad siendo posible utilizar alternativas diferentes con los mismos resultados, en este caso solo se pretende exponer la configuración utilizada:
 
-Servidor base de datos Neo4j:
-\url{http://51.136.48.142:7474/browser} 
-Usuario: neo4j
-Password: Y01t1b3cr4wl3rt00l
-Consulta de ejemplo: MATCH (n) RETURN n
+\begin{itemize}
+\item \textbf{Sistema operativo:} MacOS.
+\item \textbf{Neo4J 3.3.5 Server Community version:} Instalación de servidor de base de datos Neo4J en local necesario para el desarrollo de la capa de datos.
+\item \textbf{Java JDK 8:} Kit de desarrollo de Java versión 8 \cite{21} necesario para el desarrollo de la capa de aplicación.
+\item \textbf{Git y creación de cuenta en GitHub:} Como herramienta para el control de versiones se ha escogido Git \cite{22}. Ademas, se creo una cuenta con perfil público en Github accesible desde el siguiente enlace: \url{https://github.com/jsanchezmend/TFGAntivacunas}.
+\item \textbf{Maven:} Herramienta para la gestión de proyectos Java \cite{23}, fue utilizada para la construcción del proyecto y para la gestión de dependencias.
+\item \textbf{Spring Tool Suite:} Entorno de desarrollo utilizado el cual se basa en una customización de Eclipse \cite{24}.
+\item \textbf{Tomcat:} Para probar la aplicación se utilizo el servidor de aplicaciones Tomcat \cite{25}, pero devido al uso de Spring Boot \cite{26} no fue necesario realizar su instalación al incorporar esta solución una versión de Tomcat.
+\item \textbf{Google API Key:} Para poder realizar consultas a la API de \textit{YouTube} es necesario obtener una clave de API que tendrá que ser utilizada cada vez que se haga uso de sus servicios. Para obtenerla, primero hay que acceder a la consola de desarrollo de \textit{Google} utilizando una cuanta previamente existente, crear un nuevo proyecto de desarrollo y activar los servicios de \textit{YouTube Data API v3} \cite{27}.
+\end{itemize}
 \medskip 
 
-\subsection{YouTube Data API}\label{youTubeDataAPI} 
+\subsection{Decisiones previas al desarrollo}
+Antes de empezar con el desarrollo de la aplicación, fue necesario realizar algunas decisiones previas las cuales tendrían repercusión en la implementación final de la solución.  Para ayudar en la toma de decisión y estudiar la viabilidad de las mismas, estas fueron respaldadas con pruebas de concepto detalladas en la sección \ref{pocs}.
+\\
+
+En los próximos apartados se detallan algunas de las decisiones mas relevantes que se tuvieron que tomar, como fue el estudio y elección de la API de YouTube a consumir y el SGDB a utilizar. 
+\medskip
+
+\subsubsection{YouTube Data API}\label{youTubeDataAPI} 
 \medskip 
 
-\subsection{Neo4j como SGBD}\label{sgbd} 
+\subsubsection{Neo4j como SGBD}\label{sgbd} 
 \medskip 
 
 \subsection{Estructura de la aplicación}
+Tal y como se ha avanzado anteriormente, para la creación de la estructura del proyecto en \textit{Java} se hizo uso de la herramienta \textit{Maven} (o conocido popularmente como \textit{mvn}).
+\\
+
+Con esta herramienta se creo la definición del proyecto juntamente con sus módulos utilizando los \textit{Project Object Model} (definidos mediante ficheros de configuración '\textit{pom.xml}') con los cuales es posible definir la estructura de la aplicación a construir. Ademas, \textit{Maven} nos permite gestionar las dependencias a otros módulos o librerías de terceros añadiendo versionado a nuestra aplicación.
+\\
+
+Así entonces, utilizando \textit{Maven} se definió la estructura de la aplicación separada por módulos independientes tomando como referencia la separación por paquetes realizada en el diseño de la capa de aplicación de la sección \ref{capaAplicacion}:
+
+\begin{itemize}
+\item \textbf{youtube-crawler-tool:} Modulo padre de la aplicación.
+\item \textbf{youtube-crawler-tool-data:} Implementación de la capa de acceso a datos.
+\item \textbf{youtube-crawler-tool-core:} Implementación de la capa de lógica de negocio.
+\item \textbf{youtube-crawler-tool-api:} Implementación de la capa de presentación.
+\item \textbf{youtube-crawler-tool-war:} Implementación de la capa cliente.
+\end{itemize}
+
+Gracias a esta separación por módulos, la solución implementada puede ser fácilmente ampliada para, por ejemplo, definir una capa de acceso a datos alternativa que utilice una tecnología de persistencia diferente.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{desarrollo/mvn.png}
+\caption{Estructura de la aplicación}
+\end{figure}
+
+A seguir se facilitan algunos extractos de los ficheros "\textit{pom.xml}" definidos para cada modulo:
+\\
+
+\noindent\textbf{youtube-crawler-tool}
+\begin{lstlisting}[style=C]
+...
+<groupId>uoc.edu.jsanchezmend.tfg</groupId>
+<artifactId>youtube-crawler-tool</artifactId>
+<version>1.0.0</version>
+<packaging>pom</packaging>
+
+<parent>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-parent</artifactId>
+  <version>2.0.1.RELEASE</version>
+</parent>
+	
+<!-- Modules -->
+<modules>
+  <module>youtube-crawler-tool-data</module>
+  <module>youtube-crawler-tool-core</module>
+  <module>youtube-crawler-tool-api</module>
+  <module>youtube-crawler-tool-war</module>
+</modules>
+...
+\end{lstlisting}
+\newpage  
+
+\noindent\textbf{youtube-crawler-tool-data}
+\begin{lstlisting}[style=C]
+...
+<artifactId>youtube-crawler-tool-data</artifactId>
+<packaging>jar</packaging>
+
+<parent>
+  <groupId>uoc.edu.jsanchezmend.tfg</groupId>
+  <artifactId>youtube-crawler-tool</artifactId>
+  <version>1.0.0</version>
+</parent>
+    
+<dependencies>
+  <!-- Spring Data Neo4j -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-neo4j</artifactId>
+  </dependency>
+  <!-- Json parser -->
+  <dependency>
+    <groupId>com.google.http-client</groupId>
+    <artifactId>google-http-client-jackson2</artifactId>
+    <version>1.23.0</version>
+  </dependency>
+</dependencies>
+...
+\end{lstlisting}
+\medskip
+
+\noindent\textbf{youtube-crawler-tool-core}
+\begin{lstlisting}[style=C]
+...
+<artifactId>youtube-crawler-tool-core</artifactId>
+<packaging>jar</packaging>
+
+<parent>
+  <groupId>uoc.edu.jsanchezmend.tfg</groupId>
+  <artifactId>youtube-crawler-tool</artifactId>
+  <version>1.0.0</version>
+</parent>
+
+<dependencies>
+  <!-- YouTubeCrawlerTool data -->
+  <dependency>
+    <groupId>uoc.edu.jsanchezmend.tfg</groupId>
+    <artifactId>youtube-crawler-tool-data</artifactId>
+    <version>${parent.version}</version>
+  </dependency>
+  <!-- YouTube Data V3 support -->
+  <dependency>
+    <groupId>com.google.apis</groupId>
+    <artifactId>google-api-services-youtube</artifactId>
+    <version>v3-rev193-1.23.0</version>
+  </dependency>
+</dependencies>
+...
+\end{lstlisting}
+\medskip
+
+\noindent\textbf{youtube-crawler-tool-api}
+\begin{lstlisting}[style=C]
+...
+<artifactId>youtube-crawler-tool-api</artifactId>
+<packaging>jar</packaging>
+
+<parent>
+  <groupId>uoc.edu.jsanchezmend.tfg</groupId>
+  <artifactId>youtube-crawler-tool</artifactId>
+  <version>1.0.0</version>
+</parent>
+
+<dependencies>
+  <!-- YouTubeCrawlerTool core -->
+  <dependency>
+    <groupId>uoc.edu.jsanchezmend.tfg</groupId>
+    <artifactId>youtube-crawler-tool-core</artifactId>
+    <version>${parent.version}</version>
+  </dependency>
+  <!-- Spring Boot Web -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+  <!-- Spring Security -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+  </dependency>
+</dependencies>
+...
+\end{lstlisting}
+\medskip
+
+\noindent\textbf{youtube-crawler-tool-war}
+\begin{lstlisting}[style=C]
+...
+<artifactId>youtube-crawler-tool-war</artifactId>
+<packaging>war</packaging>
+
+<parent>
+  <groupId>uoc.edu.jsanchezmend.tfg</groupId>
+  <artifactId>youtube-crawler-tool</artifactId>
+  <version>1.0.0</version>
+</parent>
+
+<dependencies>
+  <!-- YouTubeCrawlerTool api -->
+  <dependency>
+    <groupId>uoc.edu.jsanchezmend.tfg</groupId>
+    <artifactId>youtube-crawler-tool-api</artifactId>
+    <version>${parent.version}</version>
+  </dependency>
+  <!-- Spring Boot Thymeleaf -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+  </dependency>
+  <!-- optional, it brings userful tags to display spring security stuff -->
+  <dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+  </dependency>
+  <!-- hot swapping, disable cache for template, enable live reload -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    <optional>true</optional>
+  </dependency>
+</dependencies>
+...
+\end{lstlisting}
+
 \medskip 
 
 \subsection{Acceso a datos}
@@ -1285,28 +1523,41 @@ Consulta de ejemplo: MATCH (n) RETURN n
 \medskip 
 
 \subsection{Definición y ejecución de pruebas}
+Durante el desarrollo de la aplicación y a medida que se iba finalizando la implementacion de los distintos componentes, se fueron definiendo y ejecutando pruebas de integración para probar la funcionalidad desarrollada.
+\\
+
+Las pruebas a realizar se definieron según los casos de uso documentados en la sección \ref{casosDeUso} asignando un código de identificación para cada uno de ellos. Ademas, al agrupar las pruebas a realizar por componentes nos permitió evaluar la calidad de cada componente por separado tan pronto estaba disponible.
+\\
+
+En el apartado anexo \ref{pruevasIntegracion} se facilita el resultado completo de las pruebas de integración realizadas.
 \medskip 
 
-\subsection{Pruebas de concepto}
-\begin{itemize}
-\item \textbf{Twitter crawler:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCTwitterCrawler}
-\item \textbf{YouTube crawler:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}
-\item \textbf{Visualización en grafo:}: \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}
-\item \textbf{Neo4j:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawlerNeo4j}
-\end{itemize}
-\medskip 
+\subsection{Pruebas de concepto}\label{pocs}
+Tal y como se ha comentado en anteriores apartados, en el desarrollo de la aplicación se realizaron varias pruebas de concepto para poner a prueba distintas soluciones y estudiar la viabilidad se ser incorporadas en el sistema.
+\\
 
-\subsubsection{POCTwitterCrawler}
-\medskip 
+En esta apartado se resume brevemente cada una de ellas junto con su finalidad y los resultados obtenidos:
+\\
 
-\subsubsection{POCYouTubeCrawler}
-\medskip 
+\noindent\textbf{POCTwitterCrawler}\\
+\textbf{Descripción:} Prueba de concepto desarrollada para probar la integración con la API de \textit{Twitter} y guardar los contenidos recolectados en \textit{MongoDB}.\\
+\textbf{Resultados:} Aunque la prueba resulto satisfactoria y fue posible obtener mensajes de \textit{Twitter} y guardarlos en \textit{MongoDB}, debido a la posterior elección de \textit{YouTube} como red social a utilizar y a \textit{Neo4j} como SGBD, no se pudo aprovechar el conocimiento adquirido para la implementación final.\\
+\textbf{Enlace:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCTwitterCrawler}.
+\\
 
-\subsubsection{POCYouTubeCrawlerNeo4j}
+\noindent\textbf{POCYouTubeCrawler}\\
+\textbf{Descripción:} Prueba de concepto desarrollada para probar la integración con la API de \textit{YouTube} y guardar los contenidos recolectados en \textit{MongoDB}. Posteriormente también se añadio la visualización en grafo utilizando librería JavaScript '\textit{Cytoscape.js}'.\\
+\textbf{Resultados:} La prueba resulto satisfactoria y fue posible obtener mensajes de \textit{YouTube} y guardarlos en \textit{MongoDB} ademas de su visualización en formato de grafo. De esta prueba de concepto en la implementación de la aplicación se aprovecho el conocimiento adquirido a la hora de utilizar la API de\textit{YouTube} y de mostrar los videos en formato de grafo.\\
+\textbf{Enlace:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}.
+\\
+
+\noindent\textbf{POCYouTubeCrawlerNeo4j}\\
+\textbf{Descripción:} Prueba de concepto desarrollada para probar la persistencia de contenidos recolectados en \textit{Neo4j}.\\
+\textbf{Resultados:} La prueba resulto satisfactoria y fue posible guardar los contenidos recolectados en \textit{Neo4j}. El conocimiento adquirido a la hora de implementar el acceso a los datos utilizando \textit{Neo4j} como capa de datos fue utilizado en la implementación final de la aplicación.\\
+\textbf{Enlace:} \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawlerNeo4j}.
+\\
+
 \newpage 
-
-
-
 
 
 \section{Implementación y puesta en funcionamiento}
@@ -1316,6 +1567,14 @@ Consulta de ejemplo: MATCH (n) RETURN n
 \medskip 
 
 \subsection{Servidor de explotación}
+Aplicación web (con POCYouTubeCrawlerNeo4j instalado):
+\url{http://youtubecrawlertoolwebapp.azurewebsites.net} 
+
+Servidor base de datos Neo4j:
+\url{http://51.136.48.142:7474/browser} 
+Usuario: neo4j
+Password: Y01t1b3cr4wl3rt00l
+Consulta de ejemplo: MATCH (n) RETURN n
 \medskip 
 
 \subsection{Formación y sensibilización}
@@ -1381,17 +1640,24 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{7} \url{https://es.wikipedia.org/wiki/Macrodatos} (07/03/2018)
   \bibitem{8} \url{https://es.wikipedia.org/wiki/Scrum_(desarrollo_de_software)} (16/03/2018)
   \bibitem{9} \url{https://trello.com} (16/03/2018)
-  \bibitem{10} \url{http://www.oracle.com/technetwork/java/index.html} (23/05/2018)
-  \bibitem{11} \url{https://spring.io/} (23/05/2018)
-  \bibitem{12} \url{https://es.wikipedia.org/wiki/JavaScript} (23/05/2018)
-  \bibitem{13} \url{https://jquery.com/} (23/05/2018)
-  \bibitem{14} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (23/05/2018)
+  \bibitem{10} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (23/05/2018)
+  \bibitem{11} \url{http://www.oracle.com/technetwork/java/index.html} (23/05/2018)
+  \bibitem{12} \url{https://spring.io/} (23/05/2018)
+  \bibitem{13} \url{https://es.wikipedia.org/wiki/JavaScript} (23/05/2018)
+  \bibitem{14} \url{https://jquery.com/} (23/05/2018)
   \bibitem{15} \url{https://es.wikipedia.org/wiki/Dise%C3%B1o_centrado_en_el_usuario} (24/05/2018)
   \bibitem{16} \url{https://es.wikipedia.org/wiki/Caso_de_uso} (24/05/2018) 
   \bibitem{17} \url{https://developer.twitter.com/en/docs/tweets/search/overview} (26/05/2018) 
   \bibitem{18} \url{https://developers.google.com/youtube/v3/getting-started?hl=es-419#quota} (26/05/2018) 
   \bibitem{19} \url{https://es.wikipedia.org/wiki/Modelo%E2%80%93vista%E2%80%93controlador} (29/05/2018) 
   \bibitem{20} \url{https://docs.microsoft.com/es-es/azure/architecture/best-practices/api-design} (29/05/2018) 
+  \bibitem{21} \url{http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html} (29/05/2018) 
+  \bibitem{22} \url{https://git-scm.com/} (29/05/2018) 
+  \bibitem{23} \url{https://maven.apache.org/} (29/05/2018) 
+  \bibitem{24} \url{https://spring.io/tools} (29/05/2018) 
+  \bibitem{25} \url{http://tomcat.apache.org/} (29/05/2018) 
+  \bibitem{26} \url{https://projects.spring.io/spring-boot/} (29/05/2018) 
+  \bibitem{27} \url{https://developers.google.com/youtube/v3/getting-started#before-you-start} (29/05/2018) 
 \end{thebibliography}
 \newpage 
 
@@ -1399,8 +1665,6 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
 \section{Anexos}
 \bigskip
 
-Listado de apartados que son demasiado extensos para incluir dentro de la memoria y tienen un carácter autocontienido (por ejemplo, manuales de usuario, manuales de instalación, etc.) 
-
-Dependiente del tipo de trabajo, es posible que no haya que añadir ningún anexo.
+\subsection{Pruebas de integración}\label{pruevasIntegracion} 
 
 \end{document}
