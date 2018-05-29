@@ -669,7 +669,7 @@ A modo ilustrativo, a continuación se adjunta una imagen de la implementación 
 \end{figure}
 \medskip 
 
-\subsubsection{Casos de uso}
+\subsubsection{Casos de uso}\label{casosDeUso} 
 Hacer uso de un marco ágil de desarrollo no debe ser escusa para no disponer de una documentación adecuada de los requisitos de una aplicación y, aunque estos sufran modificaciones durante las diferentes iteraciones de desarrollo, estos deben de estar actualizados. Por esta razón se ha decidido realizar la toma de requerimientos de la aplicación en forma de casos de uso, en donde para facilitar la gestión de cambios se ha decidido hacer constar solo el titulo, actores y descripción en cada uno de ellos.
 \\
 
@@ -872,7 +872,7 @@ Así entonces y con lo expuesto en apartados anteriores, a continuación se expo
 \\
 
 
-\subsubsection{Propuesta de interfaz de usuario}
+\subsubsection{Propuesta de interfaz de usuario}\label{propuestaInterfazUsuario} 
 Finalmente, en la ultima etapa en lo que ha diseño del producto se refiere, se presentaron a la clienta diferentes propuestas de interfaz de usuario que se fueron refinando a medida que se modificaban o definían nuevas funcionalidades. En concreto se presentaron tres propuestas:
 \\
 
@@ -965,6 +965,10 @@ Gracias a esta distribución, se espera poder atorgar a la aplicación de una gr
 \medskip 
 
 \subsection{Diseño capa de datos}
+En la capa de datos es donde se persistirá la información necesaria para el funcionamiento de la aplicación. Para tales efectos haremos uso de un sistema gestor de base de datos (SGBD) donde la implementación escogida de la misma se detalla en el apartado \ref{sgbd}.
+\\
+
+Para diseñar la capa de datos se proporciono un diagrama UML de clases del esquema invariante de la información:
 
 \begin{figure}[H]
 \centering
@@ -972,84 +976,130 @@ Gracias a esta distribución, se espera poder atorgar a la aplicación de una gr
 \caption{Diagrama de classes UML capa de datos}
 \end{figure}
 
+A continuación se detallan las entidades diseñadas:
+\begin{itemize}
+\item \textbf{\textit{Crawler}:} Representa a un proceso de recolección de vídeos y contiene, ademas de los criterios de búsqueda introducidos por el usuario, información sobre el estado y resultado del proceso. Un proceso de recolección puede tener asignada una categoría por defecto y haber recolectado varios vídeos.
+\item \textbf{\textit{Video}:} Representa un vídeo en la red social \textit{YouTube}. Un vídeo puede tener asignada una categoría, ha sido recolectado por un proceso de recolección, ha sido publicado por un canal y puede estar relacionado con otros vídeos.
+\item \textbf{\textit{Channel}:} Representa a un canal de publicación de vídeos en la red social \textit{YouTube}. Un canal puede haber publicado varios vídeos.
+\item \textbf{\textit{Category}:} Representa una categoría creada por el usuario de la aplicación. Una categoría puede etiquetar varios vídeos y puede estar asignada por defecto en varios procesos de recolección.
+\end{itemize}
+
 \medskip 
 
 \subsection{Diseño capa de aplicación}
+Para el diseño de la capa de aplicación se decidió definir un componente por cada grupo de funcionalidad identificada en los casos de uso definidos en el apartado \ref{casosDeUso}. En concreto, los componentes diseñados fueron los siguientes:
+
+\begin{itemize}
+\item \textbf{\textit{Crawler}:} Agrupa la funcionalidad del recolector de vídeos.
+\item \textbf{\textit{Video}:} Agrupa la funcionalidad relacionada con la entidad \textit{video}.
+\item \textbf{\textit{Channel}:} Agrupa la funcionalidad relacionada con la entidad \textit{channel}.
+\item \textbf{\textit{Category}:} Agrupa la funcionalidad relacionada con la entidad \textit{category}.
+\item \textbf{\textit{Analysis}:} Agrupa la funcionalidad relacionada con la visualización en formato de grafo y exportación a fichero csv.
+\end{itemize}
+
+En donde en cada capa de la aplicación podemos encontrar representado el diseño realizado de cada componente.
+\\
+
+A continuación se facilita la figura donde se representa el diagrama de componentes de la aplicación al completo y en próximos apartados se detallan cada una de las capas juntos con los diferentes diagrama refinados:
+\newpage 
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.25]{diseno/ComponentDiagram3.png}
+\includegraphics[scale=0.27]{diseno/ComponentDiagram3.png}
 \caption{Diagrama de componentes}
 \end{figure}
-
-\medskip 
+\newpage 
 
 \subsubsection{Capa de acceso a datos}
+Esta capa es la encargada de proporcionar acceso a la aplicación a los datos realizando y gestionando las conexiones y peticiones al SGDB.
+\\
 
+
+\noindent\textbf{Definición de componentes}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.35]{diseno/accesoDatos/ComponentsDiagram.png}
-\caption{Diagrama de componentes capa acceso a datos - v1}
+\caption{Diagrama de componentes capa acceso a datos - componentes}
 \end{figure}
 
+\noindent\textbf{Definición de interfaces}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.3]{diseno/accesoDatos/ComponentDiagram2.png}
-\caption{Diagrama de componentes capa acceso a datos - v2}
+\caption{Diagrama de componentes capa acceso a datos - interfaces}
 \end{figure}
 
+\noindent\textbf{Definición de implementaciones}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.25]{diseno/accesoDatos/ComponentDiagram3.png}
-\caption{Diagrama de componentes capa acceso a datos - v3}
+\caption{Diagrama de componentes capa acceso a datos - implementaciones}
 \end{figure}
 
 \medskip 
 
 \subsubsection{Capa de lógica de negocio}
+La capa de lógica de negocio es la encarga de actuar como mediadora entre la capa de acceso a datos y la capa de presentación añadiendo la lógica necesaria sobre los datos que los requerimientos de la aplicación necesiten. Es en esta capa también, donde se realizara la conexión con el servicio externo en forma de API  de \textit{YouTube} para obtener los vídeos.
+\\
 
+\noindent\textbf{Definición de componentes}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.35]{diseno/negocio/ComponentsDiagram.png}
-\caption{Diagrama de componentes capa de lógica de negocio - v1}
+\caption{Diagrama de componentes capa de lógica de negocio - componentes}
 \end{figure}
 
+\noindent\textbf{Definición de interfaces}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.3]{diseno/negocio/ComponentDiagram2.png}
-\caption{Diagrama de componentes capa de lógica de negocio - v2}
+\caption{Diagrama de componentes capa de lógica de negocio - interfaces}
 \end{figure}
+\newpage 
 
+\noindent\textbf{Definición de implementaciones}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.25]{diseno/negocio/ComponentDiagram3.png}
-\caption{Diagrama de componentes capa de lógica de negocio - v3}
+\caption{Diagrama de componentes capa de lógica de negocio - implementaciones}
 \end{figure}
 
 \medskip 
 
 \subsubsection{Capa de presentación}
+En la capa de presentación es donde habitan el controlador de solicitudes de recursos (paquete '\textit{Presentation (api)}') y el controlador de solicitudes de navegador (paquete '\textit{WebApplication (war)}') aplicando el patrón modelo vista controlador (MVC) \cite{19}.
+\\
 
+\noindent\textbf{Definición de componentes}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.35]{diseno/presentacion/ComponentsDiagram.png}
-\caption{Diagrama de componentes capa de presentación - v1}
+\caption{Diagrama de componentes capa de presentación - componentes}
 \end{figure}
+\newpage 
 
+\noindent\textbf{Definición de interfaces}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.3]{diseno/presentacion/ComponentDiagram2.png}
-\caption{Diagrama de componentes capa de presentación - v2}
+\caption{Diagrama de componentes capa de presentación - interfaces}
 \end{figure}
 
+\noindent\textbf{Definición de implementaciones}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.25]{diseno/presentacion/ComponentDiagram3.png}
-\caption{Diagrama de componentes capa de presentación - v3}
+\caption{Diagrama de componentes capa de presentación - implementaciones}
 \end{figure}
 
-\noindent\textbf{Componente \textit{crawler}:}
+\subsubsection{API REST}
+A continuación se facilita el diseño realizado de la API REST de la aplicación detallando la URI del recurso, el método de ejecución y una breve descripción.
+\\
 
+La API se ha diseñado respetando los patrones de diseño definidos por la arquitectura REST \cite{20}:
+\\
+
+\noindent\textbf{Componente \textit{crawler}:}
 \begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -1103,6 +1153,7 @@ GET             & api/channels/\{id\}/videos & Lista todos los videos relacionad
 }
 \caption{Componente \textit{channel} API}
 \end{table}
+\newpage 
 
 \noindent\textbf{Componente \textit{category}:}
 \begin{table}[H]
@@ -1139,11 +1190,32 @@ POST            & api/graphs   & Crea un nuevo grafo (no se persiste, se muestra
 \medskip 
 
 \subsection{Diseño capa cliente}
-// Explicar combinación jsp mas llamadas Ajax desde javascript
+Finalmente, para el diseño de la capa cliente correspondiente a la interfaz de usuario de la aplicación web, se especificaron las vistas de acuerdo con los casos de uso definidos en el apartado \ref{casosDeUso} y a la propuesta de interfaz de usuario aprobada por la clienta \ref{propuestaInterfazUsuario}:
+\\
+
+\begin{itemize}
+\item \textbf{\textit{loginView.html}:} Permite la identificación en el sistema.
+\item \textbf{\textit{crawlersView.html}:} Pagina principal de la aplicación. Lista los procesos de recolección existentes y permite gestionarlos y iniciar nuevos procesos.
+\item \textbf{\textit{crawlerView.html}:} Vista detalle de un proceso de recolección.
+\item \textbf{\textit{videosView.html}:} Listado de todos los vídeos del sistema.
+\item \textbf{\textit{videoView.html}:} Vista detalle de un vídeo.
+\item \textbf{\textit{channelsView.html}:} Lista de todos los canales del sistema.
+\item \textbf{\textit{channelView.html}:} Vista detalle de un canal.
+\item \textbf{\textit{analysisView.html}:} Permite visualizar los vídeos en un grafo y exportarlos a fichero csv.
+\item \textbf{\textit{favoriteVideosView.html}:} Listado de todos los vídeos favoritos.
+\item \textbf{\textit{categoriesView.html}:} Lista todas las categorías del sistema.
+\item \textbf{\textit{addCategoryView.html}:} Permite crear una nueva categoría.
+\item \textbf{\textit{editCategoryView.html}:} Permite editar una categoría.
+\end{itemize}
+
+Dichas vistas serán gestionadas por el controlador de solicitudes de navegador y en ellas, se realizaran peticiones asíncronas a recursos utilizando la API REST de la aplicación que sera gestionada por el controlador de solicitudes de recursos.
+\\
+
+La figura a continuación ejemplifica el mapa web de la aplicación con los flujos de interacción posibles y funcionalidades previstas para cada vista:
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.25]{diseno/capaCliente.png}
+\includegraphics[scale=0.40]{diseno/capaCliente.png}
 \caption{Diseño vistas capa cliente}
 \end{figure}
 
@@ -1153,9 +1225,9 @@ POST            & api/graphs   & Crea un nuevo grafo (no se persiste, se muestra
 
 
 \section{Desarrollo}
+//TODO: Hablar de patrones usados (factory y etc) y framworks utilizados
 \bigskip
 
-//TODO: Hablar de patrones usados (factory y etc) y framworks utilizados
 \subsection{Entorno de desarrollo}
 Aplicación web (con POCYouTubeCrawlerNeo4j instalado):
 \url{http://youtubecrawlertoolwebapp.azurewebsites.net} 
@@ -1165,6 +1237,54 @@ Servidor base de datos Neo4j:
 Usuario: neo4j
 Password: Y01t1b3cr4wl3rt00l
 Consulta de ejemplo: MATCH (n) RETURN n
+\medskip 
+
+\subsection{YouTube Data API}\label{youTubeDataAPI} 
+\medskip 
+
+\subsection{Neo4j como SGBD}\label{sgbd} 
+\medskip 
+
+\subsection{Estructura de la aplicación}
+\medskip 
+
+\subsection{Acceso a datos}
+// Spring data, entities, repositorios y POJOS
+// Modulo data
+\medskip 
+
+\subsection{Lógica de negocio}
+\medskip 
+\subsubsection{Patrones, servicios, converters..}
+// Explicar lo que haya en el core en general
+// Modulo core
+\medskip 
+\subsubsection{Crawler de YouTube}
+// Explicar conexión con YouTube y como se ha implementado el crawler
+\medskip
+
+\subsection{Presentación}
+\medskip 
+
+\subsubsection{Solicitudes de navegador}
+//Plantillas JSP con Themleaf, plantilla html de donde partir el diseño y jquery para modificar el dom
+// Modulo war
+\medskip 
+
+\subsubsection{Solicitudes de recursos}
+//Requests Ajax con Jquery
+// Modulo api
+\medskip 
+
+\subsubsection{Visualización de vídeos en grafo}
+// Busqueda de videos y su representación en grafo Cytripode.js
+\medskip 
+
+\subsubsection{Seguridad de vistas y recursos}
+//Configuración de Spring security
+\medskip 
+
+\subsection{Definición y ejecución de pruebas}
 \medskip 
 
 \subsection{Pruebas de concepto}
@@ -1183,42 +1303,6 @@ Consulta de ejemplo: MATCH (n) RETURN n
 \medskip 
 
 \subsubsection{POCYouTubeCrawlerNeo4j}
-\medskip 
-
-\subsection{Análisis YouTube Data API}\label{youTubeDataAPI} 
-\medskip 
-
-\subsection{Elección de Neo4j como SGBD}
-\medskip 
-
-\subsection{Estructura de la aplicación}
-\medskip 
-
-\subsection{Acceso a datos}
-// Spring data, entities, repositorios y POJOS
-\medskip 
-
-\subsection{Crawler de YouTube}
-// Explicar conexión con YouTube y como se ha implementado el crawler
-\medskip 
-
-\subsection{Visualización de vídeos en grafo}
-// Busqueda de videos y su representación en grafo Cytripode.js
-\medskip 
-
-\subsection{Otras funcionalidades}
-// Accose a videos, favoritos, canales, etc.. 
-\medskip 
-
-\subsection{Capa de seguridad}
-//Spring security
-\medskip 
-
-\subsection{Capa de presentación}
-//Plantillas JSP con Themleaf y requests Ajax con Jquery y jquery para modificar el dom
-\medskip 
-
-\subsection{Definición y ejecución de pruebas}
 \newpage 
 
 
@@ -1306,6 +1390,8 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{16} \url{https://es.wikipedia.org/wiki/Caso_de_uso} (24/05/2018) 
   \bibitem{17} \url{https://developer.twitter.com/en/docs/tweets/search/overview} (26/05/2018) 
   \bibitem{18} \url{https://developers.google.com/youtube/v3/getting-started?hl=es-419#quota} (26/05/2018) 
+  \bibitem{19} \url{https://es.wikipedia.org/wiki/Modelo%E2%80%93vista%E2%80%93controlador} (29/05/2018) 
+  \bibitem{20} \url{https://docs.microsoft.com/es-es/azure/architecture/best-practices/api-design} (29/05/2018) 
 \end{thebibliography}
 \newpage 
 
