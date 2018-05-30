@@ -1662,10 +1662,52 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
 \bigskip
 
 \subsection{Manual de instalación y requerimientos}\label{Manual} 
-\medskip 
+\noindent\textbf{Requerimientos de \textit{hardware}:}
+\begin{itemize}
+\item \textbf{Sistema operativo:} La aplicación puede funcionar tanto en sistemas \textit{Windows}, \textit{Linux} o \textit{Mac}, en cada caso hará falta la instalación de las distribuciones correctas según el sistema operativo escogido.
+\item \textbf{Memoria RAM:} Se recomienda un mínimo de 256Mb de memoria RAM dedicados a la ejecución de la aplicación.
+\item \textbf{Espacio de disco:} La aplicación en si misma tiene un peso de 30Mb en disco pero dependiendo del uso requerido de la aplicación y del volumen de información a recolectar, el espacio en disco necesario puede variar. Como dato extrapolativo, un volumen de 500 vídeos y 100 canales ocupa un espació en disco aproximado de 200Mb.
+\end{itemize}
 
-\subsection{Ilustración de la aplicación}\label{IlustracionApp} 
-A continuación se incluyen imágenes ilustrativas de cada vistas de la aplicación en funcionamiento:
+\noindent\textbf{Requerimientos de \textit{software}:}
+\begin{itemize}
+\item \textbf{\textit{Java JDK}:} Versión 8 o superior.
+\item \textbf{\textit{Neo4J Server}:} Versión 3.3.5 o superior.
+\item \textbf{Contenedor de \textit{servlets}}: Puede utilizarse cualquier distribución compatible con Java 8, por ejemplo \textit{Tomcat 8}.
+\end{itemize}
+\bigskip 
+
+Los pasos para realizar la instalación de la aplicación son los siguientes:
+\\
+
+\noindent\textbf{1- Instalación de Java JDK}: Las instrucciones para la instalación de la misma pueden encontrarse detallas en la pagina web oficial: \url{https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html}.
+\\
+
+\noindent\textbf{2- Instalación de \textit{Neo4J Server}}: La instalación consiste simplemente en obtener la distribución deseada y descomprimirla. Se puede arrancar como servicio ejecutando el comando: \textit{bin/neo4j start}. Una vez el servicio esta arrancado, se puede visitar su consola de administración en cualquier explorador web mediante la url  \textit{http://localhost:7474} en donde al acceder por primera vez se preguntara para crear un nuevo password para el usuario administrador \textit{"neo4j"}. Mas detalles sobre su instalación se pueden encontrar en la web oficial: \url{https://neo4j.com/docs/operations-manual/current/installation/}.
+\\
+
+\noindent\textbf{3- Instalación contenedor de \textit{servlets}}: La instalación dependerá del sistema operativo y del contenedor escogido. En el caso de \textit{Tomcat 8}: \url{https://tomcat.apache.org/tomcat-8.0-doc/setup.html}.\\
+
+\noindent\textbf{4- Configurar conexión base de datos}: La conexión de la aplicación con la base de datos Neo4J esta configurada mediante el archivo de propiedades 'application.properties', en donde los valores por defecto son:
+\begin{lstlisting}[style=C]
+#Neo4j connection
+spring.data.neo4j.uri=bolt://localhost
+spring.data.neo4j.username=neo4j
+spring.data.neo4j.password=youtubecrawlertool
+\end{lstlisting}
+Los valores de esta configuración se pueden sobrescribir mediante un nuevo archivo de propiedades que debe de ser indicado como opciones de Java en el inició de contenedor de \textit{servlets}:\\
+\textit{JAVA\_OPTS="\--Dspring.config.location=\$location\_to\_the\_overriden\_properties"}
+\\
+
+\noindent\textbf{5- Instalar fichero WAR en el contenedor de \textit{servlets}}: El ejecutable de la aplicación Web en formato de fichero WAR se entrega junto con esta memoria. Para hacer funcionar la aplicación esta debe ser instalada en un contenedor de \textit{servlets}. Seguir las instrucciones indicadas según el contenedor escogido para realizar su instalación. En el caso de \textit{Tomcat 8}: \url{https://tomcat.apache.org/tomcat-8.0-doc/deployer-howto.html}.
+\\
+
+\noindent\textbf{6- Abrir un explorador WEB}: Y acceder a la aplicación recientemente instalada. Por defecto en \textit{Tomcat 8} si se instala la aplicación en la raíz esta esta disponible en \url{http://localhost:8080/}.
+
+\newpage 
+
+\subsection{Ilustraciones de la aplicación}\label{IlustracionApp} 
+A continuación se incluyen imágenes ilustrativas de cada una de las vistas de la aplicación en funcionamiento:
 
 \begin{figure}[H]
 \centering
