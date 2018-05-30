@@ -1563,21 +1563,46 @@ En esta apartado se resume brevemente cada una de ellas junto con su finalidad y
 \bigskip 
 
 \subsection{Servidor de explotación}
-Aplicación web (con POCYouTubeCrawlerNeo4j instalado):
-\url{http://youtubecrawlertoolwebapp.azurewebsites.net} 
+Para dar acceso a la clienta y \textit{stakeholders}, se habilito un servidor de explotación desde donde el cual poder acceder a la aplicación.
+\\
 
-Servidor base de datos Neo4j:
-\url{http://51.136.48.142:7474/browser} 
-Usuario: neo4j
-Password: Y01t1b3cr4wl3rt00l
-Consulta de ejemplo: MATCH (n) RETURN n
+Fue con la aplicación instalada en este servidor donde la clienta pudo realizar el estudio sobre el movimiento antivacunas en la red social \textit{YouTube} recolectando vídeos y analizando sus relaciones. La aplicación instalada en este servidor fue actualizándose a medida que se avanzaba en el desarrollo.
+\\
+
+Para realizar la instalación de la aplicación se realizo el procedimiento detallado en el manual de instalación descrito en el apartado \ref{Manual} del anexo a este documento. También en el anexo en la sección \ref{IlustracionApp}, se encuentran ilustraciones de la puesta en funcionamiento de la aplicación con imágenes de la ultima versión instalada.
+\\
+
+Inicialmente, para tales efectos se habilito una aplicación Web en el servicio \textit{Microsoft Azure} con el dominio: \url{http://youtubecrawlertoolwebapp.azurewebsites.net}. Pero debido a los recursos necesarios para la instalación de Neo4j y al escaso presupuesto que \textit{Microsoft Azure} ofrece a las cuentas de estudiante, rápidamente este servició quedo bloqueado por falta de presupuesto disponible.
+\\
+
 \medskip 
 
 \subsection{Formación y sensibilización}
+En toda aplicación, ya sea de escritorio, móvil o web, para el usuario existe una primera fase de aprendizaje o de sensibilización que es mas o menos prolongada en medida de lo usable y bien diseñada que este una aplicación.
+\\
+
+\textit{YouTubeCrawlerTool} no es una excepción y, aunque la aplicación goza de una alta usabilidad bajo el criterio de la propia clienta, se han llevado a cabo sesiones de formación para acelerar este proceso.
+\\
+
+Dichas sesiones se realizaron de forma online en las cuales asistieron la clienta y los \textit{stakeholders} de la aplicación, llegando a enregistrarse una de las sesiones en \textit{YouTube}: \url{https://youtu.be/ETWtbywxOmI}.
+\\
+
+Gracias a estas sesiones, ademas de sensibilizar a los futuros usuarios de la aplicación, sirvieron para recoger sugerencias y mejoras con las cuales se llevaron a cabo posteriores refinamientos de la aplicación, como por ejemplo la adicción de la funcionalidad de favoritos o una visualización diferente para los listados de vídeos.
+
 \medskip 
 
 \subsection{Funcionalidades no implementadas}
-// Stats
+De las funcionalidades diseñadas y recogidas como requisitos de la aplicación en forma de casos de uso en la sección \ref{casosDeUso}, las únicas que no han sido finalmente implementadas en la aplicación son las relativas a la habilitación de información estadística sobre el estado de la aplicación y la categorización de vídeos realizada. Concretamente los casos de uso no implementados han sido:
+
+\begin{itemize}
+\item \textbf{UC\_2:} View all crawlers statistics.
+\item \textbf{UC\_8:} View crawler process statistics.
+\item \textbf{UC\_16:} View all channels statistics.
+\item \textbf{UC\_19:} View channel statistics.
+\end{itemize}
+
+Las razones por las que estos casos de uso no se llegaron a implementar son debido a falta de tiempo para su desarrollo y la priorización de otras funcionalidades en detrimento de estas. En la sección \ref{sec:seguiminetoPlanificacion} se proporcionan más detalles sobre estas decisiones.
+
 \medskip 
 
 \subsection{Propuesta de mejoras}
