@@ -6,7 +6,7 @@
 \usepackage{amssymb}
 \usepackage[export]{adjustbox}
 \usepackage{tabularx}
-\usepackage[table]{xcolor}
+\usepackage[table,xcdraw]{xcolor}
 \usepackage{float}
 \usepackage{url}
 \usepackage{hyperref}
@@ -21,8 +21,7 @@
 \usepackage{subfigure}
 \usepackage{longtable}
 \graphicspath{ {images/} }
-
-
+\usepackage{multirow}
 
 \usepackage{color}
 \definecolor{gray97}{gray}{.97}
@@ -1666,5 +1665,57 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
 \bigskip
 
 \subsection{Pruebas de integración}\label{pruevasIntegracion} 
+\begin{large}
+\textbf{Resultados globales}
+\end{large}
+
+\begin{table}[H]
+\centering
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{YouTubeCrawlerTool}                                                  & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Resultado}} \\ \hline
+                                                                             & V                              & 72                             \\ \cline{2-3} 
+\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & X                              & 0                              \\ \hline
+\end{tabular}%
+%}
+\end{table}
+
+
+\begin{large}
+\textbf{Componente \textit{User session}}
+\end{large}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{User session}                                                        & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Resultado}} \\ \hline
+                                                                             & V                              & 5                              \\ \cline{2-3} 
+\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & X                              & 0                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                          \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{User session}                                                                                                                                                                                                                                            \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_1: Login}                                                                                                                                                                                                                                            \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                        & {\color[HTML]{333333} \textbf{Resultado esperado}}                                 & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Identificarse al sistema como\\ usuario valido.\end{tabular}     & Usuario identificado.                                                              & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Identificarse al sistema ya\\ estando identificado.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular} & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Introducir datos nuevos o\\ incorrectos.\end{tabular}            & Usuario no identificado.                                                           & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                     & \multicolumn{1}{c|}{V}                                                             & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                         & \multicolumn{1}{c|}{X}                                                             & 0                                                                                         \\ \hline
+\end{tabular}
+}
+\end{table}
 
 \end{document}
