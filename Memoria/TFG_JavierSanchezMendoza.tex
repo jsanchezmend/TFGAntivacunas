@@ -1664,9 +1664,45 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
 \section{Anexos}
 \bigskip
 
+\subsection{Puesta en funcionamiento}\label{Puestafuncionamiento} 
+A continuación se incluyen imágenes ilustrativas de cada vistas de la aplicación en funcionamiento:
+
+\begin{figure}[H]
+\centering
+\subfigure[Login.html]{\includegraphics[width=60mm]{funcionamiento/login.png}}
+\subfigure[Analysis.html]{\includegraphics[width=60mm]{funcionamiento/anaysis.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Crawlers.html]{\includegraphics[width=60mm]{funcionamiento/crawlers.png}}
+\subfigure[Crawler.html]{\includegraphics[width=60mm]{funcionamiento/crawler.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Videos.html]{\includegraphics[width=60mm]{funcionamiento/videos.png}}
+\subfigure[Video.html]{\includegraphics[width=60mm]{funcionamiento/video.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Channels.html]{\includegraphics[width=60mm]{funcionamiento/channels.png}}
+\subfigure[Channel.html]{\includegraphics[width=60mm]{funcionamiento/channel.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[Favorites.html]{\includegraphics[width=60mm]{funcionamiento/favorites.png}}
+\subfigure[Categories.html]{\includegraphics[width=60mm]{funcionamiento/categories.png}}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfigure[NewCategory.html]{\includegraphics[width=60mm]{funcionamiento/newCategory.png}}
+\subfigure[EditCategory.html]{\includegraphics[width=60mm]{funcionamiento/editCategory.png}}
+\caption{Puesta en funcionamiento}
+\end{figure}
+\pagebreak 
+
 \subsection{Pruebas de integración}\label{pruevasIntegracion} 
 \begin{large}
-\textbf{Resultados globales}
+\noindent\textbf{Resultados globales}
 \end{large}
 
 \begin{table}[H]
@@ -1684,7 +1720,7 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
 
 
 \begin{large}
-\textbf{Componente \textit{User session}}
+\noindent\textbf{Componente \textit{User session}}
 \end{large}
 
 \begin{table}[H]
@@ -1715,6 +1751,678 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
 \multicolumn{2}{|c|}{}                                                                                                                     & \multicolumn{1}{c|}{V}                                                             & 3                                                                                         \\ \cline{3-4} 
 \multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                         & \multicolumn{1}{c|}{X}                                                             & 0                                                                                         \\ \hline
 \end{tabular}
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                          \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{User session}                                                                                                                                                                                                                                            \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_1-1: Logout}                                                                                                                                                                                                                                            \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                        & {\color[HTML]{333333} \textbf{Resultado esperado}}                                 & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Cerrar sesión de un usuario\\ identificado.\end{tabular}     & \begin{tabular}[c]{@{}l@{}}El usuario actual ya no esta\\identificado en el sistema.\end{tabular} & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Cerrar sesión de un usuario\\ no identificado.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                     & \multicolumn{1}{c|}{V}                                                             & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                         & \multicolumn{1}{c|}{X}                                                             & 0                                                                                         \\ \hline
+\end{tabular}
+}
+\end{table}
+
+
+\begin{large}
+\noindent\textbf{Componente \textit{Crawler}}
+\end{large}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Crawler}                                                        & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Resultado}} \\ \hline
+                                                                             & V                              & 18                              \\ \cline{2-3} 
+\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & X                              & 0                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_2: View all crawlers statistics}                                                                                                  \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}} & {\color[HTML]{333333} \textbf{Resultado esperado}} & {\color[HTML]{333333} \textbf{Verificación}} \\ \hline
+\multicolumn{4}{|c|}{NO IMPLEMENTADO}                                                                                                                                                                   \\ \hline
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                  \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                                                                                                                                                                                                                                         \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_3: List all crawlers}                                                                                                                                                                                                                                                                                                                        \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                 & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de crawlers cuando aun no\\ existe ninguno en el sistema.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                                                    & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de crawlers cuando existen\\ algunos en el sistema.\end{tabular}       & \begin{tabular}[c]{@{}l@{}}Se debe mostrar el estado\\ actualizado de todos los crawlers\\ que existan en el sistema.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                             & \multicolumn{1}{c|}{V}                                                                                                             & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                 & \multicolumn{1}{c|}{X}                                                                                                             & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                                                                                                                                                                                                                                                                                                                                                                \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_4: Start new crawler process}                                                                                                                                                                                                                                                                                                                                                                                                                                       \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                                                                   & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                                     & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ iniciar un proceso de crawler.\end{tabular}                                                                                                  & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                      & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ iniciar un nuevo proceso de\\ crawler sin indicar el termino a\\ buscar.\end{tabular}                                                           & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                      & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ iniciar un nuevo proceso de\\ crawler indicando una fecha\\ mayor en el campo “from” que\\ el que hay informado en el\\ campo “to”\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                      & V                                                                                         \\ \hline
+4                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ iniciar un nuevo proceso de\\ crawler indicando el termino de\\ búsqueda.\end{tabular}                                                         & \begin{tabular}[c]{@{}l@{}}Nuevo proceso de crawler\\ inicializado y almacenado con las\\ opciones introducidas o con las\\ de por defecto en los campos no\\ requeridos.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                                                                & \multicolumn{1}{c|}{V}                                                                                                                                                                 & 4                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                                                                    & \multicolumn{1}{c|}{X}                                                                                                                                                                 & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_5: Stop crawler process}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                            & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                                                                                                                                           & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ parar un proceso de crawler.\end{tabular}                                             & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                                                                                                                             & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ parar un proceso de crawler\\ que este en un estado distinto\\ a “Running”.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                                                                                                                             & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ parar un proceso de crawler\\ que este en estado “Running”.\end{tabular}                 & \begin{tabular}[c]{@{}l@{}}El proceso pasa al estado\\ “Stopping” y en acabar la\\ extracción de videos de la pagina\\ actual del crawler el proceso pasa\\ al estado “Stopped” si hay mas\\ paginas para extraer, en caso\\ contrario el crawler pasa al\\ estado “Finished”.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                         & \multicolumn{1}{c|}{V}                                                                                                                                                                                                                                                                       & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                             & \multicolumn{1}{c|}{X}                                                                                                                                                                                                                                                                       & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                  \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                                                                                                                                                                                                                                         \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_6: Play crawler process}                                                                                                                                                                                                                                                                                                                     \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                 & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ reiniciar un proceso de crawler.\end{tabular}                                             & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                   & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ reiniciar un proceso de crawler\\ que este en un estado distinto\\ a “Stopped”.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                   & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ reiniciar un proceso de crawler\\ que este en estado “Stopped”.\end{tabular}                 & \begin{tabular}[c]{@{}l@{}}El proceso pasa al estado\\ “Running” y se continua\\ recolectando videos.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                             & \multicolumn{1}{c|}{V}                                                                                             & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                 & \multicolumn{1}{c|}{X}                                                                                             & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_7: View crawler process details}                                                                                                                                                                                                                                                                                 \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                            & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                         & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario accedo a la vista\\ en detalle de un proceso de\\ crawler.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Es posible ver la información\\ actualizada del proceso de\\ crawler seleccionado.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                         & \multicolumn{1}{c|}{V}                                                                                                     & 1                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                             & \multicolumn{1}{c|}{X}                                                                                                     & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_8: View crawler process statistics}                                                                                                  \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}} & {\color[HTML]{333333} \textbf{Resultado esperado}} & {\color[HTML]{333333} \textbf{Verificación}} \\ \hline
+\multicolumn{4}{|c|}{NO IMPLEMENTADO}                                                                                                                                                                   \\ \hline
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                                                                                     \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                                                                                                                                                                                                                                                                                                                                                            \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_9: Delete crawler process}                                                                                                                                                                                                                                                                                                                                                                                                                                      \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                         & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                                                                           & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ eliminar un proceso de crawler.\end{tabular}                                                       & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                                                             & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ eliminar un proceso de crawler\\ en estado “Running” o\\ “Stopping\end{tabular}                       & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                                                             & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ eliminar un proceso de crawler\\ en estado “Finished”,\\ “Stopped”, “Blocked” o “Error”.\end{tabular} & \begin{tabular}[c]{@{}l@{}}El proceso de crawler como los\\ vídeos que ha recolectado son\\ eliminados del sistema además de\\ los canales que como resultado\\ de la acción no tengan ningún\\ vídeo asociado.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                      & \multicolumn{1}{c|}{V}                                                                                                                                                                                                       & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                          & \multicolumn{1}{c|}{X}                                                                                                                                                                                                       & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                               \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Crawler}                                                                                                                                                                                                                                                                                                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_10: List all crawler process videos}                                                                                                                                                                                                                                                                                                                                      \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                                   & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                           & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de videos recolectados por un\\ crawler cuando el crawler no\\ ha recolectado ningún vídeo.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                                               & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de videos recolectados por un\\ crawler cuando el crawler ha\\ recolectado algún vídeo.\end{tabular}     & \begin{tabular}[c]{@{}l@{}}Se deben mostrar todos y solo los\\ vídeos recolectados por el\\ proceso de crawler.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                                & \multicolumn{1}{c|}{V}                                                                                                       & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                                    & \multicolumn{1}{c|}{X}                                                                                                       & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+
+
+\begin{large}
+\noindent\textbf{Componente \textit{Video}}
+\end{large}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Video}                                                        & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Resultado}} \\ \hline
+                                                                             & V                              & 22                              \\ \cline{2-3} 
+\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & X                              & 0                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_11-1: List all videos}                                                                                                                                                                                                                                                                                         \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                              & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                     & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de vídeos cuando aun no existe\\ ninguno en el sistema.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                         & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de vídeos cuando existen\\ algunos en el sistema.\end{tabular}       & \begin{tabular}[c]{@{}l@{}}Se deben mostrar todos los\\ vídeos que existan en el sistema.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                           & \multicolumn{1}{c|}{V}                                                                                 & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                               & \multicolumn{1}{c|}{X}                                                                                 & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_11: View video detail}                                                                                                                                                                                                                                                  \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                              & {\color[HTML]{333333} \textbf{Resultado esperado}}                                              & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder a la vista\\ en detalle de un video.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Es posible ver la información del\\ video seleccionado.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                           & \multicolumn{1}{c|}{V}                                                                          & 1                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                               & \multicolumn{1}{c|}{X}                                                                          & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                           \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_12: Categorize a video}                                                                                                                                                                                                                                                               \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                        & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                  & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ cambiar la categoría de un\\ vídeo.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                    & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ cambiar la categoría de un\\ vídeo.\end{tabular}    & \begin{tabular}[c]{@{}l@{}}El vídeo tiene asignada la nueva\\ categoría seleccionada.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                     & \multicolumn{1}{c|}{V}                                                                              & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                         & \multicolumn{1}{c|}{X}                                                                              & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable}                                     & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                 \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}                                      & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                                                          \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso}                                     & \multicolumn{3}{l|}{CU\_13: Delete a video}                                                                                                                                                                                                                                                                                                         \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                                                                  & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                    & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                            & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                                                                & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ eliminar un vídeo.\end{tabular}                                               & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                              & V                                                                                         \\ \hline
+2                                                                                & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ borrar un vídeo.\end{tabular}                                                    & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                              & V                                                                                         \\ \hline
+3                                                                                & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ borrar un vídeo el cual su canal\\ solo contiene el video a borrar.\end{tabular} & \begin{tabular}[c]{@{}l@{}}El vídeo ya no esta disponible en\\ el sistema al igual que su canal.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & \multicolumn{1}{c|}{}                                                                                                                   & \multicolumn{1}{c|}{V}                                                                                        & 3                                                                                         \\ \hline
+\multicolumn{1}{|c|}{}                                                           & \multicolumn{1}{c|}{}                                                                                                                   & \multicolumn{1}{c|}{X}                                                                                        & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable}                                     & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}                                      & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso}                                     & \multicolumn{3}{l|}{CU\_14: List all related videos}                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                                                                  & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                                 & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                  & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                                                                & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de vídeos relacionados de un\\ vídeo cuando el vídeo no tiene\\ ningún vídeo relacionado.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                                                      & V                                                                                         \\ \hline
+2                                                                                & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de vídeos relacionados de un\\ vídeo cuando el vídeo si tiene\\ algún vídeo relacionado.\end{tabular}  & \begin{tabular}[c]{@{}l@{}}Se deben mostrar todos y solo los\\ vídeos a los cuales el vídeo actual\\ este relacionado.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & \multicolumn{1}{c|}{}                                                                                                                                                & \multicolumn{1}{c|}{V}                                                                                                              & 2                                                                                         \\ \hline
+\multicolumn{1}{|c|}{}                                                           & \multicolumn{1}{c|}{}                                                                                                                                                & \multicolumn{1}{c|}{X}                                                                                                              & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_15: Find more related videos}                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                                                                                    & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ iniciar un nuevo proceso de\\ crawler sobre un vídeo para\\ encontrar vídeos relacionados.\end{tabular}                                                       & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                          & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ iniciar un nuevo proceso de\\ crawler indicando los\\ parámetros de búsqueda sobre\\ un vídeo en concreto para\\ encontrar sus relacionados.\end{tabular}      & \begin{tabular}[c]{@{}l@{}}Un nuevo proceso de crawler de\\ búsqueda relacionada debe\\ haberse dado de alta con la\\ información introducida y estar\\ un funcionamiento.\end{tabular} & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ iniciar un nuevo proceso de\\ crawler sin indicar ningún\\ parámetro de búsqueda sobre\\ un vídeo en concreto para\\ encontrar sus relacionados.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Un nuevo proceso de crawler de\\ búsqueda relacionada debe\\ haberse dado de alta con los\\ parámetros por defecto y estar un\\ funcionamiento.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                                                                                 & \multicolumn{1}{c|}{V}                                                                                                                                                                    & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                                                                                     & \multicolumn{1}{c|}{X}                                                                                                                                                                    & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                        \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                                                                 \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_15-1: Add a video as a favorite}                                                                                                                                                                                                                                                                                                   \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                              & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                         & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ marcar un vídeo como favorito.\end{tabular}                                             & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                           & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ marcar un vídeo como favorito\\ un vídeo que ya esta marcado\\ como favorito.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                           & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ marcar un vídeo como favorito.\end{tabular}                                                & \begin{tabular}[c]{@{}l@{}}El vídeo es añadido al listado de\\ vídeos favoritos del usuario.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                           & \multicolumn{1}{c|}{V}                                                                                     & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                               & \multicolumn{1}{c|}{X}                                                                                     & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                           \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_15-2: Delete a video as a favorite}                                                                                                                                                                                                                                                                                                   \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                          & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ eliminar un vídeo como\\ favorito.\end{tabular}                                           & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                            & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ eliminar un vídeo como\\ favorito un vídeo que no esta\\ marcado como favorito.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                            & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ eliminar un vídeo como\\ favorito un vídeo que esta\\ marcado como favorito.\end{tabular}    & \begin{tabular}[c]{@{}l@{}}El vídeo es eliminado al listado de\\ vídeos favoritos del usuario.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                             & \multicolumn{1}{c|}{V}                                                                                      & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                 & \multicolumn{1}{c|}{X}                                                                                      & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Video}                                                                                                                                                                                                                                                                                                                                                                                            \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_15-3: List all favorite videos}                                                                                                                                                                                                                                                                                                                                                               \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                                          & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ ver el listado de vídeos\\ favoritos.\end{tabular}                                                                  & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                          & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado ver\\ el listado de vídeos favoritos\\ cuando el usuario aun no ha\\ marcado ningún vídeo como\\ favorito.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado\end{tabular}                                                             & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado ver\\ el listado de vídeos favoritos\\ cuando el usuario ha marcado\\ algún vídeo como favorito.\end{tabular}           & \begin{tabular}[c]{@{}l@{}}Se debe mostrar un listado con\\ todos los vídeos marcados como\\ favorito por parte del usuario.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                                       & \multicolumn{1}{c|}{V}                                                                                                                    & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                                           & \multicolumn{1}{c|}{X}                                                                                                                    & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+
+\begin{large}
+\noindent\textbf{Componente \textit{Channel}}
+\end{large}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Channel}                                                        & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Resultado}} \\ \hline
+                                                                             & V                              & 7                              \\ \cline{2-3} 
+\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & X                              & 0                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Channel}                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_16: View all channels statistics}                                                                                                  \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}} & {\color[HTML]{333333} \textbf{Resultado esperado}} & {\color[HTML]{333333} \textbf{Verificación}} \\ \hline
+\multicolumn{4}{|c|}{NO IMPLEMENTADO}                                                                                                                                                                   \\ \hline
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Channel}                                                                                                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_17: List all channels}                                                                                                                                                                                                                                                                                           \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                               & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                      & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de canales cuando aun no\\ existe ninguno en el sistema.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                          & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de canales cuando existen\\ algunos en el sistema.\end{tabular}       & \begin{tabular}[c]{@{}l@{}}Se deben mostrar todos los\\ canales que existan en el sistema.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                            & \multicolumn{1}{c|}{V}                                                                                  & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                & \multicolumn{1}{c|}{X}                                                                                  & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Channel}                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_18: View channel details}                                                                                                                                                                                                                                               \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                              & {\color[HTML]{333333} \textbf{Resultado esperado}}                                              & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder a la vista\\ en detalle de un canal.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Es posible ver la información del\\ canal seleccionado.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                           & \multicolumn{1}{c|}{V}                                                                          & 1                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                               & \multicolumn{1}{c|}{X}                                                                          & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                      \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Channel}                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{UC\_19: View channel statistics}                                                                                                  \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}} & {\color[HTML]{333333} \textbf{Resultado esperado}} & {\color[HTML]{333333} \textbf{Verificación}} \\ \hline
+\multicolumn{4}{|c|}{NO IMPLEMENTADO}                                                                                                                                                                   \\ \hline
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                  \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Channel}                                                                                                                                                                                                                                                                                                         \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_20: Delete a channel}                                                                                                                                                                                                                                                                                        \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                      & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                           & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ eliminar un canal.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                             & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ borrar un canal.\end{tabular}      & \begin{tabular}[c]{@{}l@{}}El canal y todos los vídeos con los\\ que este relacionado ya no están\\ disponibles en el sistema.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                   & \multicolumn{1}{c|}{V}                                                                                                                       & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                       & \multicolumn{1}{c|}{X}                                                                                                                       & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                             \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Channel}                                                                                                                                                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_21: List all channel videos}                                                                                                                                                                                                                                                                                                                                                                            \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                    & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                        & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de vídeos de un canal en\\ concreto cuando el canal no\\ tiene ningún vídeo.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación debido a que, si un\\ canal no tiene ningún vídeo\\ asociado es eliminado del\\ sistema.\end{tabular} & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de videos de un canal en\\ concreto cuando el canal tiene\\ ningún vídeo.\end{tabular}    & \begin{tabular}[c]{@{}l@{}}Se deben mostrar todos y solo los\\ vídeos asociados con el canal\\ seleccionado.\end{tabular}                                                 & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                 & \multicolumn{1}{c|}{V}                                                                                                                                                    & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                     & \multicolumn{1}{c|}{X}                                                                                                                                                    & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{large}
+\noindent\textbf{Componente \textit{Category}}
+\end{large}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Category}                                                        & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Resultado}} \\ \hline
+                                                                             & V                              & 12                              \\ \cline{2-3} 
+\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & X                              & 0                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                               \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Category}                                                                                                                                                                                                                                                                                                                     \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_22: List all categories}                                                                                                                                                                                                                                                                                                  \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                   & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                           & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de categorías cuando aun no\\ existe ninguna en el sistema.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                               & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario acceder al listado\\ de categorías cuando existe\\ alguna en el sistema.\end{tabular}         & \begin{tabular}[c]{@{}l@{}}Se deben mostrar todos las\\ categorías que existan en el\\ sistema.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                & \multicolumn{1}{c|}{V}                                                                                       & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                    & \multicolumn{1}{c|}{X}                                                                                       & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                            \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Category}                                                                                                                                                                                                                                                                                                                                                                  \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_23: Add new category}                                                                                                                                                                                                                                                                                                                                                  \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                                                         & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                  & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ dar de alta una nueva\\ categoría.\end{tabular}                                                                                    & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                    & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado dar\\ de alta una nueva categoría sin\\ especificar el nombre.\end{tabular}                                                             & \begin{tabular}[c]{@{}l@{}}No se debe dar de alta una nueva\\ categoría en el sistema.\end{tabular} & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado dar\\ de alta una nueva categoría sin\\ especificar el color.\end{tabular}                                                              & \begin{tabular}[c]{@{}l@{}}No se debe dar de alta una nueva\\ categoría en el sistema.\end{tabular} & V                                                                                         \\ \hline
+4                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado dar\\ de alta una nueva categoría sin\\ especificando un nombre de\\ categoría que ya existe\\ previamente en el sistema.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe dar de alta una nueva\\ categoría en el sistema.\end{tabular} & V                                                                                         \\ \hline
+5                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado dar\\ de alta una nueva categoría\\ especificando nombre y color.\end{tabular}                                                          & \begin{tabular}[c]{@{}l@{}}Una nueva categoría debe darse\\ de alta en el sistema.\end{tabular}     & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                                                      & \multicolumn{1}{c|}{V}                                                                              & 5                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                                                          & \multicolumn{1}{c|}{X}                                                                              & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                              \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Category}                                                                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_24: Edit a category}                                                                                                                                                                                                                                                                                                     \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                             & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ editar la información de una\\ categoría.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                  & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ modificar el nombre de una\\ categoría.\end{tabular}      & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                  & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ modificar el color de una\\ categoría.\end{tabular}       & \begin{tabular}[c]{@{}l@{}}La categoría previamente\\ existente en el sistema tiene\\ ahora asignado un nuevo color.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                          & \multicolumn{1}{c|}{V}                                                                                                            & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                              & \multicolumn{1}{c|}{X}                                                                                                            & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Category}                                                                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_25: Delete a category}                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                           & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                                                                                                                       & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario no identificado\\ eliminar una categoría.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Acción no permitida por la\\ aplicación.\end{tabular}                                                                                                                                                                                        & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario identificado\\ eliminar una categoría.\end{tabular}    & \begin{tabular}[c]{@{}l@{}}La categoría así como todos los\\ vídeos categorizados con la\\ misma categoría que se esta\\ eliminando son eliminados del\\ sistema además de los canales\\ que como resultado de la acción\\ no tengan ningún vídeo asociado.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                        & \multicolumn{1}{c|}{V}                                                                                                                                                                                                                                                   & 2                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                            & \multicolumn{1}{c|}{X}                                                                                                                                                                                                                                                   & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+
+\begin{large}
+\noindent\textbf{Componente \textit{Analysis}}
+\end{large}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Analysis}                                                        & \multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Resultado}} \\ \hline
+                                                                             & V                              & 8                              \\ \cline{2-3} 
+\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}} & X                              & 0                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                                                               \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Analysis}                                                                                                                                                                                                                                                                                                                                                                                                                                     \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_26: Search and show results on a graph}                                                                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                                 & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                                             & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario realizar una\\ búsqueda de análisis sin indicar\\ ningún filtro.\end{tabular}                                               & \begin{tabular}[c]{@{}l@{}}En el grafo resultante deben\\ aparecer todos los vídeos\\ existentes en el sistema y sus\\ relaciones.\end{tabular}                                                & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario realizar una\\ búsqueda de análisis indicando\\ diferentes combinaciones de\\ filtros.\end{tabular}                        & \begin{tabular}[c]{@{}l@{}}En el grafo resultante deben\\ aparecer solo los vídeos\\ existentes en el sistema que sean\\ resultado de la búsqueda\\ introducida y sus relaciones.\end{tabular} & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario realizar una\\ búsqueda de análisis cuando no\\ hay ningún vídeo en el sistema.\end{tabular}                                 & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                                                                                                                 & V                                                                                         \\ \hline
+4                                            & \begin{tabular}[c]{@{}l@{}}Como usuario realizar una\\ búsqueda de análisis indicando\\ una combinación de filtros que\\ no produzca ningún resultado.\end{tabular} & \begin{tabular}[c]{@{}l@{}}No se debe mostrar ningún\\ resultado.\end{tabular}                                                                                                                 & V                                                                                         \\ \hline
+5                                            & \begin{tabular}[c]{@{}l@{}}Como usuario realizar una\\ búsqueda de análisis indicando\\ que se quieren obtener los\\ canales.\end{tabular}                           & \begin{tabular}[c]{@{}l@{}}En el grafo resultante deben\\ aparecer los vídeos resultado de\\ la búsqueda introducida junto con\\ sus canales de publicación y sus\\ relaciones.\end{tabular}   & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                                              & \multicolumn{1}{c|}{V}                                                                                                                                                                         & 5                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                                  & \multicolumn{1}{c|}{X}                                                                                                                                                                         & 0                                                                                         \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|c|}
+\hline
+\rowcolor[HTML]{FFFFFF} 
+\cellcolor[HTML]{C0C0C0}\textbf{Responsable} & \multicolumn{3}{l|}{\cellcolor[HTML]{FFFFFF}Javier Sánchez Mendoza}                                                                                                                                                                                                                                                                                                                                                                              \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Componente}  & \multicolumn{3}{l|}{Analysis}                                                                                                                                                                                                                                                                                                                                                                                                                    \\ \hline
+\cellcolor[HTML]{C0C0C0}\textbf{Caso de uso} & \multicolumn{3}{l|}{CU\_27: Export search results}                                                                                                                                                                                                                                                                                                                                                                                               \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Código}                              & {\color[HTML]{333333} \textbf{Acciones a verificar}}                                                                                                  & {\color[HTML]{333333} \textbf{Resultado esperado}}                                                                                                                                           & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} \textbf{Verificación}}} \\ \hline
+1                                            & \begin{tabular}[c]{@{}l@{}}Como usuario exportar a\\ fichero csv los vídeos\\ resultantes de una búsqueda\\ de análisis.\end{tabular}                 & \begin{tabular}[c]{@{}l@{}}Los vídeos obtenidos como\\ resultado de una búsqueda de\\ análisis son exportados a un\\ fichero csv y descargado por el\\ usuario.\end{tabular}                 & V                                                                                         \\ \hline
+2                                            & \begin{tabular}[c]{@{}l@{}}Como usuario exportar a\\ fichero csv los canales\\ resultantes de una búsqueda\\ de análisis.\end{tabular}                & \begin{tabular}[c]{@{}l@{}}Los canales obtenidos como\\ resultado de una búsqueda de\\ análisis son exportados a un\\ fichero csv y descargado por el\\ usuario.\end{tabular}                & V                                                                                         \\ \hline
+3                                            & \begin{tabular}[c]{@{}l@{}}Como usuario exportar a\\ fichero csv las relaciones entre\\ nodos resultantes de una\\ búsqueda de análisis.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Las relaciones entre nodos\\ obtenidos como resultado de una\\ búsqueda de análisis son\\ exportados a un fichero csv y\\ descargado por el usuario.\end{tabular} & V                                                                                         \\ \hline
+\multicolumn{2}{|c|}{}                                                                                                                                                                               & \multicolumn{1}{c|}{V}                                                                                                                                                                       & 3                                                                                         \\ \cline{3-4} 
+\multicolumn{2}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}EVALUACIÓN\\ 100\%\end{tabular}}}                                                                                                   & \multicolumn{1}{c|}{X}                                                                                                                                                                       & 0                                                                                         \\ \hline
+\end{tabular}%
 }
 \end{table}
 
