@@ -1293,6 +1293,32 @@ En los próximos apartados se detallan algunas de las decisiones mas relevantes 
 \medskip
 
 \subsubsection{YouTube Data API}\label{youTubeDataAPI} 
+Para ofrecer sus servicios a terceros, \textit{YouTube} divide su funcionalidad en cuatro grupos de APIs distintas dentro de la plataforma \textit{Google APIs}:
+
+\begin{itemize}
+\item \textbf{\textit{YouTube Data API v3}:} Proporciona acceso y servicios de búsqueda a recursos tales como vídeos, canales, comentarios entre otros.
+\item \textbf{\textit{YouTube Analytics API}:} Permite obtener información analítica sobre la cuenta de un usuario, tales como número de suscripciones o número de visualizaciones entre otros. Este servicio esta limitado a uso personal, siendo solo posible acceder a la información del propio usuario que realiza la petición y no es permitido realizar consultas sobre otros usuarios.
+\item \textbf{\textit{YouTube Reporting API}:} Complementaria a la \textit{YouTube Analytics API}, esta API permite al usuario de \textit{YouTube} programar la generación de informes sobre su información analítica. De igual forma que su antecesora, su eso esta limitado al uso personal.
+\item \textbf{\textit{YouTube Ad Reach API}:} Dedicada a anunciantes, permite el estudio del alcance obtenido por campaña de publicidad.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.40]{desarrollo/youTubeAPI.png}
+\caption{\textit{YouTube} APIs}
+\end{figure}
+
+//Explicar eleccion de YouTube Data API
+
+//Explicar estructuracion de los servicios, busqueda para obtener id's y luego acesso por recurso
+
+//Explicar la search api y los criterios de busqueda escoguidos.
+
+//Explicar el uso de cuotas y porque es importante solicitar el minimo numero de campos
+
+//Exponer las apis de videos y canales y los campos recuperados de cada uno
+
+
 \medskip 
 
 \subsubsection{Neo4j como SGBD}\label{sgbd} 
