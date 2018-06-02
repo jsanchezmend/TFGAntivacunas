@@ -1693,13 +1693,56 @@ Finalmente, en esta capa también se definen los objetos planos de \textit{Java}
 \medskip 
 
 \subsection{Lógica de negocio}
+En el modulo \textit{youtube-crawler-tool-core} esta implementada la capa de lógica de negocio. En ella, diferentes componentes que se ofrecen como servicios a ser utilizados por la capa de presentación, acceden a los recursos definidos en la capa de acceso a datos o en servicios de terceros para implementar la lógica de negocio de la aplicación.
 \medskip 
-\subsubsection{Patrones, servicios, converters..}
-// Explicar lo que haya en el core en general
-// Modulo core
+
+\subsubsection{Servicios}
+Así entonces, en el modulo \textit{youtube-crawler-tool-core} se definen tantos servicios como componentes se definieron para la aplicación ademas de otros servicios que, se podría decir, actúan como complementos de los servicios principales. Entre los servicios complementarios se encuentran los denominados \textit{converters} que son los encargados de transformar una entidad de base de datos a su respectivo POJO y, en el caso de ser una entidad proveniente de \textit{YouTube}, también realizan la transformación de entidad de \textit{YouTube} a POJO. Ademas de los \textit{converters}, entre los servicios complementarios también encontramos el servicio \textit{YouTubeSearchService} que es el encargado de realizar las peticiones a la API de \textit{YouTube}.
+\\
+
+Aplicando esta estructuración, la aplicación respeta los principios de diseño SOLID \cite{44} al conseguirse, entre otras características,  la especialización de los servicios favoreciendo la extensibilidad y la reutilización de código. 
+\\
+
+A continuación se listan los servicios principales a los cuales se acceden desde la capa de presentación:
+\begin{itemize}
+\item \textbf{CrawlerService.java:} Actúa como interfaz del componente \textit{CrawlerBusiness} y en cuya implementación se encuentra la lógica de negocio necesaria para la recolección de vídeos.
+\item \textbf{VideoService.java:} Actúa como interfaz del componente \textit{VideoBusiness} y en cuya implementación se encuentra la lógica de negocio relacionada con los vídeos de la aplicación.
+\item \textbf{ChannelService.java:} Actúa como interfaz del componente \textit{ChannelBusiness} y en cuya implementación se encuentra la lógica de negocio relacionada con los canales de la aplicación.
+\item \textbf{CategoryService.java:} Actúa como interfaz del componente \textit{CategoryBusiness} y en cuya implementación se encuentra la lógica de negocio relacionada con las categorías de la aplicación.
+\item \textbf{AnalysisService.java:} Actúa como interfaz del componente \textit{AnalysisBusiness} y en cuya implementación se encuentra la lógica de negocio relacionada con la representación en grafo de vídeos y canales de la aplicación.
+\end{itemize}
+
+Y por lo que se refiere a los servicios que actúan como \textit{converters}, su listado es el siguiente:
+\begin{itemize}
+\item \textbf{CrawlerConverterServiceImpl.java:} Es el encargado de transformar entidades del tipo \textit{Crawler} a su respectivo POJO (\textit{CrawlerItem}) y viceversa.
+\item \textbf{VideoConverterServiceImpl.java:} Es el encargado de transformar entidades del tipo \textit{Video} a su respectivo POJO (\textit{VideoItem}) y viceversa. Ademas, también realiza la trasformaciones de la entidad de \textit{Video} de \textit{YouTuve} a POJO.
+\item \textbf{ChannelConverterServiceImpl.java:} Es el encargado de transformar entidades del tipo \textit{Channel} a su respectivo POJO (\textit{ChannelItem}) y viceversa. Ademas, también realiza la trasformaciones de la entidad de \textit{Channel} de \textit{YouTuve} a POJO.
+\item \textbf{CategoryConverterServiceImpl.java:} Es el encargado de transformar entidades del tipo \textit{Category} a su respectivo POJO (\textit{CategoryItem}) y viceversa.
+\end{itemize}
+
+Para conectar todos estos servicios entre si y habilitarlos en la capa de presentación, en el proyecto se hace un uso extensivo del patrón de inyección de independencias proporcionado por el marco de desarrollo \textit{Spring Core}, el cual se encarga de instanciar objetos y inyectarlos como dependencias allí donde  sean necesarias. De esta forma, se consigue un alto desacoplamiento entre los distintos componentes lo cual facilita el mantenimiento y la reusablilidad del código.
+\\
+
+Para aplicar el patrón de inyección de independencias se ha utilizado el mecanismo de anotaciones habilitado por \textit{Spring Core}. En el cual, para definir una nueva instancia a injectar se ha utilizado la anotación \textit{@Service} y para injectar una dependencia la anotación \textit{@Autowired} tal y como se demuestra en el siguiente extracto de la implementación del servicio \textit{VideoService}.
+\begin{lstlisting}[style=C]
+@Service("videoService")
+public class VideoServiceImpl implements VideoService {
+  
+  @Autowired
+  private VideoRepository videoRepository;
+  ...
+  @Autowired
+  @Qualifier("videoConverterService")
+  private YouTubeConverterService<com.google.api.services.youtube.model.Video, Video, VideoItem> videoConverterService;
+  ...
+\end{lstlisting}	
+
 \medskip 
+
 \subsubsection{Crawler de YouTube}
-// Explicar conexión con YouTube y como se ha implementado el crawler
+// Explicar conexión con YouTube (servicio youtube)
+// Como se ha implementado el crawler (servicio crawler)
+// Multiples threads y sincronizacion
 \medskip
 
 \subsection{Presentación}
@@ -1916,6 +1959,7 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{41} \url{https://es.wikipedia.org/wiki/Objeto_de_acceso_a_datos} (02/06/2018) 
   \bibitem{42} \url{https://es.wikipedia.org/wiki/CRUD} (02/06/2018)
   \bibitem{43} \url{https://es.wikipedia.org/wiki/Plain_Old_Java_Object} (02/06/2018) 
+  \bibitem{44} \url{https://es.wikipedia.org/wiki/SOLID} (02/06/2018) 
 \end{thebibliography}
 \newpage 
 
