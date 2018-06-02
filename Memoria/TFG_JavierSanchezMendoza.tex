@@ -1268,7 +1268,7 @@ La figura a continuación ejemplifica el mapa web de la aplicación con los fluj
 
 
 \section{Desarrollo}
-El código fuente de la aplicación desarrollada la cual se detalla a continuación, se encuentra disponible en un repositorio publico de \textit{GitHub}: \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/YouTubeCrawlerTool}.
+El código fuente de la aplicación desarrollada la cual se detalla a continuación, se encuentra disponible en un repositorio publico de \textit{GitHub}: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/YouTubeCrawlerTool}{YouTubeCrawlerTool}.
 \bigskip
 
 \subsection{Entorno de desarrollo}
@@ -1392,9 +1392,53 @@ Campos solicitados:
 \item \textbf{\textit{statistics/videoCount}:} Número de vídeos publicados por el canal.
 \end{itemize}
 
+Antes de la implementación final de la solución, para probar los servicios aquí detallados se realizo con éxito la siguiente prueba de concepto: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}{POCYouTubeCrawler}.
+
 \medskip 
 
 \subsubsection{Neo4j como SGBD}\label{sgbd} 
+Como consecuencia de los requerimientos del proyecto y al futuro uso para el cual esta destinada la aplicación, se requiere el almacenamiento de grandes cantidades de información que pueden o no estar estructuradas y a las cuales se requiere una alta accesibilidad.
+\\
+
+Por estos motivos, como gestor de bases datos se considero el uso de bases de datos NoSQL en vez de hacer uso de una base de datos relacional. Entre las principales características que ofrecen las bases de datos NoSQL que provocaron su elección en el proyecto destacamos las siguientes:
+
+\begin{itemize}
+\item \textbf{Manejo de grandes cantidades de datos:} Las bases de datos NoSQL al no garantizar completamente las características ACID (atomicidad, consistencia, aislamiento y durabilidad) \cite{33}, permiten el acceso a grandes cantidades de datos de forma mas eficiente que las bases de datos que si garantizan ACID.
+\item \textbf{Estructuras no fijas:} Para almacenar los datos no se requieren estructuras fijas como tablas, pueden almacenarse todo tipo de contenidos sin especificar previamente su estructura.
+\item \textbf{Escalabilidad:} Ofrecen buena escalabilidad horizontal que nos permitiría augmentar su capacidad fácilmente.
+\item \textbf{Operaciones de lectura:} Debido a sus características, las bases de datos NoSQL son especialmente idóneas en las operaciones de lectura, las cuales son las que se quieren potenciar en la aplicación.
+\end{itemize}
+
+Dentro de las bases de datos NoSQL existen subcategorías según la forma en la cual se almacenan los datos. Algunas de ellas son:
+\begin{itemize}
+\item \textbf{Bases de datos clave-valor:} Almacenan conjuntos donde a cada clave se le asigna un valor. Algunas de sus principales implementaciones son \textit{Cassandra} \cite{34} o \textit{BigTable} de \textit{Google}. 
+\item \textbf{Bases de datos documentales:} Almacenan información en formato de documentos que responden a algún formato en concreto. Algunas de sus principales implementaciones son \textit{MongoDB} \cite{35} y \textit{CouchDB} \cite{36}.
+\item \textbf{Bases de datos orientadas a grafos:} La información se almacena en formato de grafo en donde la información queda almacenada cono nodo y sus relaciones como aristas. Actualmente la implementacion mas extendida es \textit{Neo4j} \cite{37}.
+\end{itemize}
+
+De entre las diferentes opciones, inicialmente se eligió utilizar una base de datos documental y, concretamente, el uso de la implementación ofrecida por \textit{MongoDB}.
+\\
+
+Esta decisión fue motivada, en su momento, después de analizar la información que era necesaria persistir en la aplicación en donde los contenidos a recuperar respondían a una estructura de documento. Por su lado, la elección de \textit{MongoDB} como implenmentación de base de datos documental venia motivada principalmente por gozar de alta aceptación y de disponer una amplia documentación. Ademas, al trabajar \textit{MongoDB} con documentos en formato \textit{JSON} facilitaba su tratamiento y posterior presentación en la aplicación. Por estas razones, las dos primera pruebas de concepto desarrolladas se llevaron a cabo con \textit{MongoDB}: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCTwitterCrawler}{POCTwitterCrawler} y \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawler}{POCYouTubeCrawler}.
+\\
+
+Posteriormente y en etapas mas avanzadas del proyecto, la visualización de los contenidos recolectados en formato de grafo cobro mas importancia dentro de la aplicación, este hecho provoco la consideración del uso de bases de datos orientadas a grafos \cite{38}. Entre las principales ventajas en su uso, destaca el poder  aplicar teoría de grafos en las consultas a realizar y de esta forma recorrer las relaciones entre registros como si de un grafo se tratara para, por ejemplo, encontrar el camino mas corto entre dos vídeos que están relacionados mediante otros vídeos.
+\\
+
+Por lo tanto, el uso de una base de datos orientada a grafo nos permitiría añadir capacidades analíticas al  grafo obtenido en la aplicación que serian difíciles de proporcionar con otro tipo de base de datos, habilitando que en un futuro se puedan añadir mas funcionalidades al grafo para facilitar su estudio. Ademas, al estar orientada a grafos nos permite realizar consultas de forma mas natural a la hora de obtener la información a representar.
+\\
+
+Y como implementación de base de datos orientada a grafo, se escogió el uso de \textit{Neo4j} al ser esta la solución mas extendida actualmente. Para poner a prueba su uso en la aplicación se adaptaron las pruebas de concepto realizadas anteriormente con \textit{MongoDB} a \textit{Neo4j} con resultado favorable: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawlerNeo4j}{POCYouTubeCrawlerNeo4j}
+\\
+
+Como curiosidad, \textit{Neo4j} define su propio lenguaje de consultas llamado \textit{Cypher} y proporciona una consola de administración web donde realizar consultas y visualizar los resultados en formato de grafo entre otros:
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.20]{desarrollo/neo4j.png}
+\caption{Consola de administración \textit{Neo4j}}
+\end{figure}
+
 \medskip 
 
 \subsection{Estructura de la aplicación}
@@ -1405,6 +1449,7 @@ Con esta herramienta se creo la definición del proyecto juntamente con sus mód
 \\
 
 Así entonces, utilizando \textit{Maven} se definió la estructura de la aplicación separada por módulos independientes tomando como referencia la separación por paquetes realizada en el diseño de la capa de aplicación de la sección \ref{capaAplicacion}:
+\pagebreak 
 
 \begin{itemize}
 \item \textbf{youtube-crawler-tool:} Modulo padre de la aplicación.
@@ -1448,7 +1493,7 @@ A seguir se facilitan algunos extractos de los ficheros "\textit{pom.xml}" defin
 </modules>
 ...
 \end{lstlisting}
-\newpage  
+\medskip
 
 \noindent\textbf{youtube-crawler-tool-data}
 \begin{lstlisting}[style=C]
@@ -1581,8 +1626,7 @@ A seguir se facilitan algunos extractos de los ficheros "\textit{pom.xml}" defin
 </dependencies>
 ...
 \end{lstlisting}
-
-\medskip 
+\pagebreak 
 
 \subsection{Acceso a datos}
 // Spring data, entities, repositorios y POJOS
@@ -1801,7 +1845,13 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{29} \url{https://developers.google.com/youtube/v3/} (02/06/2018) 
   \bibitem{30} \url{https://developers.google.com/youtube/v3/docs/search/list} (02/06/2018)  
   \bibitem{31} \url{https://developers.google.com/youtube/v3/docs/videos/list} (02/06/2018)  
-  \bibitem{32} \url{https://developers.google.com/youtube/v3/docs/channels/list} (02/06/2018)  
+  \bibitem{32} \url{https://developers.google.com/youtube/v3/docs/channels/list} (02/06/2018)
+  \bibitem{33} \url{https://es.wikipedia.org/wiki/ACID} (02/06/2018)  
+  \bibitem{34} \url{http://cassandra.apache.org/} (02/06/2018)
+  \bibitem{35} \url{https://www.mongodb.com/} (02/06/2018)
+  \bibitem{36} \url{http://couchdb.apache.org/} (02/06/2018)
+  \bibitem{37} \url{https://neo4j.com/} (02/06/2018)
+  \bibitem{38} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (02/06/2018)    
 \end{thebibliography}
 \newpage 
 
