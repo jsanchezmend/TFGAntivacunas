@@ -617,7 +617,7 @@ A continuación se resumen las entrevistas y reuniones realizadas junto con los 
 En los siguientes apartados se detallan algunas de las decisiones tomadas en estas reuniones las cuales tuvieron mas repercusión en el resultado final de la aplicación.
 \medskip 
 
-\subsubsection{Elección de YouTube como red social}
+\subsubsection{Elección de YouTube como red social}\label{eleccionYouTube} 
 A la hora de escoger una red social para realizar el estudio del movimiento antivacuna nos encontramos con una gran variedad de opciones, tales como \textit{Facebook}, \textit{Twitter} o \textit{YouTube} para nombrar solo algunas.
 \\
 
@@ -1268,6 +1268,7 @@ La figura a continuación ejemplifica el mapa web de la aplicación con los fluj
 
 
 \section{Desarrollo}
+El código fuente de la aplicación desarrollada la cual se detalla a continuación, se encuentra disponible en un repositorio publico de \textit{GitHub}: \url{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/YouTubeCrawlerTool}.
 \bigskip
 
 \subsection{Entorno de desarrollo}
@@ -1308,16 +1309,88 @@ Para ofrecer sus servicios a terceros, \textit{YouTube} divide su funcionalidad 
 \caption{\textit{YouTube} APIs}
 \end{figure}
 
-//Explicar eleccion de YouTube Data API
+Así entonces y según lo expuesto, para poder realizar búsquedas y obtener los contenidos que sean requeridos por el usuario, la aplicación hara uso de los servicios web expuestos por la \textit{YouTube Data API v3} \cite{29}.
+\\
 
-//Explicar estructuracion de los servicios, busqueda para obtener id's y luego acesso por recurso
+Dichos servicios se dividen por tipos de recursos a los cuales acceder, en donde cada recurso representa un tipo de contenido de \textit{YouTube} tales como vídeos, canales, listas de reproducción entre otros. Para poder obtener dichos recursos primeramente es necesario conocer los identificadores de los objectos que se quieren obtener, en donde para tales efectos hay habilitado un servició el propósito del cual es la obtención de dichos identificadores. Las únicas operaciones que se realizan en la aplicación son de lectura de recursos, no se requiere realizar operaciones de escritura. Así entonces, el modo en que nuestra aplicación utiliza estos servicios es de la siguiente forma:
+\\
+\begin{itemize}
+\item \textbf{1- Obtención de identificadores de vídeos:} Se realiza una búsqueda para obtener los identificadores de los vídeos que se correspondan con los criterios de búsqueda introducidos por el usuario. Los resultados obtenidos, dependiendo del volumen de coincidencias que la búsqueda haya producido, podrán ser paginados requiriendo realizar peticiones iterativas para obtener los consiguientes resultados. El servició utilizado es el de \textit{'Seach'} y concretamente la operación \textit{'list'} \cite{30}.
+\item \textbf{2- Obtención de vídeos:} Una vez obtenidos los identificadores de los vídeos que se quieren recuperar, se realiza una petición a la operación \textit{'list'} del servicio \textit{'Videos'} \cite{31} con dichos identificadores para obtener finalmente su contenido. De igual forma que en la obtención de identificadores, las peticiones a este servició se realizaran de forma iterativa para recuperar los vídeos de forma paginada.
+\item \textbf{3- Obtención de canales:} Paralelamente a la obtención de vídeos para cada vídeo recuperado también se obtiene su canal. Para recuperarlo, de detectar que el canal en cuestión aun no se encuentra almacenado en el sistema, se realiza una petición al servicio \textit{'Channels'} operación \textit{'list'} \cite{32} con el identificador del canal obtenido en la información recuperada del vídeo.
+\end{itemize}
 
-//Explicar la search api y los criterios de busqueda escoguidos.
+Como se ha comentado en el apartado \ref{eleccionYouTube}, \textit{YouTube} define un sistema de cuotas en el uso de sus servicios, en el cual cada petición realizada tiene un coste que puede variar dependiendo del tipo de recurso y la información solicitada. Para minimizar el uso de cuota es importante solicitar solo los recursos y los campos que realmente sean necesarios para el usuario. A continuación se detalla el uso realizado para cada tipo de petición:
+\\
 
-//Explicar el uso de cuotas y porque es importante solicitar el minimo numero de campos
+\noindent\textbf{Obtención de identificadores de vídeos}\\
+Petición HTTP: GET https://www.googleapis.com/youtube/v3/search\\
 
-//Exponer las apis de videos y canales y los campos recuperados de cada uno
+Criterios de búsqueda utilizados:
+\begin{itemize}
+\item \textbf{\textit{type}:} Permite escoger el tipo de recurso a recuperar. Valor utilizado por defecto \textit{'video'}.
+\item \textbf{\textit{relevanceLanguage}:} Permite obtener resultados que son mas relevantes en el idioma introducido. Valor utilizado por defecto \textit{'en'}.
+\item \textbf{\textit{q}:} Se utiliza en caso de realizarse una búsqueda textual, permite buscar recursos que correspondan con el texto introducido. En el texto a buscar se pueden utilizar negaciones y conjunciones.
+\item \textbf{\textit{relatedToVideoId}:} Alternativamente a la búsqueda textual, con este campo se puede realizar una búsqueda de contenidos que estén relacionados con el identificador solicitado.
+\item \textbf{\textit{publishedBefore} y publishedAfter:} Permite acotar la búsqueda a realizar dentro de un rango de fechas determinado. 
+\item \textbf{\textit{order}:} Permite ordenar los resultados obtenidos por varios criterios: por fecha, rating, relevancia, titulo y numero de visualizaciones. Por defecto, los resultados son ordenados por relevancia.
+\item \textbf{\textit{maxResults}:} Máximo de resultados obtenidos por pagina. El máximo valor aceptado es 50.
+\item \textbf{\textit{pageToken}:} Identifica la pagina de resultados que debe ser devuelta. Como respuesta a la petición de busqueda, juntamente con los recursos solicitados se devuelven los campos \textit{'nextPageToken'} y \textit{'prevPageToken'}, con la información devuelta en estos campos es posible navegar hacia la siguiente pagina de resultados o hacia la anterior.
+\end{itemize}
 
+Campos solicitados:
+\begin{itemize}
+\item \textbf{\textit{id}:} Identificador de los vídeos encontrados.
+\end{itemize}
+\medskip 
+
+\noindent\textbf{Obtención de vídeos}\\
+Petición HTTP: GET https://www.googleapis.com/youtube/v3/videos\\
+
+Criterios de búsqueda utilizados:
+\begin{itemize}
+\item \textbf{\textit{id}:} Listado separado por comas de los identificadores de vídeos a recuperar.
+\end{itemize}
+\pagebreak 
+
+Campos solicitados:
+\begin{itemize}
+\item \textbf{\textit{id}:} Identificador de vídeo.
+\item \textbf{\textit{snippet/title}:} Titulo del vídeo.
+\item \textbf{\textit{snippet/description}:} Descripción del vídeo.
+\item \textbf{\textit{snippet/publishedAt}:} Fecha de publicación del vídeo.
+\item \textbf{\textit{snippet/channelId}:} Identificador del canal que ha publicado el vídeo.
+\item \textbf{\textit{contentDetails/duration}:} Tiempo de duración del vídeo.
+\item \textbf{\textit{statistics/viewCount}:} Número de visualizaciones del vídeo.
+\item \textbf{\textit{statistics/likeCount}:} Número de 'me gusta' que ha recibido el vídeo.
+\item \textbf{\textit{statistics/dislikeCount}:} Número de 'no me gusta' que ha recibido el vídeo.
+\item \textbf{\textit{statistics/commentCount}:} Número de comentarios realizados sobre el vídeo.
+\item \textbf{\textit{player/embedHtml}:} Reproductor del vídeo en un formato \textit{iframe} html.
+\end{itemize}
+\medskip 
+
+\noindent\textbf{Obtención de canales}\\
+Petición HTTP: GET https://www.googleapis.com/youtube/v3/channels\\
+
+Criterios de búsqueda utilizados:
+\begin{itemize}
+\item \textbf{\textit{id}:} Identificador del canal recuperar.
+\end{itemize}
+\medskip 
+
+Campos solicitados:
+\begin{itemize}
+\item \textbf{\textit{id}:} Identificador del canal.
+\item \textbf{\textit{snippet/title}:} Titulo del canal.
+\item \textbf{\textit{snippet/description}:} Descripción del canal.
+\item \textbf{\textit{snippet/publishedAt}:} Fecha de publicación del canal.
+\item \textbf{\textit{snippet/customUrl}:} Dirección url del canal.
+\item \textbf{\textit{snippet/thumbnails/default/url}:} Dirección url de la imagen representativa del canal.
+\item \textbf{\textit{statistics/viewCount}:} Número de visualizaciones del canal.
+\item \textbf{\textit{statistics/commentCount}:} Número de comentarios que ha recibido el canal.
+\item \textbf{\textit{statistics/subscriberCount}:} Número de suscripciones al canal.
+\item \textbf{\textit{statistics/videoCount}:} Número de vídeos publicados por el canal.
+\end{itemize}
 
 \medskip 
 
@@ -1725,6 +1798,10 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{26} \url{https://projects.spring.io/spring-boot/} (29/05/2018) 
   \bibitem{27} \url{https://developers.google.com/youtube/v3/getting-started#before-you-start} (29/05/2018) 
   \bibitem{28} \url{http://js.cytoscape.org/#performance} (31/05/2018) 
+  \bibitem{29} \url{https://developers.google.com/youtube/v3/} (02/06/2018) 
+  \bibitem{30} \url{https://developers.google.com/youtube/v3/docs/search/list} (02/06/2018)  
+  \bibitem{31} \url{https://developers.google.com/youtube/v3/docs/videos/list} (02/06/2018)  
+  \bibitem{32} \url{https://developers.google.com/youtube/v3/docs/channels/list} (02/06/2018)  
 \end{thebibliography}
 \newpage 
 
