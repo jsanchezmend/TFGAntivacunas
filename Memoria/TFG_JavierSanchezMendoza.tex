@@ -1007,7 +1007,7 @@ La aplicación de los principios REST conllevo a realizar otra decisión arquite
 Gracias a esta distribución, se espera poder atorgar a la aplicación de una gran capacidad de reutilización y extensibilidad. En lo que ha distribución física se refiere, la capa cliente se ejecutara en los clientes Web de los usuarios y la capa de aplicación y de datos en un servidor. En los siguientes capítulos se detalla el diseño realizado para cada una de las capas.
 \medskip 
 
-\subsection{Diseño capa de datos}
+\subsection{Diseño capa de datos}\label{disenoDatos} 
 En la capa de datos es donde se persistirá la información necesaria para el funcionamiento de la aplicación. Para tales efectos haremos uso de un sistema gestor de base de datos (SGBD) donde la implementación escogida de la misma se detalla en el apartado \ref{sgbd}.
 \\
 
@@ -1431,15 +1431,20 @@ Por lo tanto, el uso de una base de datos orientada a grafo nos permitiría aña
 Y como implementación de base de datos orientada a grafo, se escogió el uso de \textit{Neo4j} al ser esta la solución mas extendida actualmente. Para poner a prueba su uso en la aplicación se adaptaron las pruebas de concepto realizadas anteriormente con \textit{MongoDB} a \textit{Neo4j} con resultado favorable: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/POCYouTubeCrawlerNeo4j}{POCYouTubeCrawlerNeo4j}
 \\
 
-Como curiosidad, \textit{Neo4j} define su propio lenguaje de consultas llamado \textit{Cypher} y proporciona una consola de administración web donde realizar consultas y visualizar los resultados en formato de grafo entre otros:
+Debido a sus características, para habilitar su uso en la aplicación no se requirió modificar el diseño de la capa de datos detallado en el apartado \ref{disenoDatos}, al poderse realizar la de forma natural la transformación de entidad a nodo y de relación a aristas tal y como se ilustra en la siguiente imagen:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.20]{desarrollo/DatabaseGraph.png}
+\caption{Diseño capa de datos con nodos y aristas}
+\end{figure}
 
+Como curiosidad, \textit{Neo4j} define su propio lenguaje de consultas llamado \textit{Cypher} y proporciona una consola de administración web donde realizar consultas y visualizar los resultados en formato de grafo entre otros:
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.20]{desarrollo/neo4j.png}
 \caption{Consola de administración \textit{Neo4j}}
 \end{figure}
-
-\medskip 
+\pagebreak 
 
 \subsection{Estructura de la aplicación}
 Tal y como se ha avanzado anteriormente, para la creación de la estructura del proyecto en \textit{Java} se hizo uso de la herramienta \textit{Maven} (o conocido popularmente como \textit{mvn}).
@@ -1449,7 +1454,6 @@ Con esta herramienta se creo la definición del proyecto juntamente con sus mód
 \\
 
 Así entonces, utilizando \textit{Maven} se definió la estructura de la aplicación separada por módulos independientes tomando como referencia la separación por paquetes realizada en el diseño de la capa de aplicación de la sección \ref{capaAplicacion}:
-\pagebreak 
 
 \begin{itemize}
 \item \textbf{youtube-crawler-tool:} Modulo padre de la aplicación.
@@ -1626,11 +1630,66 @@ A seguir se facilitan algunos extractos de los ficheros "\textit{pom.xml}" defin
 </dependencies>
 ...
 \end{lstlisting}
-\pagebreak 
+\bigskip 
 
 \subsection{Acceso a datos}
-// Spring data, entities, repositorios y POJOS
-// Modulo data
+En el modulo \textit{youtube-crawler-tool-data} se implemento la capa de acceso a datos de la aplicación. Al utilizar \textit{Neo4j} como SGBD en la capa de datos, esta capa debía de realizar y gestionar la conexión a esta base de datos i proporcionar acceso a la capa de lógica de negocio.
+\\
+
+Para su implementanción se utilizo el marco de desarrollo \textit{Spring Data} y, mas concretamente, el proyecto \textit{Spring Data Neo4j} \cite{39}. Al utilizar este marco de desarrollo, ademas de poder utilizar las características que aporta \textit{Spring Data} para dar soporte a JPA \cite{40}, como el uso de entidades para definir los objetos de dominio y uso de repositorios para la implementación de DAOs (Data Access Objects) \cite{41}, también podemos utilizar características propias que aporta el uso de \textit{Neo4j}, tales como anotaciones para la definición de grafos o soporte para el lenguaje de consultas \textit{Cypher}.
+\pagebreak 
+
+La relación de entidades (o objetos de dominio) definidos fue:
+\begin{itemize}
+\item \textbf{Crawler.java:} Representación en la aplicación de un proceso de recolección.
+\item \textbf{Video.java:} Representación en la aplicación de un vídeo de \textit{YouTube}.
+\item \textbf{Channel.java:} Representación en la aplicación de un canal de \textit{YouTube}.
+\item \textbf{Category.java:} Representación en la aplicación de una categoría.
+\end{itemize}
+
+A modo ilustrativo, se añade a continuación un extracto de la entidad \textit{Video} en donde se observan algunas de las anotaciones propias del proyecto \textit{Spring Data Neo4j}:
+\begin{lstlisting}[style=C]
+@NodeEntity
+public class Video {
+  
+  @Id
+  protected String id;
+  ...
+  @Relationship(type = "UPLOADED_BY", direction = Relationship.OUTGOING)
+  protected Channel channel;
+	
+  @Relationship(type = "RELATED_TO", direction = Relationship.OUTGOING)
+  public Set<Video> related;
+  ...
+\end{lstlisting}
+En donde la anotación \textit{@NodeEntity} identifica esta clase como un objeto de dominio o nodo en \textit{Neo4j} y la anotación \textit{@Relationship} permite definir el tipo de relación o arista entre dos nodos.
+\\
+
+Y por lo que se refiere a los repositorios para dar acceso a estas entidades en el proyecto se definieron los siguientes:
+\begin{itemize}
+\item \textbf{CrawlerRepository.java:} Proporciona acceso a objetos de dominio de tipo \textit{Crawler}.
+\item \textbf{VideoRepository.java:} Proporciona acceso a objetos de dominio de tipo \textit{Video}.
+\item \textbf{ChannelRepository.java:} Proporciona acceso a objetos de dominio de tipo \textit{Channel}.
+\item \textbf{CategoryRepository.java:} Proporciona acceso a objetos de dominio de tipo \textit{Category}.
+\end{itemize}
+
+Y de igual forma que con las entidades, a continuación se proporciona un extracto del repositorio \textit{VideoRepository} para ilustrar su implementación: 
+\begin{lstlisting}[style=C]
+public interface VideoRepository extends Neo4jRepository<Video, String> {
+
+  @Depth(1)
+  @Query("MATCH (video:Video) WHERE video.favorite=true WITH video "
+    + "MATCH v=(video)-[:UPLOADED_BY|DISCOVERED_BY|CATEGORIZED_AS]->() RETURN video, nodes(v), rels(v)")
+  List<Video> findAllFavorite();
+  ...		
+  @Query("MATCH (v:Video) -[:DISCOVERED_BY]-> (c:Crawler) WHERE ID(c)={0} DETACH DELETE v")
+  void removeByCrawlerId(Long crawlerId);
+  ...
+\end{lstlisting}
+En el cual, al extender de \textit{Neo4jRepository} nos brinda muchas funcionalidades estandard que se suelen requerir a los objectos de acceso a datos, tales como operaciones de CRUD \cite{42}. Pero ademas, se nos permite definir nuestras propias consultas las cuales pueden estar definidas en lenguaje \textit{Cypher}.
+\\
+
+Finalmente, en esta capa también se definen los objetos planos de \textit{Java} conocidos como POJOs \cite{43}, los cuales en su gran mayoría son representaciones de las entidades definidas anteriormente y su uso esta destinado a actuar como mecanismo de comunicación (previamente serializados como JSON) entre la capa de presentación y la capa cliente.
 \medskip 
 
 \subsection{Lógica de negocio}
@@ -1851,7 +1910,12 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{35} \url{https://www.mongodb.com/} (02/06/2018)
   \bibitem{36} \url{http://couchdb.apache.org/} (02/06/2018)
   \bibitem{37} \url{https://neo4j.com/} (02/06/2018)
-  \bibitem{38} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (02/06/2018)    
+  \bibitem{38} \url{https://es.wikipedia.org/wiki/Base_de_datos_orientada_a_grafos} (02/06/2018)
+  \bibitem{39} \url{https://projects.spring.io/spring-data-neo4j/} (02/06/2018) 
+  \bibitem{40} \url{https://es.wikipedia.org/wiki/Java_Persistence_API} (02/06/2018) 
+  \bibitem{41} \url{https://es.wikipedia.org/wiki/Objeto_de_acceso_a_datos} (02/06/2018) 
+  \bibitem{42} \url{https://es.wikipedia.org/wiki/CRUD} (02/06/2018)
+  \bibitem{43} \url{https://es.wikipedia.org/wiki/Plain_Old_Java_Object} (02/06/2018) 
 \end{thebibliography}
 \newpage 
 
