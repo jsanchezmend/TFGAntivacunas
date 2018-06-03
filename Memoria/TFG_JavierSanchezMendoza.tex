@@ -648,7 +648,7 @@ Por lo referente a la API ofrecida por \textit{YouTube} para la obtención de co
 En el apartado \ref{youTubeDataAPI} se detalla en profundidad los servicios de la API de \textit{YouTube} utilizados y el modo en que la aplicación los consume para obtener contenidos. 
 \medskip 
 
-\subsubsection{Visualización de vídeos en grafo}
+\subsubsection{Visualización de vídeos en grafo}\label{propuestaGrafo} 
 Otra de las decisiones de diseño mas debatidas fue la definición de una vista en la aplicación que permitiera de forma visual analizar como se relacionan los movimientos anti y pro vacuna en la red social de \textit{YouTube}. 
 \\
 
@@ -1137,7 +1137,7 @@ En la capa de presentación es donde habitan el controlador de solicitudes de re
 \caption{Diagrama de componentes capa de presentación - implementaciones}
 \end{figure}
 
-\subsubsection{API REST}
+\subsubsection{API REST}\label{rest} 
 A continuación se facilita el diseño realizado de la API REST de la aplicación detallando la URI del recurso, el método de ejecución y una breve descripción.
 \\
 
@@ -1234,7 +1234,7 @@ POST            & api/graphs   & Crea un nuevo grafo (no se persiste, se muestra
 
 \medskip 
 
-\subsection{Diseño capa cliente}
+\subsection{Diseño capa cliente}\label{capaCliente} 
 Finalmente, para el diseño de la capa cliente correspondiente a la interfaz de usuario de la aplicación web, se especificaron las vistas de acuerdo con los casos de uso definidos en el apartado \ref{casosDeUso} y a la propuesta de interfaz de usuario aprobada por la clienta \ref{propuestaInterfazUsuario}:
 \\
 
@@ -1864,24 +1864,257 @@ Por ejemplo, durante la ejecución de un proceso de recolección el usuario pued
 \medskip
 
 \subsection{Presentación}
-\medskip 
-
-\subsubsection{Solicitudes de navegador}
-//Plantillas JSP con Themleaf, plantilla html de donde partir el diseño y jquery para modificar el dom
-// Modulo war
+En el modulo \textit{youtube-crawler-tool-api} es donde se implemento el controlador de solicitudes de recursos para habilitar la API REST de la aplicación y en el modulo \textit{youtube-crawler-tool-war} el controlador de solicitudes de navegador y la capa cliente de la aplicación web. A continuación en los siguientes apartados se detallan las características mas relevantes de su implementación.
 \medskip 
 
 \subsubsection{Solicitudes de recursos}
-//Requests Ajax con Jquery
-// Modulo api
+Para habilitar la API REST de la aplicación definida en el apartado \ref{rest}, en el modulo \textit{youtube-crawler-tool-api} se hace uso del marco de desarrollo \textit{Spring MVC} \cite{46}. Gracias al cual, fue posible definir la API REST, los recursos disponibles y sus métodos mediante el uso de anotaciones en cada una de las clases de tipo \textit{controller} que fueron definidas para cada componente.
+\\
+
+Es en estas clases tipo \textit{controller} es donde se realizan peticiones a los servicios habilitados en la capa de lógica de negocio para responder a las peticiones de recursos realizadas por los usuarios los cuales son devueltos en formato JSON. El listado completo de \textit{controllers} definidos es el siguiente:
+
+\begin{itemize}
+\item \textbf{CrawlerController.java:} Gestiona peticiones de recursos del tipo procesos de recolección. Responde a peticiones realizadas a la ruta \textit{'/api/crawlers'}.
+\item \textbf{VideoController.java:} Gestiona peticiones de recursos del tipo vídeos. Responde a peticiones realizadas a la ruta \textit{'/api/videos'}.
+\item \textbf{ChannelController.java:} Gestiona peticiones de recursos del tipo canales. Responde a peticiones realizadas a la ruta \textit{'/api/channels'}.
+\item \textbf{CategoryController.java:} Gestiona peticiones de recursos del tipo categorías. Responde a peticiones realizadas a la ruta \textit{'/api/categories'}.
+\item \textbf{AnalysisController.java:} Gestiona peticiones de recursos del tipo grafos. Responde a peticiones realizadas a la ruta \textit{'/api/graphs'}.
+\end{itemize}
+
+A modo de ejemplo, se incluye a continuación un extracto del controlador \textit{VideoController.java}:
+\begin{lstlisting}[style=C]
+@Controller
+@RequestMapping("/api/videos")
+public class VideoController {
+  
+  @Autowired
+  private VideoService videoService;
+  
+  @ResponseBody
+  @RequestMapping(value = "/favorites", method = RequestMethod.GET)
+  public List<VideoItem> listFavoritesVideos() {
+    return this.videoService.listFavoritesVideos();
+  }
+  ...
+\end{lstlisting}	
+
+
+La API REST habilitada mediante estos controladores es consumida por la interfaz web implementada en la capa cliente. En ella, las diferentes vistas de la aplicación realizan peticiones HTTP para acceder a los recursos necesarios. Dichas peticiones se realizan de forma asíncrona utilizando la librería de \textit{JavaScript} \textit{JQuery} y, mas concretamente, haciendo uso de la función \textit{ajax()} \cite{47}.
+\\
+
+Para evitar la repetición de código en la capa cliente, se definió una librería \textit{JavaScript} llamada  \textit{youtube-crawler-tool.js} en la cual se implementan de forma genérica las llamadas \textit{ajax}. Por ejemplo, el código \textit{JavaScript} para realizar una petición \textit{ajax} de tipo GET se define de la siguiente forma:
+\begin{lstlisting}[style=C]
+var doGet = function (requestUrl, callback) {
+  console.log("doGet for url: " + requestUrl);
+  $.ajax({ 
+    url: requestUrl, 
+    method: 'GET', 
+    success: callback
+  });
+}
+\end{lstlisting}	
+
+En donde, de querer obtener el listado de vídeos favoritos realizaríamos una petición a la API REST de tipo GET de la siguiente forma:
+\begin{lstlisting}[style=C]
+doGet("/api/videos/favorites", function (favorites) {
+  ...
+});
+\end{lstlisting}	
+
 \medskip 
 
-\subsubsection{Visualización de vídeos en grafo}
-// Busqueda de videos y su representación en grafo Cytripode.js
+\subsubsection{Solicitudes de navegador}
+En el modulo \textit{youtube-crawler-tool-war} es donde se encuentra implementada la capa cliente de la aplicación y el controlador de solicitudes de navegador.
+\\
+
+Dicho controlador es implementado en la clase \textit{YouTubeCrawlerToolController.java} en donde, gracias al uso de \textit{Spring MVC}, se definen las peticiones a las diferentes vistas de la aplicación. A diferencia de los \textit{controllers} definidos para las solicitudes de recursos, en el controlador de solicitudes de navegador como respuestas se devuelven redirecciones a las vistas definidas para cada caso.
+\\
+
+A modo de ejemplo, se incluye a continuación un extracto de la clase \textit{YouTubeCrawlerToolController.java} en el cual se gestiona la petición a la vista en detalle de un vídeo en concreto:
+\begin{lstlisting}[style=C]
+@Controller
+@RequestMapping("/")
+public class YouTubeCrawlerToolController {
+  ...
+  private static final String VIDEOS_VIEW = "videosView.html";
+  ...
+  @RequestMapping(value="videos/{id}")
+  public String getVideoView(Model model, @PathVariable(value = "id", required = true) String id) {
+    model.addAttribute("activeMenuOption", VIDEOS_VIEW);
+    model.addAttribute("videoId", id);
+    return VIDEO_VIEW;
+  }
+  ...
+\end{lstlisting}	
+
+Para la construcción de las vistas html de la aplicación, se utilizo el motor de plantillas para Java \textit{Thymeleaf} \cite{48}, el cual, es el recomendado actualmente por la plataforma \textit{Spring}. Con  \textit{Thymeleaf} es posible definir plantillas HTML permitiendo inyectar código servidor de una forma muy natural ademas de ofrecer integración con \textit{Spring}. Utilizando esta tecnología fue posible implementar las vistas definidas en el apartado \ref{capaCliente}.
+\\
+
+Para no partir de cero en el desarrollo de dichas vistas, como punto de partida se decidió buscar una plantilla html que se adaptara fácilmente a las funcionalidades diseñadas para la aplicación y que tuviera una licencia libre de uso. La plantilla escogida para tales efectos fue \textit{SB Admin 2} \cite{49}. 
 \medskip 
 
 \subsubsection{Seguridad de vistas y recursos}
-//Configuración de Spring security
+Uno de los requerimientos de la aplicación era la definición de dos tipos de usuarios distintos:
+\begin{itemize}
+\item \textbf{Usuario anónimo:} Solo se le permite realizar acciones de lectura en la aplicación y generar grafos.
+\item \textbf{Usuario identificado:} Se le permite realizar cualquier acción en la aplicación.
+\end{itemize}
+
+Este requerimiento conllevaba proveer a la aplicación de la funcionalidad necesaria para la identificación de usuarios mediante inicio de sesión y añadir una capa de seguridad para proteger los recursos y vistas que no fueran de dominio publico. Para conseguirlo, la aplicación hizo uso del marco de trabajo \textit{Spring Security} \cite{50}.
+\\
+
+Al añadir \textit{Spring Security} al proyecto, por defecto se provee a la aplicación de la funcionalidad necesaria para identificar y crear sesiones de usuario en la aplicación realizando peticiones de tipo POST \textit{/login} tal y como se realiza en la vista \textit{loginView.html}. Para probar dicha funcionalidad, en la clase de configuración \textit{YouTubeCrawlerToolSecurityConfiguration.java}, al levantarse la aplicación se añade al contexto de \textit{Spring} un usuario de prueba cuyo nombre y contraseña se definen en las propiedades \textit{ytct.security.default.username} y \textit{ytct.security.default.password}.
+\\
+
+Es también en la clase de configuración \textit{YouTubeCrawlerToolSecurityConfiguration.java} en donde se protegen los recursos ofrecidos por la API REST de la aplicación. En este caso, para cumplir con los requerimientos de la aplicación, teníamos que proteger todas las peticiones a recursos que no fueran de tipo GET para asegurarnos que el usuario que las realiza es un usuario identificado. Dicha configuración se facilita a continuación:
+\begin{lstlisting}[style=C]
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+      .csrf().disable()
+        .authorizeRequests()
+          // Crawler component security
+          .antMatchers(HttpMethod.POST,	"/api/crawlers").authenticated()
+          .antMatchers(HttpMethod.PUT,	"/api/crawlers").authenticated()
+          .antMatchers(HttpMethod.DELETE,	"/api/crawlers").authenticated()
+          // Video component security
+          .antMatchers(HttpMethod.PUT,	"/api/videos").authenticated()
+          .antMatchers(HttpMethod.DELETE,	"/api/videos").authenticated()
+          // Channel component security
+          .antMatchers(HttpMethod.DELETE,	"/api/channels").authenticated()
+          // Category component security
+          .antMatchers(HttpMethod.POST,	"/api/categories").authenticated()
+          .antMatchers(HttpMethod.PUT,	"/api/categories").authenticated()
+          .antMatchers(HttpMethod.DELETE,	"/api/categories").authenticated()
+          // Allow any other request
+          .anyRequest().permitAll()
+          .and()
+          .formLogin()
+            .loginPage("/login")
+            .permitAll()
+            .and()
+          .logout()
+            .logoutSuccessUrl("/")
+            .permitAll();
+  }
+\end{lstlisting}
+
+Finalmente, para proteger las vistas a las cuales es necesario estar identificado para poder acceder (por ejemplo, en el caso de la vista de vídeos favoritos), gracias a la integración de \textit{Thymeleaf} con \textit{Spring} es posible definir enlaces en las vistas que solo serán renderizados en el caso de cumplirse unos requerimientos de seguridad en concreto. Por ejemplo, en el caso del enlace para acceder a la vista de vídeos favoritos, mediante la etiqueta \textit{sec:authorize} es posible definir que el código html en donde esta definido esta etiqueta solo se renderice en caso que el usuario este identificado:
+\begin{lstlisting}[style=C]
+<li class="dropdown" sec:authorize="isAuthenticated()">
+  <a class="dropdown-toggle" th:href="@{/videos/favorites}" id="favoriteVideosView">
+    Favorites <i class="fa fa-star fa-fw"></i>
+  </a>
+</li>
+\end{lstlisting}
+\medskip 
+
+\subsubsection{Visualización de vídeos en grafo}
+En la capa cliente de la aplicación, en las vistas html se utilizan varias librerías \textit{JavaScript} que aportan funcionalidades de presentación mejoradas a la interfaz gráfica. La mas destacada de ellas es la librería \textit{Cytoscape.js} \cite{51} que es utilizada para la visualización del grafos en la vista de análisis.
+\\
+
+Dicha librería consume una fuente de datos en formato JSON en donde se especifican los nodos y las aristas para la construcción del grafo. Gracias a su facilidad de uso y a las posibilidades de personalización que hicieron posible cumplir los requisitos de visualización de la clienta definidos en el apartado \ref{propuestaGrafo}, se eliguio su uso en la aplicación por encima de otras alternativas como \textit{D3.js} \cite{52} o \textit{Sigma.js} \cite{53}.
+\\
+
+Para obtener los nodos y las aristas en el formato JSON requerido por la librería, la interfaz de usuario realiza una petición asíncrona al recurso \textit{POST api/graphs} el cual devuelve los vídeos y canales que hayan sido recolectados previamente por el sistema y que sean resultados de unos criterios de búsqueda introducidos por el usuario.
+\\
+
+A continuación se facilita un ejemplo de la respuesta JSON obtenida por el recurso \textit{POST api/graphs} y que cumple con el formato requerido por la librería \textit{Cytoscape.js}:
+\begin{lstlisting}[style=C]
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "id": "v-haqi4xvjvKo",
+          "resourceId": "haqi4xvjvKo",
+          "typeCode": "v",
+          "shape": "ellipse",
+          "color": "#dd1313",
+          "size": 25,
+          "video": {
+            //campos propios del objecto video
+          }
+        }
+      },
+      ...
+    ],
+    "edges": [
+      {
+        "data": {
+          "source": "v-L0jQz6jqQS0",
+          "target": "v-5d667Bb_iYA",
+          "outgoing": "L0jQz6jqQS0",
+          "incoming": "5d667Bb_iYA",
+          "outgoingType": "v",
+          "incomingType": "v"
+        }
+      },
+      ...
+    ]
+  }
+}
+\end{lstlisting}
+
+Una vez obtenida la respuesta, en la aplicación se genera un nuevo grafo inicializando \textit{Cytoscape.js} con los elementos obtenidos de la siguiente forma:
+\begin{lstlisting}[style=C]
+function initCytoscape(elements) {
+  cy = cytoscape({
+    container: document.getElementById('cy'),
+    style: cytoscape.stylesheet()
+      .selector('node')
+        .css({
+          'shape': 'data(shape)',
+          'background-color': 'data(color)',
+          'width': 'mapData(size, 0, 100, 10, 60)',
+          'height': 'mapData(size, 0, 100, 10, 60)'
+        })
+      .selector('edge')
+        .css({
+          'curve-style': 'haystack' // fast edges!
+        }),
+      layout: {
+        name: 'cose',
+        animate: false,
+        idealEdgeLength: 100,
+        nodeOverlap: 20,
+        refresh: 20,
+        fit: true,
+        padding: 30,
+        randomize: false,
+        componentSpacing: 100,
+        nodeRepulsion: 400000,
+        edgeElasticity: 100,
+        nestingFactor: 5,
+        gravity: 80,
+        numIter: 20,
+        initialTemp: 200,
+        coolingFactor: 0.95,
+        minTemp: 1.0
+      },
+      elements: elements
+   });
+   
+   cy.nodes().forEach(function(node){
+     nodeJson = node.json();
+     cy.getElementById(node.id()).qtip({
+       content: generateNodeContent(nodeJson.data),
+       position: {
+         my: 'top center',
+         at: 'bottom center'
+       },
+       style: {
+         classes: 'qtip-bootstrap',
+         tip: {
+           width: 16,
+           height: 8
+         }
+       }
+     });
+   });
+   ...
+ };
+\end{lstlisting}
 \medskip 
 
 \subsection{Definición y ejecución de pruebas}
@@ -2078,7 +2311,15 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{42} \url{https://es.wikipedia.org/wiki/CRUD} (02/06/2018)
   \bibitem{43} \url{https://es.wikipedia.org/wiki/Plain_Old_Java_Object} (02/06/2018) 
   \bibitem{44} \url{https://es.wikipedia.org/wiki/SOLID} (02/06/2018) 
-  \bibitem{45} \url{https://developers.google.com/api-client-library/java/apis/youtube/v3} (03/06/2018)  
+  \bibitem{45} \url{https://developers.google.com/api-client-library/java/apis/youtube/v3} (03/06/2018)
+  \bibitem{46} \url{https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc} (03/06/2018)
+  \bibitem{47} \url{http://api.jquery.com/jquery.ajax/} (03/06/2018)
+  \bibitem{48} \url{https://www.thymeleaf.org/} (03/06/2018)
+  \bibitem{49} \url{https://startbootstrap.com/template-overviews/sb-admin-2/} (03/06/2018)
+  \bibitem{50} \url{https://projects.spring.io/spring-security/} (03/06/2018)
+  \bibitem{51} \url{http://js.cytoscape.org/} (03/06/2018)
+  \bibitem{52} \url{https://d3js.org/} (03/06/2018)
+  \bibitem{53} \url{http://sigmajs.org/} (03/06/2018)
 \end{thebibliography}
 \newpage 
 
