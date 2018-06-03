@@ -51,6 +51,8 @@ numbersep=15pt,
 numberstyle=\tiny,
 numberfirstline = false,
 breaklines=true,
+emph={Funcion, Hacer, Para, Hasta, Si, Entonces, Fin, Mientras},
+emphstyle={\bfseries\underbar}
 }
 
 % minimizar fragmentado de listados
@@ -63,7 +65,7 @@ backgroundcolor=\color{gray75},
 }
 
 \lstdefinestyle{C}
-{language=C,}
+{language=C}
 
 
 \begin{document}
@@ -1271,7 +1273,7 @@ La figura a continuación ejemplifica el mapa web de la aplicación con los fluj
 El código fuente de la aplicación desarrollada la cual se detalla a continuación, se encuentra disponible en un repositorio publico de \textit{GitHub}: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/YouTubeCrawlerTool}{YouTubeCrawlerTool}.
 \bigskip
 
-\subsection{Entorno de desarrollo}
+\subsection{Entorno de desarrollo}\label{entorno} 
 A continuación se detalla la configuración del entorno de desarrollo utilizada en el desarrollo del proyecto. Algunas de las cuales no representan obligatoriedad siendo posible utilizar alternativas diferentes con los mismos resultados, en este caso solo se pretende exponer la configuración utilizada:
 
 \begin{itemize}
@@ -1282,7 +1284,7 @@ A continuación se detalla la configuración del entorno de desarrollo utilizada
 \item \textbf{Maven:} Herramienta para la gestión de proyectos Java \cite{23}, fue utilizada para la construcción del proyecto y para la gestión de dependencias.
 \item \textbf{Spring Tool Suite:} Entorno de desarrollo utilizado el cual se basa en una customización de Eclipse \cite{24}.
 \item \textbf{Tomcat:} Para probar la aplicación se utilizo el servidor de aplicaciones Tomcat \cite{25}, pero devido al uso de Spring Boot \cite{26} no fue necesario realizar su instalación al incorporar esta solución una versión de Tomcat.
-\item \textbf{Google API Key:} Para poder realizar consultas a la API de \textit{YouTube} es necesario obtener una clave de API que tendrá que ser utilizada cada vez que se haga uso de sus servicios. Para obtenerla, primero hay que acceder a la consola de desarrollo de \textit{Google} utilizando una cuanta previamente existente, crear un nuevo proyecto de desarrollo y activar los servicios de \textit{YouTube Data API v3} \cite{27}.
+\item \textbf{Google API Key:} Para poder realizar consultas a la API de \textit{YouTube} es necesario obtener una clave de API que tendrá que ser utilizada cada vez que se haga uso de sus servicios. Para obtenerla, primero hay que acceder a la consola de desarrollo de \textit{Google} utilizando una cuenta previamente existente, crear un nuevo proyecto de desarrollo y activar los servicios de \textit{YouTube Data API v3} \cite{27}.
 \end{itemize}
 \medskip 
 
@@ -1554,7 +1556,6 @@ A seguir se facilitan algunos extractos de los ficheros "\textit{pom.xml}" defin
     <version>v3-rev193-1.23.0</version>
   </dependency>
 </dependencies>
-...
 \end{lstlisting}
 \medskip
 
@@ -1740,9 +1741,126 @@ public class VideoServiceImpl implements VideoService {
 \medskip 
 
 \subsubsection{Crawler de YouTube}
-// Explicar conexión con YouTube (servicio youtube)
-// Como se ha implementado el crawler (servicio crawler)
-// Multiples threads y sincronizacion
+Una de las funcionalidades mas destacadas que se implementaron en la capa de lógica de negocio fue el proceso recolector (\textit{crawler} en ingles) de vídeos de \textit{YouTube}. En esta sección se detallan las características mas relevantes de dicha implementación.
+\\
+
+Antes de nada, para poder desarrollar un proceso de recolección había que definir el modo en el cual la aplicación realizaría peticiones a la \textit{YouTube Data API}. Para tales efectos, se definió en la aplicación el servicio \textit{\textbf{YouTubeSearchService}} el cual tiene la responsabilidad de realizar dichas peticiones.
+\\
+
+Para realizar las peticiones a la API de \textit{YouTube} se decidió hacer uso de la librería \textit{Java} cliente de la \textit{YouTube Data API} definida por \textit{Google} \cite{45}. Gracias a esta librería podíamos extraernos de realizar y gestionar las peticiones HTTP a los servicios requeridos de la API de \textit{YouTube} ya que las comunicaciones con este servicio extorno se podían realizar como si de otro servicio de la aplicación se tratase.
+\\
+
+Para importar en el proyecto la librería cliente de la \textit{YouTube Data API} fue necesario añadir la siguiente dependencia en el fichero \textit{pom.xml} del modulo \textit{youtube-crawler-tool-core} de la siguiente forma:
+\begin{lstlisting}[style=C]
+  ...
+  <!-- YouTube Data V3 support -->
+  <dependency>
+    <groupId>com.google.apis</groupId>
+    <artifactId>google-api-services-youtube</artifactId>
+    <version>v3-rev193-1.23.0</version>
+  </dependency>
+  ...
+\end{lstlisting}	
+
+Y para inicializar el servicio de \textit{YouTube} que realizaría nuestras peticiones a la API de \textit{YouTube}, se añadió la siguiente instancia al contexto de \textit{Spring} mediante una clase de configuración:
+\begin{lstlisting}[style=C]
+@Configuration
+public class YouTubeConfiguration {
+  protected static final String YOUTUBE_APPLICATION_NAME="youtube-crawler-tool-app";
+  
+  @Bean
+  public YouTube youTube() {
+    // This object is used to make YouTube Data API requests.
+    final YouTube youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(),
+      (request) -> {}).setApplicationName(YOUTUBE_APPLICATION_NAME).build();
+    return youtube;
+  }
+}
+\end{lstlisting}	
+\pagebreak 
+
+Ahora, cada vez que se requiriera realizar una petición a la API de \textit{YouTube}, se podía realizar utilizando el servició definido indicando en cada petición la \textit{Google API Key} obtenida al configurar el entorno de desarrollo en el apartado \ref{entorno} y que esta configurada en la aplicación mediante la propiedad \textit{'ytct.youtube.api.key'}. 
+\\
+
+La relación completa de los métodos definidos en el servicio \textit{YouTubeSearchService} es la siguiente:
+\begin{itemize}
+\item \textbf{searchVideos():} Realiza la petición al servicio \textit{'Search: list'} de la API de \textit{YouTube} para realizar una búsqueda textual y obtener un listado de identificadores de vídeos como respuesta.
+\item \textbf{searchRelatedVideos():} Realiza la petición al servicio \textit{'Search: list'} de la API de \textit{YouTube} para realizar una búsqueda por vídeo relacionado y obtener un listado de identificadores de vídeos como respuesta.
+\item \textbf{findVideos():} Realiza la petición al servicio \textit{'Videos: list'} de la API de \textit{YouTube} para recuperar el contenido de los vídeos dado un listado de identificadores de vídeos.
+\item \textbf{findChannel():} Realiza la petición al servicio \textit{'Channels: list'} de la API de \textit{YouTube} para recuperar el contenido de un canal dado un identificador de canal.
+\end{itemize}
+
+Habiendo resuelto el modo en el que se realizarían las peticiones a la API de \textit{YouTube} mediante el servicio \textit{YouTubeSearchService}, ahora era el momento de definir el proceso de recolección propiamente dicho. Para tales efectos se diseño el servicio \textit{\textbf{CrawlerService}} el cual tiene la responsabilidad de realizar y gestionar los procesos de recolección.
+\\
+
+A continuación se proporciona un pseudocodigo resumido a modo ilustrativo del proceso de recolección implementado en el servicio \textit{CrawlerService}:
+\begin{lstlisting}[style=C]
+Funcion doCrawler(crawler)
+  crawler.status <- RUNNING;
+  Hacer
+    busqueda <- youTubeSearchService.searchVideos(crawler);
+    
+    videos <- youTubeSearchService.findVideos(busqueda.videoIds);
+    Para i <- 0 Hasta i = videos.size() Hacer
+      Si videoRepository.findBy(video.id) = null Entonces
+        videoRepository.save(video);
+        
+        Si channelRepository.findBy(video.channelId) = null Entonces
+          channel <- youTubeSearchService.findChannel(video.channelId);
+          channelRepository.save(channel);
+        Fin Si
+      Fin Si
+      
+      Si crawler.nivelRelacionado > 0) Entonces
+        nuevoCrawler <- new Crawler();
+        nuevoCrawler.videoRelacionado <- video.id;
+        nuevoCrawler.nivelRelacionado <- crawler.nivelRelacionado -1;
+        nuevoCrawler.videosRelacionados <- crawler.videosRelacionados;
+        doCrawler(nuevoCrawler);
+      Fin Si
+      
+      i <- i+1;
+    Fin Para
+    
+    Si busqueda.siguientePagina = null Entonces
+      crawler.status <- FINISHED;
+    Si no Entonces
+      crawler.pagina <- busqueda.siguientePagina;
+    Fin Si
+    
+  Mientras crawler.status = RUNNING
+  
+Fin Funcion
+\end{lstlisting}	
+
+
+Uno de los requerimientos del proyecto era poder realizar varios procesos de recolección de forma simultanea y controlar su ejecución. Por lo tanto, los procesos de recolección debían de ejecutarse en hilos de ejecución (o \textit{Threads} en ingles) distintos al hilo principal de la aplicación para, de este modo, no bloquear el funcionamiento de la herramienta y permitir la ejecución asíncrona en paralelo de varios procesos de recolección.
+\\
+
+Para habilitar la ejecución asíncrona de varios procesos de recolección, de nuevo se utilizaron las capacidades ofrecidas por el marco de trabajo \textit{Spring} para la creación y gestión de los hilos de ejecución. Concretamente, para su configuración fue necesario instanciar un \textit{TaskExecutor} mediante la clase de configuración \textit{AsyncExecutorConfiguration} y anotar posteriormente con la anotación \textit{@Async} el método deseado. De esta forma, cada vez que se ejecutara el método anotado con la anotación \textit{@Async}, el \textit{TaskExecutor} configurado crearía y gestionaría un nuevo hilo de ejecución para su procesado.
+\newpage 
+
+Así entonces, en nuestro caso el método que iniciaba la ejecución de un proceso de recolección tenia que ser anotado con la anotación \textit{@Async} de la siguiente forma:
+\begin{lstlisting}[style=C]
+  @Async
+  @Override
+  public CompletableFuture<CrawlerItem> executeCrawler(Long crawlerId) {
+\end{lstlisting}	
+
+Finalmente, el uso de varios hilos de ejecución puede producir errores de concurrencia si mas de un hilo intenta acceder al mismo recurso al mismo tiempo. Para evitar este tipo de problemas, en el código se protegieron los recursos que eran susceptibles de ser accedidos por varios hilos de ejecución al mismo tiempo con la sentencia \textit{synchronized}. De esta forma, cuando un hilo de ejecución entra dentro de un bloque con la sentencia \textit{synchronized}, evita que cualquier otro hilo acceda también dentro de dicho bloque o a los recursos del mismo.
+\\
+
+Por ejemplo, durante la ejecución de un proceso de recolección el usuario puede cambiar su estado para detenerlo. Para asegurar que ningún proceso esta cambiando el estado del mismo proceso de recolección al mismo tiempo y evitar problemas de consistencia, se utiliza la sentencia \textit{synchronized} de la siguiente forma:
+\begin{lstlisting}[style=C]
+  synchronized (this) {
+    final Crawler crawler = this.crawlerRepository.findById(id).orElse(null);
+    ...
+    crawler.setStatusByEnum(newStatus);
+    this.crawlerRepository.save(crawler);
+    ...
+  }
+\end{lstlisting}	
+
 \medskip
 
 \subsection{Presentación}
@@ -1960,6 +2078,7 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
   \bibitem{42} \url{https://es.wikipedia.org/wiki/CRUD} (02/06/2018)
   \bibitem{43} \url{https://es.wikipedia.org/wiki/Plain_Old_Java_Object} (02/06/2018) 
   \bibitem{44} \url{https://es.wikipedia.org/wiki/SOLID} (02/06/2018) 
+  \bibitem{45} \url{https://developers.google.com/api-client-library/java/apis/youtube/v3} (03/06/2018)  
 \end{thebibliography}
 \newpage 
 
