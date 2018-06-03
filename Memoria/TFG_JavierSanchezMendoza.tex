@@ -2199,7 +2199,27 @@ De las funcionalidades diseñadas y recogidas como requisitos de la aplicación 
 \end{itemize}
 
 Las razones por las que estos casos de uso no se llegaron a implementar son debido a falta de tiempo para su desarrollo y la priorización de otras funcionalidades en detrimento de estas. En la sección \ref{sec:seguiminetoPlanificacion} se proporcionan más detalles sobre estas decisiones.
+\newpage 
 
+
+\section{Conclusiones}
+\bigskip 
+
+\subsection{Conclusiones del trabajo}
+// Una descripción de las conclusiones del trabajo: Qué lecciones se han aprendido del trabajo?
+// mencionar conclusiones de Johanna
+// Puntos fuertes y debiles
+// Criticas dificultades
+// ha merecido la pena etc...
+\medskip 
+
+\subsection{Grado de cumplimiento de los objetivos}
+// Una reflexión crítica sobre el logro de los objetivos planteados inicialmente: Hemos logrado todos los objetivos? Si la respuesta es negativa, por qué motivo? 
+\medskip 
+
+\subsection{Seguimiento de la planificación y metodología}\label{sec:seguiminetoPlanificacion}
+// Un análisis crítico del seguimiento de la planificación y metodología a lo largo del producto: Se ha seguido la planificación? La metodología prevista ha sido la adecuada? Ha habido que introducir cambios para garantizar el éxito del trabajo? Por qué? 
+//TODO: Gant tentativo vs gant final (tomar prestado de los informes de seguimiento)
 \medskip 
 
 \subsection{Propuesta de mejoras}
@@ -2224,36 +2244,6 @@ A continuación se facilita un listado de propuestas de mejora de la aplicación
 \item \textbf{Realizar filtros en la búsqueda de \textit{'Analysis'} por base de datos en vez de lógicamente:} En la consulta realizada a base de datos para la obtención de vídeos a ser presentados en el grafo, solo se realiza el filtrando de los campos obligatorios (por fecha), los demás filtros disponibles en esta funcionalidad (tales como por categoría o proceso de recolección) no son obligatorios y pueden venir informados o no. Por falta de tiempo en la investigación, no se encontró la forma de realizar consultas a \textit{Neo4J} con parámetros que podían venir informados o no, como solución temporal se decidió realizar el filtrado de los parámetros opcionales de forma lógica posteriormente a la realización de la consulta a la base de datos. Esta solución temporal puede conllevar problemas de rendimiento en el futuro y, aunque como se comenta a continuación no es el principal problema potencial de rendimiento en la visualización del grafo,  debería encontrarse una alternativa mejor. 
 \item \textbf{Mejorar el rendimiento de la representación del grafo:} Tal y como se comenta en la página web oficial de la librería \textit{JavaScript Cytoscape.js} utilizada para la visualización del grafo, en los gráficos con una gran cantidad de nodos a representar el rendimiento de la librería empieza a degradarse  \cite{28}. En las pruebas realizadas se ha confirmado esta afirmación al, por ejemplo, tardar aproximadamente unos 34 segundos en visualizarse un grafo con mil nodos (4 segundos para obtener los videos a representar de la base de datos y a realizar el filtrado lógico de los mismos más 30 segundos para que la librería los visualice por pantalla). Debido al gran volumen de información con la que se puede trabajar con la aplicación, para mejorar el rendimiento en la visualización de grafos se deberían adoptar medidas correctoras (tales como disminuir la información a mostrar por cada nodo) o estudiar alternativas al uso de \textit{Cytoscape.js} como libreria \textit{JavaScript} para la representación del grafo.
 \end{itemize}
-
-\newpage 
-
-
-\section{Conclusiones}
-\bigskip 
-
-Este capítulo tiene que incluir:
-\begin{itemize}
-\item Una descripción de las conclusiones del trabajo: Qué lecciones se han aprendido del trabajo?.
-\item Una reflexión crítica sobre el logro de los objetivos planteados inicialmente: Hemos logrado todos los objetivos? Si la respuesta es negativa, por qué motivo? 
-\item Un análisis crítico del seguimiento de la planificación y metodología a lo largo del producto: Se ha seguido la planificación? La metodología prevista ha sido la adecuada? Ha habido que introducir cambios para garantizar el éxito del trabajo? Por qué? 
-\item Las líneas de trabajo futuro que no se han podido explorar en este trabajo y han quedado pendientes.
-\end{itemize}
-
-\subsection{Conclusiones del trabajo}
-// mencionar conclusiones de Johanna
-// Puntos fuertes y debiles
-// Criticas dificultades
-// ha merecido la pena etc...
-\medskip 
-
-\subsection{Grado de cumplimiento de los objetivos}
-\medskip 
-
-\subsection{Seguimiento de la planificación y metodología}\label{sec:seguiminetoPlanificacion}
-//TODO: Gant tentativo vs gant final (tomar prestado de los informes de seguimiento)
-\medskip 
-
-\subsection{Opinión del proyecto}
 \newpage 
 
 
