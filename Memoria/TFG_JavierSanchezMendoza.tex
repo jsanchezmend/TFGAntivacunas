@@ -145,9 +145,25 @@ Reconocimiento-NoComercial-SinObraDerivada\\
 \hline
 \end{tabularx} 
 \begin{tabularx}{\textwidth}{|X|}
-\textbf{Resumen del Trabajo (máximo 250 palabras):} \textit{Con la finalidad, contexto de aplicación, metodología, resultados i conclusiones del trabajo.} \\ 
+\textbf{Resumen del Trabajo:} \\ 
 \hline 
-\cellcolor{gray!25} \textit{...} \\
+\cellcolor{gray!25}
+\medskip
+En este proyecto final de grado en ingeniería informática se procede a realizar un recolector de contenidos (o \textit{crawler} en ingles) para habilitar el estudio del movimiento antivacuna en redes sociales.
+\\
+\medskip 
+\cellcolor{gray!25}
+Gracias a en parte a las redes sociales, actualmente el activismo antivacunas goza de una alta popularidad, hecho que a propiciado la aparición de enfermedades que se consideraban erradicadas y las cuales, en el peor de los casos, han llegado ha cobrarse victimas mortales. Con el propósito de conocer mejor dicho movimiento y luchar contra la desinformación generada al respecto, se pretende habilitar una aplicación para analizar su divulgación en las redes sociales.
+\\
+\medskip 
+\cellcolor{gray!25}
+Para conseguir tal objetivo, se trabaja conjuntamente con una alumna en el desarrollo de su trabajo final de máster. En nuestro proyecto, dicha alumna actúa con el rol de clienta y usuaria de la aplicación. Debido a este escenario, se adopta una metodología centrada en el usuario que nos permite garantizar, en la medida de lo posible, la máxima satisfacción de la usuaria. Y para garantizar la ejecución del proyecto, se aplica el marco ágil de desarrollo \textit{Scrum}.
+\\
+\medskip 
+\cellcolor{gray!25}
+Como resultado se obtiene una aplicación web que permite la recolección de vídeos de la red social \textit{YouTube} y su posterior categorización. La aplicación cumple con las expectativas generadas por la clienta, permitiendo el análisis de los contenidos obtenidos mediante una visualización en formato de grafo y su exportación a fichero csv. Así mismo, la herramienta es lo suficientemente genérica para ser utilizada en otros contextos.
+\medskip 
+\\
 \hline 
 \end{tabularx} 
 \newpage 
@@ -155,9 +171,25 @@ Reconocimiento-NoComercial-SinObraDerivada\\
 
 \begin{tabularx}{\textwidth}{|X|}
 \hline 
-\textbf{Abstract (in English, 250 words or less):} \\ 
+\textbf{Abstract:} \\ 
 \hline 
-\cellcolor{gray!25} \textit{...} \\
+\cellcolor{gray!25}
+\medskip
+En este proyecto final de grado en ingeniería informática se procede a realizar un recolector de contenidos (o \textit{crawler} en ingles) para habilitar el estudio del movimiento antivacuna en redes sociales.
+\\
+\medskip 
+\cellcolor{gray!25}
+Gracias a en parte a las redes sociales, actualmente el activismo antivacunas goza de una alta popularidad, hecho que a propiciado la aparición de enfermedades que se consideraban erradicadas y las cuales, en el peor de los casos, han llegado ha cobrarse victimas mortales. Con el propósito de conocer mejor dicho movimiento y luchar contra la desinformación generada al respecto, se pretende habilitar una aplicación para analizar su divulgación en las redes sociales.
+\\
+\medskip 
+\cellcolor{gray!25}
+Para conseguir tal objetivo, se trabaja conjuntamente con una alumna en el desarrollo de su trabajo final de máster. En nuestro proyecto, dicha alumna actúa con el rol de clienta y usuaria de la aplicación. Debido a este escenario, se adopta una metodología centrada en el usuario que nos permite garantizar, en la medida de lo posible, la máxima satisfacción de la usuaria. Y para garantizar la ejecución del proyecto, se aplica el marco ágil de desarrollo \textit{Scrum}.
+\\
+\medskip 
+\cellcolor{gray!25}
+Como resultado se obtiene una aplicación web que permite la recolección de vídeos de la red social \textit{YouTube} y su posterior categorización. La aplicación cumple con las expectativas generadas por la clienta, permitiendo el análisis de los contenidos obtenidos mediante una visualización en formato de grafo y su exportación a fichero csv. Así mismo, la herramienta es lo suficientemente genérica para ser utilizada en otros contextos.
+\medskip 
+\\
 \hline 
 \end{tabularx} 
 \newpage 
@@ -187,7 +219,7 @@ Hoy en día las redes sociales han puesto al alcance de los analistas de datos u
 La obtención de grandes volúmenes de datos nos lleva también a la problemática que surge en su almacenamiento en bases de datos tradicionales y su posterior procesamiento. Para habilitar al usuario final el correcto acceso a la información obtenida se estudían las ventajas que aporta el uso de bases de datos \textit{NoSQL} \cite{6} para este cometido, al ser diseñadas especialmente para manejar enormes cantidades de datos. Proyecto que se enmarca dentro de la problemática de la obtención, almacenamiento y procesamiento de grandes volúmenes de datos (\textit{Big Data} \cite{7}) y su posterior acceso.
 \newpage
 
-\subsection{Objetivos del Trabajo}
+\subsection{Objetivos del Trabajo}\label{objectivos} 
 El objetivo principal del proyecto es proporcionar una aplicación web que permita a la clienta obtener de forma usable y transparente la información que necesite de la red social \textit{YouTube} para poder llevar a cabo el estudio de patrones de comportamiento entre las diferentes movimientos anti y pro vacuna.
 \\
 
@@ -222,7 +254,7 @@ Siguiendo la metodología \textit{scrum}, se realizaron iteraciones (comúnmente
 \end{figure}
 \medskip 
 
-\subsection{Planificación del Trabajo}
+\subsection{Planificación del Trabajo}\label{planificacionTrabajao} 
 En la realización del proyecto se propuso inicialmente seguir una planificación tentativa tal y como se detalla en el diagrama de \textit{Grantt} facilitado en las figuras dos y tres:
 
 \begin{figure}[H]
@@ -267,10 +299,10 @@ Para la consecución de los objetivos definidos se ha desarrollado una aplicaci�
 En la capa de datos se utiliza una base de datos orientada a grafos \cite{10} la cual nos permite persistir los vídeos obtenidos en forma de grafo junto con sus relaciones ademas de otras informaciones derivadas y necesarias para el uso y funcionamiento de la aplicación.
 \\
 
-La capa de aplicación ha sido desarrollada con tecnología Java EE \cite{11} implementada mayormente utilizando proyectos del marco de desarrollo Spring Framework \cite{12} entre otros. En esta capa se hace uso intensivo de servicios externos en forma de API pública ofrecida por YouTube con el fin de consumir dicha API para recolectar los vídeos requeridos por el usuario para su estudio.
+La capa de aplicación ha sido desarrollada con tecnología Java EE \cite{11} implementada mayormente utilizando proyectos del marco de desarrollo \textit{Spring Framework} \cite{12} entre otros. En esta capa se hace uso intensivo de servicios externos en forma de API pública ofrecida por \textit{YouTube} con el fin de consumir dicha API para recolectar los vídeos requeridos por el usuario para su estudio.
 \\
 
-Finalmente, en la capa de cliente las vistas desarrolladas utilizan lenguaje JavaScript \cite{13} con un gran uso de JQuery \cite{14} para modificar el DOM y realizar llamadas asíncronas a la API Rest habilitada en la capa de aplicación para tales efectos.
+Finalmente, en la capa de cliente las vistas desarrolladas utilizan lenguaje JavaScript \cite{13} con un gran uso de \textit{JQuery} \cite{14} para modificar el DOM y realizar llamadas asíncronas a la API Rest habilitada en la capa de aplicación para tales efectos.
 \\
 
 En los siguientes apartados se profundiza en la arquitectura y el diseño de la aplicación introducidos en esta sección.
@@ -319,7 +351,7 @@ Gracias al enfoque escogido fue posible encontrar respuestas a preguntas sobre l
 \textit{¿Qué información se necesita?}
 \\
 
-También cabe destacar que gracias a que tanto \textit{scrum} como el diseño centrado en el usuario son dos procesos iterativos, resulto fácil integrar esta metodología dentro del marco ágil de desarrollo.
+También cabe destacar que gracias a que tanto \textit{Scrum} como el diseño centrado en el usuario son dos procesos iterativos, resulto fácil integrar esta metodología dentro del marco ágil de desarrollo.
 \medskip 
 
 \subsection{Propuesta de la solución}
@@ -2214,12 +2246,58 @@ Las razones por las que estos casos de uso no se llegaron a implementar son debi
 \medskip 
 
 \subsection{Grado de cumplimiento de los objetivos}
-// Una reflexión crítica sobre el logro de los objetivos planteados inicialmente: Hemos logrado todos los objetivos? Si la respuesta es negativa, por qué motivo? 
+Aunque algunas de las funcionalidades diseñadas inicialmente para el proyecto no se han llegado a implementar (tales como la incorporación de datos estadísticos sobre la categorización de los contenidos), consideramos  que el proyecto ha sido un éxito y se han podido lograr todos los objetivos planteados inicialmente en el apartado \ref{objectivos}.
+\\
+
+A continuación se facilita la relación de objetivos definidos y su grado de cumplimiento al termino del desarrollo del proyecto:
+
+\begin{itemize}
+\item \textbf{Investigar que funcionalidades aportan las API públicas ofrecidas por \textit{YouTube} y analizar como se pueden utilizar para la obtención de la información requerida}: Se ha analizado la API de \textit{YouTube} en la sección \ref{youTubeDataAPI} y se ha estudiado conjuntamente con la clienta que información va a ser recolectada por la aplicación. Este objetivo se realizo durante la primera fase de desarrollo.
+\item \textbf{Determinar como almacenar y acceder de forma eficiente a la gran cantidad de información que se obtendrá}: Se ha tomado la decisión de utilizar una base de datos NoSQL enfocada a grafos (\textit{Neo4j}) para poder acceder a la información de forma eficiente. Se ha diseñado un diagrama UML para representar el esquema invariante de la información y se ha adaptado al concepto de nodos y relaciones de las base de datos de grafos. Se realizo una prueba de concepto para estudiar la viabilidad de utilizar \textit{Neo4j} como base de datos en el proyecto con resultado favorable. La prueba de concepto realizada fue utilizada como base para la implementación de la aplicación durante la segunda fase de desarrollo. Este objetivo se considera realizado.
+\item \textbf{Permitir la recolección de información según criterios de búsqueda proporcionados por el usuario final}: Conjuntamente con el cliente se han determinado los criterios de búsqueda a utilizar. Se ha desarrollado una prueba de concepto en la cual a sido posible recolectar información de vídeos y canales utilizando la API de \textit{YouTube}. La prueba de concepto realizada fue utilizada como base para la implementación de la aplicación durante la segunda fase de desarrollo. Este objetivo se considera realizado.
+\item \textbf{Habilitar la gestión, visualización y exportación de datos obtenidos en distintos procesos de extracción para su posterior análisis en herramientas especializadas}: Se ha diseñado una interfaz de usuario para proporcionar estas funcionalidades y se ha diseñado la arquitectura de la aplicación para hacerlas viables. En la segunda fase de desarrollo se ha adoptado y implementado la arquitectura propuesta en la primera fase de desarrollo y la interfaz de usuario necesarias para habilitar estas funcionalidades al usuario final. Este objetivo se considera realizado.
+\item \textbf{Ofrecer herramientas de visualización para el análisis y comprensión de los datos obtenidos}: Se ha decidido el uso de un grafo para la visualización de los datos obtenidos y se ha determinado cuales serán sus componentes. Se ha realizado una prueba de concepto en la cual ha sido posible visualizar los datos obtenidos a través de la API de \textit{YouTube} en un grafo. La prueba de concepto realizada fue utilizada como base para la implementación final de la aplicación y se consiguió visualizar los datos obtenidos en un grafo acorde a las especificaciones del cliente. Este objetivo se considera realizado.
+\item \textbf{Proporcionar una interfaz de usuario usable que permita realizar las acciones requeridas por el usuario final}: Se ha realizado una propuesta de interfaz de usuario que ha sido aprobada por la cliente. En la segunda fase de desarrollo se implemento la interfaz gráfica propuesta con la aprobación final de la clienta. Este objetivo se considera realizado.
+\end{itemize}
+
 \medskip 
 
 \subsection{Seguimiento de la planificación y metodología}\label{sec:seguiminetoPlanificacion}
-// Un análisis crítico del seguimiento de la planificación y metodología a lo largo del producto: Se ha seguido la planificación? La metodología prevista ha sido la adecuada? Ha habido que introducir cambios para garantizar el éxito del trabajo? Por qué? 
-//TODO: Gant tentativo vs gant final (tomar prestado de los informes de seguimiento)
+Debido a la naturaleza del proyecto desarrollado en donde se ha trabajado conjuntamente con la clienta y usuaria final de la aplicación, creo que la elección de una metodología de diseño centrado en el usuario a sido la correcta al priorizar, por encima de todo, la satisfacción de los usuarios. 
+\\
+
+Por otro lado, la aplicación de una metodología de desarrollo ágil como \textit{Scrum} nos ha permitido poder aplicar dicha metodología de forma efectiva produciendo componentes de software funcionales en cortos plazos de tiempo desde que fueran requeridos por la cliente y su inclusión en la aplicación, especialmente en las ultimas fases de desarrollo.
+\\
+
+Durante la realización del proyecto se recibieron peticiones por parte de la clienta y de los \textit{stakeholder} que afectaron al alcance de la aplicación o a su implementación final. La relación de los cambios más destacados efectuados con relación a la propuesta inicial fue la siguiente:
+\begin{itemize}
+\item \textbf{Cambio de red social:} Debido a las restricciones de uso de la API gratuita de Twitter tal y como se describe en el apartado \ref{eleccionYouTube}, se decidió utilizar en substitución la red social \textit{YouTube}.
+\item \textbf{Cambio de SGBD:} Inicialmente se había planteado el uso de la base de datos documental NoSQL MongoDB como el SGBD de la aplicación, pero debido a los motibos expuestos en el apartado \ref{sgbd}, finalmente se opto por el uso de una bases de datos oriantada a grafos como \textit{Neo4j}.
+\item \textbf{No inclusión de información estadística sobre la categorización:} En la propuesta de interfaz de usuario presentada, en algunas secciones de la aplicació se incluía información estadística sobre el estado de la aplicación y de la información recolectada (porcentaje de vídeos categorizados, distribución de categorías, etc.). Debido al ajustado tiempo disponible para la implementación de esta funcionalidad y a la baja prioridad dada por la clienta en comparación a otras funcionalidades, finalmente esta característica no fue incluida dentro de la aplicación.
+\item \textbf{Funcionalidad de favoritos:} En las ultimas fases de desarrollo y después de realizar la presentación de la aplicación a la clienta, debido a la gran cantidad de vídeos que pueden ser recolectados por la aplicación y para poder facilitar su identificación, se considero oportuno añadir la funcionalidad de favoritos para poder marcar los vídeos que la clienta considerara oportunos como favoritos para poder acceder a ellos de forma mas eficiente.
+\item \textbf{Nuevas funcionalidades en el listado de vídeos:} También en las ultimas fase de desarrollo, para hacer mas eficiente la tarea de categorización, en los diferentes listados de vídeos en la aplicación se añadió la funcionalidad para la categorización de vídeos. De esta forma, ya no es requerido acceder a un vídeo para cambiar su categoría. 
+\\
+
+Debido principalmente a las actividades no previstas detalladas, de la planificación inicial para la primera fase de desarrollo no se pudieron ejecutar las actividades relacionadas con la implementación del recolector de vídeos. Aunque en su momento represento una desviación importante en el proyecto de un total de 19 días, gracias al detallado diseño de la aplicación, el exhaustivo análisis de la API de \textit{YouTube} y, sobretodo, a las diferentes pruebas de concepto realizadas, fue posible absorber estas tareas dentro de la segunda fase de desarrollo. 
+\\
+
+Debido a los motivos expuestos, la planificación inicial del proyecto facilitada en la sección \ref{planificacionTrabajao} se vio afectada, debiendo ser actualizada por el siguiente diagrama de Gantt:
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.20]{planificacion/planificacion2.png}
+\caption{Listado final de tareas y diagrama de Gantt}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{planificacion/listado-tareas2.png}
+\caption{Listado final de tareas}
+\end{figure}
+
+\end{itemize}
+
+
 \medskip 
 
 \subsection{Propuesta de mejoras}
