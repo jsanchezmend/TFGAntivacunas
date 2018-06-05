@@ -302,7 +302,7 @@ En la capa de datos se utiliza una base de datos orientada a grafos \cite{10} la
 La capa de aplicación ha sido desarrollada con tecnología Java EE \cite{11} implementada mayormente utilizando proyectos del marco de desarrollo \textit{Spring Framework} \cite{12} entre otros. En esta capa se hace uso intensivo de servicios externos en forma de API pública ofrecida por \textit{YouTube} con el fin de consumir dicha API para recolectar los vídeos requeridos por el usuario para su estudio.
 \\
 
-Finalmente, en la capa de cliente las vistas desarrolladas utilizan lenguaje JavaScript \cite{13} con un gran uso de \textit{JQuery} \cite{14} para modificar el DOM y realizar llamadas asíncronas a la API Rest habilitada en la capa de aplicación para tales efectos.
+Finalmente, en la capa de cliente las vistas desarrolladas utilizan lenguaje JavaScript \cite{13} con un gran uso de \textit{JQuery} \cite{14} para modificar el DOM y realizar llamadas asíncronas a la API REST habilitada en la capa de aplicación para tales efectos.
 \\
 
 En los siguientes apartados se profundiza en la arquitectura y el diseño de la aplicación introducidos en esta sección.
@@ -340,7 +340,7 @@ La relación de fases y técnicas utilizadas ha sido la siguiente:
 \begin{itemize}
 \item \textbf{Definir contexto de uso:} El objetivo de esta fase es el de determinar que necesidades pretende la usuaria final que la aplicación resuelva y a que se va a destinar su uso. La técnica escogida para la realización de esta fase fueron las entrevistas con la usuaria final que se realizaron mediante videoconferencia sobretodo durante las diferentes \textit{sprint reviews} al termino de cada \textit{sprint}.
 \item \textbf{Especificar requisitos:} En la siguiente fase se definen los requisitos del sistema a partir de la información recogida en la fase previa. Para los requisitos funcionales se opto por recogerlos como 'casos de uso' \cite{16}.
-\item \textbf{Diseñar el producto:} En esta fase se diseñan y implementan los requisitos definidos en la fase anterior ya sea con el objetivo de proporcionar una solución final o una propuesta de solución a ser refinada en sucesivas iteraciones. Las técnicas utilizadas en esta fase fueron la creación de maquetas para evaluar la solución y el prototipado mediante pruebas de concepto realizadas con el objetivo de estudiar posibles soluciones antes de realizar su implementación en la aplicación.
+\item \textbf{Diseñar el producto:} En esta fase se diseñan y implementan los requisitos definidos en la fase anterior ya sea con el objetivo de proporcionar una solución final o una propuesta de solución a ser refinada en sucesivas iteraciones. Las técnicas utilizadas en esta fase fueron la creación de maquetas para evaluar la solución y el prototipo mediante pruebas de concepto realizadas con el objetivo de estudiar posibles soluciones antes de realizar su implementación en la aplicación.
 \item \textbf{Poner a prueba el producto:} Finalmente, en esta fase se pone a prueba el producto obtenido. Para hacerlo, se definieron y ejecutaron pruebas de integración diseñadas teniendo en cuenta los casos de uso definidos previamente y se realizaron test con usuarios para evaluar su grado de satisfacción.
 \end{itemize}
 
@@ -1223,9 +1223,9 @@ GET             & api/videos/\{id\}/videos & Lista todos los vídeos relacionado
 \textbf{Metodo} & \textbf{Uri}               & \textbf{Descripción}                              \\ \hline
 GET             & api/channels               & Lista todos los canales                           \\ \hline
 GET             & api/channels/\{id\}        & Devuelve un canal.                                \\ \hline
-DELETE          & api/channels/\{id\}        & Borra un canal. Require identificación            \\ \hline
-GET             & api/channels/\{id\}/stats  & Devuelve la estadisticas de un canal              \\ \hline
-GET             & api/channels/\{id\}/videos & Lista todos los videos relacionados con un canal. \\ \hline
+DELETE          & api/channels/\{id\}        & Borra un canal. Requiere identificación            \\ \hline
+GET             & api/channels/\{id\}/stats  & Devuelve la estadísticas de un canal              \\ \hline
+GET             & api/channels/\{id\}/videos & Lista todos los vídeos relacionados con un canal. \\ \hline
 \end{tabular}%
 }
 \caption{Componente \textit{channel} API}
@@ -1300,7 +1300,6 @@ La figura a continuación ejemplifica el mapa web de la aplicación con los fluj
 
 
 
-
 \section{Desarrollo}
 El código fuente de la aplicación desarrollada la cual se detalla a continuación, se encuentra disponible en un repositorio publico de \textit{GitHub}: \href{https://github.com/jsanchezmend/TFGAntivacunas/tree/master/YouTubeCrawlerTool}{YouTubeCrawlerTool}.
 \bigskip
@@ -1370,7 +1369,7 @@ Criterios de búsqueda utilizados:
 \item \textbf{\textit{publishedBefore} y publishedAfter:} Permite acotar la búsqueda a realizar dentro de un rango de fechas determinado. 
 \item \textbf{\textit{order}:} Permite ordenar los resultados obtenidos por varios criterios: por fecha, rating, relevancia, titulo y numero de visualizaciones. Por defecto, los resultados son ordenados por relevancia.
 \item \textbf{\textit{maxResults}:} Máximo de resultados obtenidos por pagina. El máximo valor aceptado es 50.
-\item \textbf{\textit{pageToken}:} Identifica la pagina de resultados que debe ser devuelta. Como respuesta a la petición de busqueda, juntamente con los recursos solicitados se devuelven los campos \textit{'nextPageToken'} y \textit{'prevPageToken'}, con la información devuelta en estos campos es posible navegar hacia la siguiente pagina de resultados o hacia la anterior.
+\item \textbf{\textit{pageToken}:} Identifica la pagina de resultados que debe ser devuelta. Como respuesta a la petición de búsqueda, juntamente con los recursos solicitados se devuelven los campos \textit{'nextPageToken'} y \textit{'prevPageToken'}, con la información devuelta en estos campos es posible navegar hacia la siguiente pagina de resultados o hacia la anterior.
 \end{itemize}
 
 Campos solicitados:
@@ -1757,7 +1756,7 @@ Y por lo que se refiere a los servicios que actúan como \textit{converters}, su
 Para conectar todos estos servicios entre si y habilitarlos en la capa de presentación, en el proyecto se hace un uso extensivo del patrón de inyección de independencias proporcionado por el marco de desarrollo \textit{Spring Core}, el cual se encarga de instanciar objetos y inyectarlos como dependencias allí donde  sean necesarias. De esta forma, se consigue un alto desacoplamiento entre los distintos componentes lo cual facilita el mantenimiento y la reusablilidad del código.
 \\
 
-Para aplicar el patrón de inyección de independencias se ha utilizado el mecanismo de anotaciones habilitado por \textit{Spring Core}. En el cual, para definir una nueva instancia a injectar se ha utilizado la anotación \textit{@Service} y para injectar una dependencia la anotación \textit{@Autowired} tal y como se demuestra en el siguiente extracto de la implementación del servicio \textit{VideoService}.
+Para aplicar el patrón de inyección de independencias se ha utilizado el mecanismo de anotaciones habilitado por \textit{Spring Core}. En el cual, para definir una nueva instancia a injectar se ha utilizado la anotación \textit{@Service} y para inyectar una dependencia la anotación \textit{@Autowired} tal y como se demuestra en el siguiente extracto de la implementación del servicio \textit{VideoService}.
 \begin{lstlisting}[style=C]
 @Service("videoService")
 public class VideoServiceImpl implements VideoService {
@@ -1826,7 +1825,7 @@ La relación completa de los métodos definidos en el servicio \textit{YouTubeSe
 Habiendo resuelto el modo en el que se realizarían las peticiones a la API de \textit{YouTube} mediante el servicio \textit{YouTubeSearchService}, ahora era el momento de definir el proceso de recolección propiamente dicho. Para tales efectos se diseño el servicio \textit{\textbf{CrawlerService}} el cual tiene la responsabilidad de realizar y gestionar los procesos de recolección.
 \\
 
-A continuación se proporciona un pseudocodigo resumido a modo ilustrativo del proceso de recolección implementado en el servicio \textit{CrawlerService}:
+A continuación se proporciona un pseudocódigo resumido a modo ilustrativo del proceso de recolección implementado en el servicio \textit{CrawlerService}:
 \begin{lstlisting}[style=C]
 Funcion doCrawler(crawler)
   crawler.status <- RUNNING;
@@ -2151,7 +2150,7 @@ function initCytoscape(elements) {
 \medskip 
 
 \subsection{Definición y ejecución de pruebas}
-Durante el desarrollo de la aplicación y a medida que se iba finalizando la implementacion de los distintos componentes, se fueron definiendo y ejecutando pruebas de integración para probar la funcionalidad desarrollada.
+Durante el desarrollo de la aplicación y a medida que se iba finalizando la implementación de los distintos componentes, se fueron definiendo y ejecutando pruebas de integración para probar la funcionalidad desarrollada.
 \\
 
 Las pruebas a realizar se definieron según los casos de uso documentados en la sección \ref{casosDeUso} asignando un código de identificación para cada uno de ellos. Ademas, al agrupar las pruebas a realizar por componentes nos permitió evaluar la calidad de cada componente por separado tan pronto estaba disponible.
@@ -2238,15 +2237,32 @@ Las razones por las que estos casos de uso no se llegaron a implementar son debi
 \bigskip 
 
 \subsection{Conclusiones del trabajo}
-// Una descripción de las conclusiones del trabajo: Qué lecciones se han aprendido del trabajo?
-// mencionar conclusiones de Johanna
-// Puntos fuertes y debiles
-// Criticas dificultades
-// ha merecido la pena etc...
+En la realización de este trabajo ademas de darme la oportunidad de poner a prueba los conocimientos adquiridos durante el grado en ingeniería informática, me ha permitido experimentar como es el proceso de desarrollo de software en contacto directo con los usuarios finales y, en este caso, con la clienta de la solución.
+\\
+
+Gracias a esta circunstancia, he podido obtener lecciones muy valiosas que creo que me serán de utilidad en el futuro. Ya que, al tener contacto con la usuaria final de la aplicación durante todo el desarrollo de la misma, he podido aprender de su perspectiva y no centrarme únicamente en el desarrollo de la solución. Una de las conclusiones mas valiosas que he obtenido, es que en un proyecto de software siempre se pueden producir cambios (sobretodo en etapas finales), y debido a ello, hay que estar siempre atento y prevenirlos para minimizar sus riesgos siempre que sea posible.
+\\
+
+Como resultado de esta colaboración y la metodología utilizada, la aplicación obtenida ademas de cumplir los objetivos marcados al inicio del proyecto, a conseguido cumplir con las expectativas de la clienta permitiendo iniciar el estudio del movimiento antivacuna en la red social \textit{YouTube}. En palabras de la propia Johanna Milena Rodríguez Vera clienta de la aplicación:
+\\
+
+\textit{La herramienta tiene una interfaz visual que le facilita al usuario realizar las búsquedas y los filtros que son necesarios para encontrar la información que necesita.}
+
+\textit{Por las características que tiene al API de YouTube los resultados que se obtienen se encuentran  dependiendo de la localización de quien realiza la búsqueda, siendo diferentes los vídeos que se proponen aunque tengan los mismos términos de búsqueda y filtrado. Este punto se puede convertir en un aspecto interesante a evaluar en el futuro por parte del investigador.}
+
+\textit{Debido a como YouTube relaciona sus contenidos, los vídeos que se muestran como resultado en muchas ocasiones no tienen relación alguna con el término utilizado. Con lo cual hace necesario un trabajo manual de filtrado de la información por parte del investigador para categorizar correctamente los vídeos que se obtienen como resultado.}
+
+\textit{La funcionalidad de grafos con la selección de múltiples variables, permite en éste escenario la obtención de grafos con diferente información que puede permitir de manera posterior su análisis de acuerdo a las características del estudio.}
+\\
+
+Ademas de lo expuesto hasta el momento, personalmente la realización de este proyecto me ha permitido desarrollar una aplicación de principio a fin, pasando des de la etapa de definición y diseño de la solución al desarrollo de la capa de datos, de aplicación y de la interfaz de usuario, obteniendo una visión global sobre el significado de desarrollar software. Por otro lado, he aprendido nuevas tecnologías tales como el uso de bases de datos NoSQL orientadas a grafos, que considero muy interesantes y con las cuales me gustaría trabajar en el futuro.
+\\
+
+Así entonces, por los puntos destacados anteriormente y por el grado de satisfacción conseguido por la usuaria, considero que la realización del proyecto a sido un éxito.
 \medskip 
 
 \subsection{Grado de cumplimiento de los objetivos}
-Aunque algunas de las funcionalidades diseñadas inicialmente para el proyecto no se han llegado a implementar (tales como la incorporación de datos estadísticos sobre la categorización de los contenidos), consideramos  que el proyecto ha sido un éxito y se han podido lograr todos los objetivos planteados inicialmente en el apartado \ref{objectivos}.
+Aunque algunas de las funcionalidades diseñadas inicialmente para el proyecto no se han llegado a implementar (tales como la incorporación de datos estadísticos sobre la categorización de los contenidos), se han podido lograr todos los objetivos planteados inicialmente en el apartado \ref{objectivos}.
 \\
 
 A continuación se facilita la relación de objetivos definidos y su grado de cumplimiento al termino del desarrollo del proyecto:
@@ -2254,13 +2270,13 @@ A continuación se facilita la relación de objetivos definidos y su grado de cu
 \begin{itemize}
 \item \textbf{Investigar que funcionalidades aportan las API públicas ofrecidas por \textit{YouTube} y analizar como se pueden utilizar para la obtención de la información requerida}: Se ha analizado la API de \textit{YouTube} en la sección \ref{youTubeDataAPI} y se ha estudiado conjuntamente con la clienta que información va a ser recolectada por la aplicación. Este objetivo se realizo durante la primera fase de desarrollo.
 \item \textbf{Determinar como almacenar y acceder de forma eficiente a la gran cantidad de información que se obtendrá}: Se ha tomado la decisión de utilizar una base de datos NoSQL enfocada a grafos (\textit{Neo4j}) para poder acceder a la información de forma eficiente. Se ha diseñado un diagrama UML para representar el esquema invariante de la información y se ha adaptado al concepto de nodos y relaciones de las base de datos de grafos. Se realizo una prueba de concepto para estudiar la viabilidad de utilizar \textit{Neo4j} como base de datos en el proyecto con resultado favorable. La prueba de concepto realizada fue utilizada como base para la implementación de la aplicación durante la segunda fase de desarrollo. Este objetivo se considera realizado.
+\newpage 
 \item \textbf{Permitir la recolección de información según criterios de búsqueda proporcionados por el usuario final}: Conjuntamente con el cliente se han determinado los criterios de búsqueda a utilizar. Se ha desarrollado una prueba de concepto en la cual a sido posible recolectar información de vídeos y canales utilizando la API de \textit{YouTube}. La prueba de concepto realizada fue utilizada como base para la implementación de la aplicación durante la segunda fase de desarrollo. Este objetivo se considera realizado.
 \item \textbf{Habilitar la gestión, visualización y exportación de datos obtenidos en distintos procesos de extracción para su posterior análisis en herramientas especializadas}: Se ha diseñado una interfaz de usuario para proporcionar estas funcionalidades y se ha diseñado la arquitectura de la aplicación para hacerlas viables. En la segunda fase de desarrollo se ha adoptado y implementado la arquitectura propuesta en la primera fase de desarrollo y la interfaz de usuario necesarias para habilitar estas funcionalidades al usuario final. Este objetivo se considera realizado.
 \item \textbf{Ofrecer herramientas de visualización para el análisis y comprensión de los datos obtenidos}: Se ha decidido el uso de un grafo para la visualización de los datos obtenidos y se ha determinado cuales serán sus componentes. Se ha realizado una prueba de concepto en la cual ha sido posible visualizar los datos obtenidos a través de la API de \textit{YouTube} en un grafo. La prueba de concepto realizada fue utilizada como base para la implementación final de la aplicación y se consiguió visualizar los datos obtenidos en un grafo acorde a las especificaciones del cliente. Este objetivo se considera realizado.
 \item \textbf{Proporcionar una interfaz de usuario usable que permita realizar las acciones requeridas por el usuario final}: Se ha realizado una propuesta de interfaz de usuario que ha sido aprobada por la cliente. En la segunda fase de desarrollo se implemento la interfaz gráfica propuesta con la aprobación final de la clienta. Este objetivo se considera realizado.
 \end{itemize}
-
-\medskip 
+\newpage 
 
 \subsection{Seguimiento de la planificación y metodología}\label{sec:seguiminetoPlanificacion}
 Debido a la naturaleza del proyecto desarrollado en donde se ha trabajado conjuntamente con la clienta y usuaria final de la aplicación, creo que la elección de una metodología de diseño centrado en el usuario a sido la correcta al priorizar, por encima de todo, la satisfacción de los usuarios. 
@@ -2273,7 +2289,7 @@ Durante la realización del proyecto se recibieron peticiones por parte de la cl
 \begin{itemize}
 \item \textbf{Cambio de red social:} Debido a las restricciones de uso de la API gratuita de Twitter tal y como se describe en el apartado \ref{eleccionYouTube}, se decidió utilizar en substitución la red social \textit{YouTube}.
 \item \textbf{Cambio de SGBD:} Inicialmente se había planteado el uso de la base de datos documental NoSQL MongoDB como el SGBD de la aplicación, pero debido a los motibos expuestos en el apartado \ref{sgbd}, finalmente se opto por el uso de una bases de datos oriantada a grafos como \textit{Neo4j}.
-\item \textbf{No inclusión de información estadística sobre la categorización:} En la propuesta de interfaz de usuario presentada, en algunas secciones de la aplicació se incluía información estadística sobre el estado de la aplicación y de la información recolectada (porcentaje de vídeos categorizados, distribución de categorías, etc.). Debido al ajustado tiempo disponible para la implementación de esta funcionalidad y a la baja prioridad dada por la clienta en comparación a otras funcionalidades, finalmente esta característica no fue incluida dentro de la aplicación.
+\item \textbf{No inclusión de información estadística sobre la categorización:} En la propuesta de interfaz de usuario presentada, en algunas secciones de la aplicación se incluía información estadística sobre el estado de la aplicación y de la información recolectada (porcentaje de vídeos categorizados, distribución de categorías, etc.). Debido al ajustado tiempo disponible para la implementación de esta funcionalidad y a la baja prioridad dada por la clienta en comparación a otras funcionalidades, finalmente esta característica no fue incluida dentro de la aplicación.
 \item \textbf{Funcionalidad de favoritos:} En las ultimas fases de desarrollo y después de realizar la presentación de la aplicación a la clienta, debido a la gran cantidad de vídeos que pueden ser recolectados por la aplicación y para poder facilitar su identificación, se considero oportuno añadir la funcionalidad de favoritos para poder marcar los vídeos que la clienta considerara oportunos como favoritos para poder acceder a ellos de forma mas eficiente.
 \item \textbf{Nuevas funcionalidades en el listado de vídeos:} También en las ultimas fase de desarrollo, para hacer mas eficiente la tarea de categorización, en los diferentes listados de vídeos en la aplicación se añadió la funcionalidad para la categorización de vídeos. De esta forma, ya no es requerido acceder a un vídeo para cambiar su categoría. 
 \\
@@ -2320,15 +2336,40 @@ A continuación se facilita un listado de propuestas de mejora de la aplicación
 \item \textbf{Paginación de resultados en la API REST:} Parecido al punto anterior, actualmente la paginación de resultados se realiza en la interfaz de usuario. La API desarrollada debería incorporar la funcionalidad necesaria para permitir la paginación de listados de resultados para minimizar las llamadas a la API y el ancho de banda utilizado por la aplicación.
 \item \textbf{Mejorar los registros de la aplicación:} Aunque en la ejecución de la aplicación se genera un fichero de registro, la aplicación debería proporcionar mejor y un mayor nivel de registro por tal de facilitar su monitorización.
 \item \textbf{Realizar filtros en la búsqueda de \textit{'Analysis'} por base de datos en vez de lógicamente:} En la consulta realizada a base de datos para la obtención de vídeos a ser presentados en el grafo, solo se realiza el filtrando de los campos obligatorios (por fecha), los demás filtros disponibles en esta funcionalidad (tales como por categoría o proceso de recolección) no son obligatorios y pueden venir informados o no. Por falta de tiempo en la investigación, no se encontró la forma de realizar consultas a \textit{Neo4J} con parámetros que podían venir informados o no, como solución temporal se decidió realizar el filtrado de los parámetros opcionales de forma lógica posteriormente a la realización de la consulta a la base de datos. Esta solución temporal puede conllevar problemas de rendimiento en el futuro y, aunque como se comenta a continuación no es el principal problema potencial de rendimiento en la visualización del grafo,  debería encontrarse una alternativa mejor. 
-\item \textbf{Mejorar el rendimiento de la representación del grafo:} Tal y como se comenta en la página web oficial de la librería \textit{JavaScript Cytoscape.js} utilizada para la visualización del grafo, en los gráficos con una gran cantidad de nodos a representar el rendimiento de la librería empieza a degradarse  \cite{28}. En las pruebas realizadas se ha confirmado esta afirmación al, por ejemplo, tardar aproximadamente unos 34 segundos en visualizarse un grafo con mil nodos (4 segundos para obtener los videos a representar de la base de datos y a realizar el filtrado lógico de los mismos más 30 segundos para que la librería los visualice por pantalla). Debido al gran volumen de información con la que se puede trabajar con la aplicación, para mejorar el rendimiento en la visualización de grafos se deberían adoptar medidas correctoras (tales como disminuir la información a mostrar por cada nodo) o estudiar alternativas al uso de \textit{Cytoscape.js} como libreria \textit{JavaScript} para la representación del grafo.
+\item \textbf{Mejorar el rendimiento de la representación del grafo:} Tal y como se comenta en la página web oficial de la librería \textit{JavaScript Cytoscape.js} utilizada para la visualización del grafo, en los gráficos con una gran cantidad de nodos a representar el rendimiento de la librería empieza a degradarse  \cite{28}. En las pruebas realizadas se ha confirmado esta afirmación al, por ejemplo, tardar aproximadamente unos 34 segundos en visualizarse un grafo con mil nodos (4 segundos para obtener los vídeos a representar de la base de datos y a realizar el filtrado lógico de los mismos más 30 segundos para que la librería los visualice por pantalla). Debido al gran volumen de información con la que se puede trabajar con la aplicación, para mejorar el rendimiento en la visualización de grafos se deberían adoptar medidas correctoras (tales como disminuir la información a mostrar por cada nodo) o estudiar alternativas al uso de \textit{Cytoscape.js} como librería \textit{JavaScript} para la representación del grafo.
 \end{itemize}
 \newpage 
 
 
-\section{Glosario}
-\bigskip
-
-Definición de los términos y acrónimos más relevantes utilizados dentro de la Memoria. 
+\section{Glosario} 
+\begin{table}[H]
+\begin{tabular}{ll}
+ACID & \textit{Atomicity, Consistency, Isolation and Durability}                  \\
+AJAX & \textit{Asynchronous JavaScript And XML}                  \\
+API & \textit{Application Programming Interface}                  \\
+CSV & \textit{Comma-Separated Values}                  \\
+DAO & \textit{Data Access Object}                  \\
+DB & \textit{DataBase}                  \\
+DOM & \textit{Document Object Model}                  \\
+HTTP & \textit{HyperText Transfer Protocol}                  \\
+JPA & \textit{Java Persistence API}                  \\
+JSON & \textit{JavaScript Object Notation}                  \\
+MVC & \textit{Model–View–Controller}                  \\
+NoSQL & \textit{Not Only SQL}                  \\
+POC & \textit{Proof Of Concept}                  \\
+POJO & \textit{Plain Old Java Object}                  \\
+REST & \textit{REpresentational State Transfer}                  \\
+RPC & \textit{Remote Procedure Call}                  \\
+SGBD & \textit{Sistema Gestor de Base de Datos}                  \\
+SQL & \textit{Structured Query Language}                  \\
+TFG & \textit{Trabajo Final de Grado}                  \\
+UML & \textit{Unified Modeling Language}                  \\
+URI & \textit{Uniform Resource Identifier}                  \\
+URL & \textit{Uniform Resource Locator}                  \\
+WAR & \textit{Web Application Archive}                  \\
+XML & \textit{eXtensible Markup Language}
+\end{tabular}%
+\end{table}
 \newpage 
 
 
@@ -2401,7 +2442,7 @@ Definición de los términos y acrónimos más relevantes utilizados dentro de l
 \begin{itemize}
 \item \textbf{Sistema operativo:} La aplicación puede funcionar tanto en sistemas \textit{Windows}, \textit{Linux} o \textit{Mac}, en cada caso hará falta la instalación de las distribuciones correctas según el sistema operativo escogido.
 \item \textbf{Memoria RAM:} Se recomienda un mínimo de 256Mb de memoria RAM dedicados a la ejecución de la aplicación.
-\item \textbf{Espacio de disco:} La aplicación en si misma tiene un peso de 30Mb en disco pero dependiendo del uso requerido de la aplicación y del volumen de información a recolectar, el espacio en disco necesario puede variar. Como dato extrapolativo, un volumen de 500 vídeos y 100 canales ocupa un espació en disco aproximado de 200Mb.
+\item \textbf{Espacio de disco:} La aplicación en si misma tiene un peso de 30Mb en disco pero dependiendo del uso requerido de la aplicación y del volumen de información a recolectar, el espacio en disco necesario puede variar. Como dato para extrapolar, un volumen de 500 vídeos y 100 canales ocupa un espació en disco aproximado de 200Mb.
 \end{itemize}
 
 \noindent\textbf{Requerimientos de \textit{software}:}
