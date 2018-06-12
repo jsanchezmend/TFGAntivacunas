@@ -18,6 +18,8 @@ public class NodeDataItem extends AbstractItem {
 
 	protected String id;
 	
+	protected String name;
+	
 	protected String resourceId;
 	
 	protected String typeCode;
@@ -59,6 +61,13 @@ public class NodeDataItem extends AbstractItem {
 
 	public String getShape() {
 		return shape;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getColor() {

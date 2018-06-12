@@ -76,6 +76,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 		for(VideoItem videoItem : videoItems) {
 			// Create video node
 			final NodeDataItem videoNodeData = new NodeDataItem(GraphNodeTypeEnum.VIDEO);
+			videoNodeData.setName("");
 			videoNodeData.setResourceId(videoItem.getId());
 			final CategoryItem categoryItem = videoItem.getCategory();
 			if(categoryItem != null) {
@@ -93,6 +94,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 			if(includeChannels && channelItem != null) {
 				final NodeDataItem channelNodeData = new NodeDataItem(GraphNodeTypeEnum.CHANNEL);
+				channelNodeData.setName(channelItem.getName());
 				channelNodeData.setResourceId(channelItem.getId());
 				
 				if(!channelIds.contains(channelNodeData.getResourceId())) {

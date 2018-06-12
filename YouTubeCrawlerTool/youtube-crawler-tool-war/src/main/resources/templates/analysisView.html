@@ -146,10 +146,15 @@
 			  style: cytoscape.stylesheet()
 			    .selector('node')
 			      .css({
+			    	'content': 'data(name)',
 			       	'shape': 'data(shape)',
 			        'background-color': 'data(color)',
 			        'width': 'mapData(size, 0, 100, 10, 60)',
 			        'height': 'mapData(size, 0, 100, 10, 60)'
+			        //'text-valign': 'center',
+			        //'color': 'white',
+			        //'text-outline-width': 2,
+			        //'text-outline-color': '#999'
 			      })
 			    .selector('edge')
 			      .css({
